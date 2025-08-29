@@ -3,13 +3,38 @@
  */
 package org.example
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+import com.google.ai.client.generativeai.GenerativeModel
+import kotlinx.coroutines.runBlocking
 
-fun main() {
-    println(App().greeting)
+fun main() = runBlocking {
+    // 1. Obtén la API key de una forma segura, por ejemplo, de una variable de entorno.
+    val apiKey = System.getenv("AIzaSyAX6g_w_VeRAECmeQqDZEbbwfIxRZ-HYbA") ?: throw IllegalArgumentException("GEMINI_API_KEY no está configurada")
+
+    // 2. Crea una instancia del modelo.
+    val generativeModel = GenerativeModel(
+        modelName = "gemini-pro",
+        apiKey = apiKey
+    )
+
+    // 3. Pide la entrada del usuario.
+    println("Ingresa el nombre del producto:")
+    val productName = readLine() ?: ""
+    println("Ingresa la categoría del producto:")
+    val productCategory = readLine() ?: ""
+
+    // 4. Crea el prompt (la instrucción para la IA).
+    val prompt = "Genera una descripción de 3-4 frases para el producto '$productName' de la categoría '$productCategory'."
+
+    // 5. Genera la descripción de manera asíncrona.
+    println("Generando descripción...")
+    try {
+        val response = generativeModel.generateContent(prompt)
+
+        // 6. Muestra la respuesta.
+        println("\n--- Descripción Generada ---")
+        println(response.text)
+        println("--------------------------")
+    } catch (e: Exception) {
+        println("Error al generar la descripción: ${e.message}")
+    }
 }
