@@ -17,7 +17,7 @@ fun main() {
     // El JSON que enviaremos. Es la clave 'pregunta' que espera el servidor.
     val jsonBody = """
         {
-            "pregunta": "¿Cuál es la capital de Italia?"
+            "pregunta": "que dia es hoy?"
         }
     """.trimIndent()
 
