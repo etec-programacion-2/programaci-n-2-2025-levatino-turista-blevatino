@@ -3,13 +3,47 @@
  */
 package org.example
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
 
 fun main() {
-    println(App().greeting)
+    val client = OkHttpClient()
+
+    // La URL de tu servidor Python. Asegúrate de que el puerto coincida.
+    val url = "http://127.0.0.1:5000/ask"
+
+    // El JSON que enviaremos. Es la clave 'pregunta' que espera el servidor.
+    val jsonBody = """
+        {
+            "pregunta": "¿Cuál es la capital de Italia?"
+        }
+    """.trimIndent()
+
+    val mediaType = "application/json; charset=utf-8".toMediaTypeOrNull()
+    val requestBody = jsonBody.toRequestBody(mediaType)
+
+    val request = Request.Builder()
+        .url(url)
+        .post(requestBody)
+        .build()
+
+    println("Enviando pregunta a Python...")
+
+    // Usamos `enqueue` para una llamada asíncrona
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            println("Error de conexión: ${e.message}")
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            val responseBody = response.body?.string()
+            if (response.isSuccessful) {
+                println("Respuesta del servidor Python: $responseBody")
+            } else {
+                println("Error en la respuesta del servidor: ${response.code} - $responseBody")
+            }
+        }
+    })
 }

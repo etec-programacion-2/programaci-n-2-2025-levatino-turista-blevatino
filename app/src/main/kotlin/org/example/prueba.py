@@ -1,33 +1,41 @@
 import google.generativeai as genai
 import os
+from flask import Flask, request, jsonify
 
-# 1. Configuración de la API Key
+# --- Configuración de la API Key de Gemini ---
 # Pega tu clave de la API en la siguiente línea.
-# Para obtenerla, ve a: https://aistudio.google.com/app/apikey
 genai.configure(api_key="AIzaSyBPSzWgyEnENenleqOD5K5hqWxnn_Bs5AQ")
 
-# 2. Seleccionamos el modelo y creamos una sesión de chat
+app = Flask(__name__)
 model = genai.GenerativeModel('gemini-1.5-flash')
-chat = model.start_chat(history=[])
 
-print("Hola, soy Gemini. ¡Puedes hacerme todas las preguntas que quieras!")
-print("Para terminar, simplemente escribe 'salir'.")
+# ----------------------------------------------------
+# 1. Definimos una ruta para recibir las preguntas
+# ----------------------------------------------------
+@app.route('/ask', methods=['POST'])
+def ask_gemini():
+    # Verificamos si la solicitud es JSON y si contiene la clave 'pregunta'
+    if not request.is_json or 'pregunta' not in request.json:
+        return jsonify({"error": "Petición JSON inválida. Se esperaba la clave 'pregunta'."}), 400
 
-# 3. Bucle para hacer múltiples preguntas
-while True:
-    # Solicitamos la pregunta al usuario
-    pregunta = input("\nTu pregunta: ")
+    pregunta_recibida = request.json['pregunta']
+    print(f"Pregunta recibida desde Kotlin: {pregunta_recibida}")
 
-    # Si el usuario escribe 'salir', terminamos el bucle
-    if pregunta.lower() == 'salir':
-        print("¡Hasta la próxima!")
-        break
-
-    # 4. Enviamos la pregunta al chat y mostramos la respuesta
+    # ------------------------------------------------
+    # 2. Enviamos la pregunta a la API de Gemini
+    # ------------------------------------------------
     try:
-        # Usamos `send_message` para que el modelo recuerde el contexto
-        respuesta = chat.send_message(pregunta)
-        print("\nGemini:", respuesta.text)
+        respuesta = model.generate_content(pregunta_recibida)
+        
+        # --------------------------------------------
+        # 3. Preparamos y enviamos la respuesta como JSON
+        # --------------------------------------------
+        return jsonify({"respuesta": respuesta.text})
+
     except Exception as e:
-        print(f"Ocurrió un error: {e}")
-        print("Asegúrate de que tu API Key sea válida.")
+        print(f"Error al llamar a Gemini: {e}")
+        return jsonify({"error": f"Error del servidor: {e}"}), 500
+
+if __name__ == '__main__':
+    # El servidor se ejecuta en http://127.0.0.1:5000
+    app.run(port=5000)
