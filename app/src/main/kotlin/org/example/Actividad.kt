@@ -1,6 +1,9 @@
 package org.example
 
+import kotlinx.serialization.Serializable
+
 // La data class es para almacenar información que puede variar
+@Serializable // permite que la librería las convierta automáticamente entre objetos y JSON
 data class Actividad (
 
     // Se declaran los atributos / variables como privadas
