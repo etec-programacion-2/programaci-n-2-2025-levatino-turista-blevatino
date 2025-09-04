@@ -1,0 +1,26 @@
+[
+  {
+    "nombre": "Parque Nacional Torres del Paine",
+    "descripcion": "Famoso por sus picos de granito.",
+    "ubicacion": "Chile",
+    "actividadesSugeridas": [
+      {
+        "nombre": "Senderismo",
+        "descripcion": "Recorrer las Torres del Paine."
+      }
+    ],
+    "temporadaRecomendada": "PRIMAVERA"
+  },
+  {
+    "nombre": "Cataratas del Iguazú",
+    "descripcion": "Conjunto de cataratas en la frontera de Argentina y Brasil.",
+    "ubicacion": "Argentina/Brasil",
+    "actividadesSugeridas": [
+      {
+        "nombre": "Paseo en lancha",
+        "descripcion": "Ver las cataratas de cerca."
+      }
+    ],
+    "temporadaRecomendada": "VERANO"
+  }
+]

@@ -1,7 +1,10 @@
 package org.example
 
+import kotlinx.serialization.Serializable
+
 // La enum class es para valores fijos y constantes
-enum class Temporada () {
+@Serializable
+enum class Temporada() {
     VERANO,
     OTONO,
     INVIERNO,
