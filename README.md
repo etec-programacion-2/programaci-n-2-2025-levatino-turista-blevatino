@@ -23,3 +23,10 @@ La lógica de filtrado se coloca en el servicio por el Principio de Responsabili
 -El Servicio se encarga de las reglas de negocio.
 
 Al poner la lógica de filtrado en el servicio, esta es reutilizable y el sistema es más modular, ya que cada componente solo tiene una razón para cambiar.
+
+**Issue 2.2: Crear la interfaz AsistenteIA:**
+La interfaz AsistenteIA aísla nuestra aplicación de los detalles de una librería o API específica de OpenAI.
+
+-Nuestra lógica de negocio no depende directamente de una clase concreta, sino de una abstracción.
+
+-Permite cambiar a otro proveedor de IA o usar una versión de prueba (mock) para testear, sin tener que modificar el resto de la aplicación.
