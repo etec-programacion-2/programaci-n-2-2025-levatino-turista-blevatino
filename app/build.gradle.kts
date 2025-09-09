@@ -32,6 +32,9 @@ dependencies {
 
     //Kotlinx para leer archivos JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+    //Para comunicarse con python
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
