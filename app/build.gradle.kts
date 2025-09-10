@@ -11,6 +11,8 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
 }
 
 repositories {

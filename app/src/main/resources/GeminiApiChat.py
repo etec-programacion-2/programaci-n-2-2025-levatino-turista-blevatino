@@ -7,6 +7,7 @@ class GeminiAsistente:
         self.api_key = os.getenv("GEMINI_API_KEY")
         if not self.api_key:
             raise ValueError("La variable de entorno 'GEMINI_API_KEY' no está configurada.")
+            
 
         # Configura la librería con la clave de API.
         genai.configure(api_key=self.api_key)

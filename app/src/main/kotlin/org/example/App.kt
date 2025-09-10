@@ -3,13 +3,24 @@
  */
 package org.example
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
-
 fun main() {
-    println(App().greeting)
+
+
+    // 1. Asegúrate de que tu servidor de Python esté corriendo en otra terminal.
+    //    Si no lo está, este código fallará.
+
+    // 2. Define la URL de tu servicio de Python.
+    val pythonServiceUrl = "http://127.0.0.1:5000/ask"
+
+    // 3. Instancia tu clase de asistente, pasándole la URL.
+    val asistente: AsistenteIA = GeminiPythonAsistente(pythonServiceUrl)
+
+    // 4. Llama al método de la interfaz para obtener una respuesta.
+    val pregunta = "¿Me puedes dar 3 recomendaciones para un viaje de un día en Mendoza?"
+
+    println("Enviando pregunta a mi servicio de Python...")
+    val respuesta = asistente.obtenerRespuesta(pregunta)
+
+    // 5. Imprime la respuesta que recibiste.
+    println("Respuesta del servidor Python:\n$respuesta")
 }

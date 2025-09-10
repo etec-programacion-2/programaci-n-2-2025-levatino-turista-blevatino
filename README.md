@@ -25,8 +25,24 @@ La lógica de filtrado se coloca en el servicio por el Principio de Responsabili
 Al poner la lógica de filtrado en el servicio, esta es reutilizable y el sistema es más modular, ya que cada componente solo tiene una razón para cambiar.
 
 **Issue 2.2: Crear la interfaz AsistenteIA:**
+
 La interfaz AsistenteIA aísla nuestra aplicación de los detalles de una librería o API específica de OpenAI.
 
 -Nuestra lógica de negocio no depende directamente de una clase concreta, sino de una abstracción.
 
 -Permite cambiar a otro proveedor de IA o usar una versión de prueba (mock) para testear, sin tener que modificar el resto de la aplicación.
+
+**Issue 2.3: Implementar GeminiAsistente:**
+
+Primero, inicio el servidor de Python en una terminal. Esto prepara mi servicio para recibir peticiones.
+
+`export GEMINI_API_KEY="AIzaSyBPerXvJjTwOD65x4_d0POPyB55mSr8W1s" && python3 ./app/src/main/resources/GeminiApiServer.py`
+
+Luego, ejecuto la aplicación de Kotlin en una segunda terminal.
+`./gradlew run`
+
+Mi aplicación de Kotlin enviará una petición a Python, que a su vez se comunicará con la API de Gemini. La respuesta de Gemini viajará de regreso por el mismo camino.
+
+(_Dentro de App.tk hay una prueba_)
+
+Para demostrar la seguridad, la API Key no está en el código, sino que la configuro en una variable de entorno. Esto la mantiene a salvo y hace que mi código sea flexible.
