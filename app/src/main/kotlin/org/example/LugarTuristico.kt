@@ -1,42 +1,33 @@
 package org.example
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
 @Serializable
-data class LugarTuristico (
+data class LugarTuristico(
+    @SerialName("nombre")
+    private val _nombre: String,
 
-    // Se declaran los atributos / variables como privadas
-    private var _nombre: String,
-    private var _ubicacion: String,
-    private var _descripcion: String,
-    private var _actividadesSugeridas: List<Actividad>,
-    private var _temporadaRecomendada: Temporada
+    @SerialName("descripcion")
+    private val _descripcion: String,
 
+    @SerialName("ubicacion")
+    private val _ubicacion: String,
 
+    @SerialName("actividadesSugeridas")
+    private val _actividadesSugeridas: List<Actividad>,
+
+    @SerialName("temporadaRecomendada")
+    private val _temporadaRecomendada: Temporada
 ) {
+    // Definimos las propiedades públicas con solo el getter
+    val nombre: String get() = _nombre
 
-    // Se les da el valor a las variables
-    var nombre: String = _nombre
-        get() = field
-        set(value) { field = value }
+    val descripcion: String get() = _descripcion
 
-    var ubicacion: String = _ubicacion
-        get() = field
-        set(value) { field = value }
+    val ubicacion: String get() = _ubicacion
 
-    var descripcion: String = _descripcion
-        get() = field
-        set(value) { field = value }
+    val actividadesSugeridas: List<Actividad> get() = _actividadesSugeridas
 
-    var actividadesSugeridas: List<Actividad> = _actividadesSugeridas
-        get() = field
-        set(value) { field = value }
-
-    var temporadaRecomendada: Temporada = _temporadaRecomendada
-        get() = field
-        set(value) { field = value }
-
-
-
-
+    val temporadaRecomendada: Temporada get() = _temporadaRecomendada
 }

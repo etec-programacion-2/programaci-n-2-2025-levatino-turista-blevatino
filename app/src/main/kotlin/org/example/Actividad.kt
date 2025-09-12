@@ -1,25 +1,17 @@
 package org.example
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
-// La data class es para almacenar información que puede variar
-@Serializable // permite que la librería las convierta automáticamente entre objetos y JSON
-data class Actividad (
+@Serializable
+data class Actividad(
+    @SerialName("nombre")
+    private val _nombre: String,
 
-    // Se declaran los atributos / variables como privadas
-    private var _nombre: String,
-    private var _descripcion: String
-
+    @SerialName("descripcion")
+    private val _descripcion: String
 ) {
-
-    // Se les da el valor a las variables
-    var nombre: String = _nombre
-        get() = field
-        set(value) { field = value }
-
-    var descripcion: String = _descripcion
-        get() = field
-        set(value) { field = value }
-
-
+    // Definimos las propiedades públicas con solo el getter
+    val nombre: String get() = _nombre
+    val descripcion: String get() = _descripcion
 }

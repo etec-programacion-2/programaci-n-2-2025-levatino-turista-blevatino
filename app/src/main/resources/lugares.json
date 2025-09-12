@@ -1,26 +1,82 @@
 [
   {
-    "nombre": "Parque Nacional Torres del Paine",
-    "descripcion": "Famoso por sus picos de granito.",
-    "ubicacion": "Chile",
+    "nombre": "Parque Provincial Aconcagua",
+    "descripcion": "Hogar del pico mas alto del hemisferio occidental, el Cerro Aconcagua. Famoso por sus imponentes paisajes andinos, valles glaciares y desafiantes rutas de senderismo y andinismo.",
+    "ubicacion": "Departamento de Las Heras, Mendoza",
     "actividadesSugeridas": [
       {
-        "nombre": "Senderismo",
-        "descripcion": "Recorrer las Torres del Paine."
-      }
-    ],
-    "temporadaRecomendada": "PRIMAVERA"
-  },
-  {
-    "nombre": "Cataratas del Iguazú",
-    "descripcion": "Conjunto de cataratas en la frontera de Argentina y Brasil.",
-    "ubicacion": "Argentina/Brasil",
-    "actividadesSugeridas": [
-      {
-        "nombre": "Paseo en lancha",
-        "descripcion": "Ver las cataratas de cerca."
+        "nombre": "Senderismo y Trekking",
+        "descripcion": "Recorrer el sendero de 2-3 horas hasta la 'Laguna de los Horcones' o realizar un trekking de un dia a 'Confluencia'. Para los mas experimentados, esta el circuito mas largo a 'Plaza de Mulas'."
       }
     ],
     "temporadaRecomendada": "VERANO"
+  },
+  {
+    "nombre": "Bodega Zuccardi Valle de Uco",
+    "descripcion": "Una de las bodegas mas reconocidas a nivel mundial, famosa por su arquitectura moderna, su enfoque en la expresion del terruño y su restaurante 'Piedra Infinita Cocina', que ofrece un menu de pasos maridado con sus vinos.",
+    "ubicacion": "Paraje Altamira, Valle de Uco, Mendoza",
+    "actividadesSugeridas": [
+      {
+        "nombre": "Visita Guiada y Degustacion",
+        "descripcion": "Participar en un tour por las instalaciones de la bodega y degustar sus vinos premium como los 'Piedra Infinita' y la linea 'Aluvional'."
+      },
+      {
+        "nombre": "Almuerzo en Piedra Infinita Cocina",
+        "descripcion": "Disfrutar de un menu de 6-7 pasos que resalta los productos locales, diseñado para maridar perfectamente con los vinos de la finca."
+      }
+    ],
+    "temporadaRecomendada": "TODO_EL_ANO"
+  },
+  {
+    "nombre": "Bodega Casa Vigil - El Enemigo",
+    "descripcion": "Mas que una bodega, es un centro cultural y gastronomico que fusiona arte, historia y enologia. Dirigida por el enologo Alejandro Vigil, ofrece una experiencia unica con vinos de autor y una gastronomia de alta cocina.",
+    "ubicacion": "Maipu, Mendoza",
+    "actividadesSugeridas": [
+      {
+        "nombre": "Experiencia Gastronomica",
+        "descripcion": "Probar el menu de 10 pasos que fusiona sabores andinos y mediterraneos, maridado con los aclamados vinos 'El Enemigo'."
+      },
+      {
+        "nombre": "Visita guiada a la 'Cava'",
+        "descripcion": "Explorar las cavas de la bodega, que simulan el Infierno de Dante, con esculturas y obras de arte que complementan la experiencia."
+      }
+    ],
+    "temporadaRecomendada": "TODO_EL_ANO"
+  },
+  {
+    "nombre": "Rafting en el Rio Mendoza",
+    "descripcion": "Una emocionante actividad de aventura en el rio Mendoza, conocido por sus rapidos de clase II a IV. El entorno montañoso de Potrerillos anade un espectacular telon de fondo a la experiencia.",
+    "ubicacion": "Potrerillos, Mendoza",
+    "actividadesSugeridas": [
+      {
+        "nombre": "Rafting de medio dia",
+        "descripcion": "Descender por los rapidos del rio en una balsa inflable, acompañado por un guia experto que brinda las instrucciones de seguridad necesarias."
+      }
+    ],
+    "temporadaRecomendada": "VERANO"
+  },
+  {
+    "nombre": "Museo del Area Fundacional",
+    "descripcion": "Ubicado en las ruinas de la antigua ciudad de Mendoza, destruida por el terremoto de 1861. Ofrece un recorrido por la historia de la provincia, con exhibiciones de la ciudad pre-terremoto y la recuperacion de la zona.",
+    "ubicacion": "Ciudad de Mendoza",
+    "actividadesSugeridas": [
+      {
+        "nombre": "Recorrido Historico",
+        "descripcion": "Explorar los restos arqueologicos de la antigua ciudad y aprender sobre su pasado a traves de sus colecciones y exposiciones interactivas."
+      }
+    ],
+    "temporadaRecomendada": "TODO_EL_ANO"
+  },
+  {
+    "nombre": "Bodega Kaiken",
+    "descripcion": "Situada en el corazon de Vistalba, Lujan de Cuyo. Se especializa en la elaboracion de vinos de alta gama con un distintivo estilo chileno-argentino, ofreciendo experiencias de cata personalizadas y un restaurante con cocina de autor.",
+    "ubicacion": "Lujan de Cuyo, Mendoza",
+    "actividadesSugeridas": [
+      {
+        "nombre": "Degustacion de 'Terroir' o 'Icono'",
+        "descripcion": "Probar las etiquetas mas exclusivas de la bodega en una cata guiada, como sus vinos de la linea 'Mai' o 'Anoranza'."
+      }
+    ],
+    "temporadaRecomendada": "TODO_EL_ANO"
   }
 ]

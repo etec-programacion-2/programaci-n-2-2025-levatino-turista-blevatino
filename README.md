@@ -46,3 +46,7 @@ Mi aplicación de Kotlin enviará una petición a Python, que a su vez se comuni
 (_Dentro de App.tk hay una prueba_)
 
 Para demostrar la seguridad, la API Key no está en el código, sino que la configuro en una variable de entorno. Esto la mantiene a salvo y hace que mi código sea flexible.
+
+**Issue 2.4: Crear la clase ControladorPrincipal:**
+
+(_Dentro de App.tk hay una prueba_)
