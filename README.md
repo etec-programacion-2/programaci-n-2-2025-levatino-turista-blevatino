@@ -36,6 +36,12 @@ La interfaz AsistenteIA aísla nuestra aplicación de los detalles de una librer
 
 Primero, inicio el servidor de Python en una terminal. Esto prepara mi servicio para recibir peticiones.
 
+`python3 -m venv venv`
+
+`source venv/bin/activate`
+
+`pip install google-generativeai Flask`
+
 `export GEMINI_API_KEY="AIzaSyBPerXvJjTwOD65x4_d0POPyB55mSr8W1s" && python3 ./app/src/main/resources/GeminiApiServer.py`
 
 Luego, ejecuto la aplicación de Kotlin en una segunda terminal.
@@ -50,3 +56,10 @@ Para demostrar la seguridad, la API Key no está en el código, sino que la conf
 **Issue 2.4: Crear la clase ControladorPrincipal:**
 
 (_Dentro de App.tk hay una prueba_)
+
+**Issue 3.2: Crear la clase VistaConsola:**
+
+
+La VistaConsola no accede a los servicios porque su único trabajo es la presentación. No debe saber cómo se obtienen los datos o cómo funciona la IA; solo se preocupa por leer y mostrar información al usuario.
+
+El ControladorPrincipal actúa como intermediario para mantener estas dos partes del sistema separadas y organizadas.
