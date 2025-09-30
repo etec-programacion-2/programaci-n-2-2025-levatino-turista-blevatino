@@ -2,15 +2,15 @@ package org.example
 
 import kotlinx.serialization.json.Json
 import java.io.FileNotFoundException
-import java.nio.file.Files
-import java.nio.file.Paths
+import java.io.File
 
 
 class JsonLugarTuristicoRepository(private val filePath: String) : LugarTuristicoRepository {
 
     private val lugares: List<LugarTuristico> by lazy {
         try {
-            val jsonString = String(Files.readAllBytes(Paths.get(filePath)))
+            // Usamos File para leer el archivo de la forma más robusta.
+            val jsonString = File(filePath).readText()
             Json.decodeFromString<List<LugarTuristico>>(jsonString)
         } catch (e: FileNotFoundException) {
             System.err.println("Error: El archivo de datos no fue encontrado en: $filePath")

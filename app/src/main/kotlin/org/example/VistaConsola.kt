@@ -35,7 +35,7 @@ class VistaConsola(private val controlador: ControladorPrincipal) {
 
     private fun solicitarRecomendacionesPorTemporada() {
         print("Ingrese la temporada (VERANO, OTONO, INVIERNO, PRIMAVERA): ")
-        val temporada = readln()
+        val temporada: String = readln()
         val lugares = controlador.solicitarRecomendaciones(temporada)
         if (lugares.isNotEmpty()) {
             println("--- Lugares recomendados para $temporada ---")
