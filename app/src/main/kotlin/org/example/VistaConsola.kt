@@ -1,5 +1,7 @@
 package org.example
 
+import java.lang.IllegalArgumentException
+
 class VistaConsola(private val controlador: ControladorPrincipal) {
 
     fun iniciar() {
@@ -34,23 +36,37 @@ class VistaConsola(private val controlador: ControladorPrincipal) {
     }
 
     private fun solicitarRecomendacionesPorTemporada() {
-        print("Ingrese la temporada (VERANO, OTONO, INVIERNO, PRIMAVERA): ")
-        val temporada: String = readln()
-        val lugares = controlador.solicitarRecomendaciones(temporada)
-        if (lugares.isNotEmpty()) {
-            println("--- Lugares recomendados para $temporada ---")
-            lugares.forEach { lugar ->
-                println("  - ${lugar.nombre}: ${lugar.descripcion}")
+        print("Ingrese la temporada (VERANO, OTONO, INVIERNO, PRIMAVERA, TODO_EL_ANO): ")
+        val temporadaIngresada = readln()
+
+        try {
+            // 1. Convertimos la entrada String a MAYÚSCULAS y luego al enum Temporada.
+            val temporada = Temporada.valueOf(temporadaIngresada.uppercase())
+
+            // 2. Llamamos al controlador con el tipo de dato correcto (Temporada).
+            val lugares = controlador.solicitarRecomendaciones(temporada)
+
+            if (lugares.isNotEmpty()) {
+                println("--- Lugares recomendados para ${temporada.name} ---")
+                lugares.forEach { lugar ->
+                    println("  - ${lugar.nombre}: ${lugar.descripcion}")
+                }
+            } else {
+                println("No se encontraron lugares para esa temporada o la entrada no es válida.")
             }
-        } else {
-            println("No se encontraron lugares para esa temporada o la entrada no es válida.")
+        } catch (e: IllegalArgumentException) {
+            // Manejamos el error si el usuario ingresa algo que no es un valor de Temporada.
+            println("Error: La temporada ingresada no es válida. Por favor, intente con una de las opciones sugeridas.")
         }
     }
 
     private fun hacerPreguntaAlAsistente() {
         print("Escriba su pregunta para la IA: ")
         val pregunta = readln()
-        val respuesta = controlador.preguntarAlAsistente(pregunta)
+
+        // La referencia al campo 'controlador' de la clase es correcta aquí.
+        val respuesta = controlador.obtenerRespuestaAsistente(pregunta)
+
         println("--- Respuesta del Asistente IA ---")
         println(respuesta)
     }

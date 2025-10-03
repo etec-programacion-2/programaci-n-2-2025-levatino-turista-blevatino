@@ -13,6 +13,7 @@ plugins {
     application
 
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 repositories {
@@ -46,6 +47,11 @@ java {
     }
 }
 
+javafx {
+    version = "25" // Especifica la versión de JavaFX
+    modules = listOf("javafx.controls", "javafx.fxml") // Módulos que necesitas
+}
+
 application {
     // Define the main class for the application.
     mainClass = "org.example.AppKt"
@@ -55,3 +61,5 @@ tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+

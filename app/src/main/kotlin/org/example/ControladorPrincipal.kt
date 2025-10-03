@@ -5,30 +5,22 @@ class ControladorPrincipal(
     private val asistenteIA: AsistenteIA
 ) {
     /**
-     * Recibe una petición de la UI para obtener recomendaciones y delega la tarea
-     * al ServicioRecomendaciones.
-     * @param temporada El nombre de la temporada como String, recibido de la UI.
-     * @return Una lista de lugares turísticos recomendados.
+     * Delega la solicitud de recomendaciones de lugares al servicio de negocio.
+     * Ahora espera el objeto Temporada (enum) directamente, ya que la UI se encarga
+     * de validar la entrada String.
+     * * @param temporada El objeto Temporada (enum) a buscar.
      */
-    fun solicitarRecomendaciones(temporada: String): List<LugarTuristico> {
-        // La lógica de negocio está en otro lugar, el controlador solo delega.
-        // Aquí puedes manejar la conversión de String a un Enum (Temporada).
-        val temporadaEnum = try {
-            Temporada.valueOf(temporada.uppercase())
-        } catch (e: IllegalArgumentException) {
-            println("Temporada '$temporada' no válida.")
-            return emptyList()
-        }
-        return servicioRecomendaciones.obtenerRecomendacionesPara(temporadaEnum)
+    fun solicitarRecomendaciones(temporada: Temporada): List<LugarTuristico> {
+        // Llama al servicio con el Enum de Temporada.
+        return servicioRecomendaciones.obtenerRecomendacionesPara(temporada)
     }
 
     /**
-     * Recibe una pregunta de la UI y delega la tarea al AsistenteIA.
-     * @param pregunta La pregunta de texto del usuario.
-     * @return La respuesta de texto de la IA.
+     * Envía una pregunta de texto al asistente de IA y retorna su respuesta.
+     * Llama al método de la interfaz AsistenteIA.
+     * @param pregunta La pregunta del usuario.
      */
-    fun preguntarAlAsistente(pregunta: String): String {
-        // La lógica para obtener la respuesta de la IA está en el AsistenteIA.
+    fun obtenerRespuestaAsistente(pregunta: String): String {
         return asistenteIA.obtenerRespuesta(pregunta)
     }
 }
