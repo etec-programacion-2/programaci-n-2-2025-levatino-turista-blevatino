@@ -1,0 +1,78 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"7df00e65-f658-42c1-8beb-6d27743ca609\" name=\"Changes\" comment=\"\">\n      <change afterPath=\"$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterAsistente.py\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.kotlin/sessions/kotlin-compiler-3064705228670719834.salive\" beforeDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/app/build.gradle.kts\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/app/build.gradle.kts\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/app/src/main/kotlin/org/example/ControladorPrincipal.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/app/src/main/kotlin/org/example/ControladorPrincipal.kt\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/app/src/main/kotlin/org/example/VistaConsola.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/app/src/main/kotlin/org/example/VistaConsola.kt\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/app/src/main/resources/GeminiApiChat.py\" beforeDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/app/src/main/resources/GeminiApiServer.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/app/src/main/resources/GeminiApiServer.py\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/settings.gradle.kts\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/settings.gradle.kts\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ExternalProjectsData\">\n    <projectState path=\"$PROJECT_DIR$\">\n      <ProjectState />\n    </projectState>\n  </component>\n  <component name=\"ExternalProjectsManager\">\n    <system id=\"GRADLE\">\n      <state>\n        <projects_view>\n          <tree_state>\n            <expand>\n              <path>\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\n                <item name=\"programaci-n-2-2025-levatino-turista-blevatino\" type=\"f1a62948:ProjectNode\" />\n              </path>\n            </expand>\n            <select />\n          </tree_state>\n        </projects_view>\n      </state>\n    </system>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Kotlin Script\" />\n        <option value=\"Kotlin Interface\" />\n        <option value=\"Kotlin Data Class\" />\n        <option value=\"Kotlin File\" />\n        <option value=\"Kotlin Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"8-crear-la-interfaz-asistenteia\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GradleScriptDefinitionsStorage\" workingDir=\"$PROJECT_DIR$\" gradleHome=\"$USER_HOME$/.gradle/wrapper/dists/gradle-8.14.2-bin/2pb3mgt1p815evrl3weanttgr/gradle-8.14.2\" javaHome=\"$USER_HOME$/.jdks/temurin-21.0.8\" gradleVersion=\"8.14.2\" />\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 8\n}</component>\n  <component name=\"ProjectId\" id=\"322Lw7jCHaxzbC6Zl6Q2Drvmvh2\" />\n  <component name=\"ProjectLevelVcsManager\">\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"Gradle.Build programaci-n-2-2025-levatino-turista-blevatino.executor\": \"Run\",\n    \"Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.AppKt.main()].executor\": \"Run\",\n    \"Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.MainJavaFXKt.main()].executor\": \"Run\",\n    \"Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.TestKt.main()].executor\": \"Run\",\n    \"Kotlin.AppKt.executor\": \"Run\",\n    \"ModuleVcsDetector.initialDetectionPerformed\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager\": \"true\",\n    \"RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252\": \"true\",\n    \"RunOnceActivity.git.unshallow\": \"true\",\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\n    \"git-widget-placeholder\": \"13-crear-una-vista-principal-en-javafx\",\n    \"kotlin-language-version-configured\": \"true\",\n    \"last_opened_file_path\": \"/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino\",\n    \"project.structure.last.edited\": \"Libraries\",\n    \"project.structure.proportion\": \"0.15\",\n    \"project.structure.side.proportion\": \"0.2\",\n    \"settings.editor.selected.configurable\": \"reference.settingsdialog.project.gradle\"\n  }\n}]]></component>\n  <component name=\"RunManager\">\n    <configuration default=\"true\" type=\"JetRunConfigurationType\">\n      <module name=\"programaci-n-2-2025-levatino-turista-blevatino\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration default=\"true\" type=\"KotlinStandaloneScriptRunConfigurationType\">\n      <module name=\"programaci-n-2-2025-levatino-turista-blevatino\" />\n      <option name=\"filePath\" />\n      <method v=\"2\" />\n    </configuration>\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"7df00e65-f658-42c1-8beb-6d27743ca609\" name=\"Changes\" comment=\"\" />\n      <created>1756613957737</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1756613957737</updated>\n    </task>\n    <servers />\n  </component>\n  <component name=\"UnknownFeatures\">\n    <option featureType=\"com.intellij.fileTypeFactory\" implementationName=\"*.py\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 2f108d3db4644ae648989393055cfcf623f75ebb)
++++ b/.idea/workspace.xml	(date 1760454661630)
+@@ -5,15 +5,9 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="7df00e65-f658-42c1-8beb-6d27743ca609" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterAsistente.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.kotlin/sessions/kotlin-compiler-3064705228670719834.salive" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ControladorPrincipal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ControladorPrincipal.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/VistaConsola.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/VistaConsola.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/GeminiApiChat.py" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/GeminiApiServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/GeminiApiServer.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.kotlin/sessions/kotlin-compiler-9771936009795684112.salive" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -73,28 +67,28 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Gradle.Build programaci-n-2-2025-levatino-turista-blevatino.executor": "Run",
+-    "Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.AppKt.main()].executor": "Run",
+-    "Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.MainJavaFXKt.main()].executor": "Run",
+-    "Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.TestKt.main()].executor": "Run",
+-    "Kotlin.AppKt.executor": "Run",
+-    "ModuleVcsDetector.initialDetectionPerformed": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+-    "RunOnceActivity.git.unshallow": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "git-widget-placeholder": "13-crear-una-vista-principal-en-javafx",
+-    "kotlin-language-version-configured": "true",
+-    "last_opened_file_path": "/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino",
+-    "project.structure.last.edited": "Libraries",
+-    "project.structure.proportion": "0.15",
+-    "project.structure.side.proportion": "0.2",
+-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Gradle.Build programaci-n-2-2025-levatino-turista-blevatino.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.AppKt.main()].executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.MainJavaFXKt.main()].executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.TestKt.main()].executor&quot;: &quot;Run&quot;,
++    &quot;Kotlin.AppKt.executor&quot;: &quot;Run&quot;,
++    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;13-crear-una-vista-principal-en-javafx&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RunManager">
+     <configuration default="true" type="JetRunConfigurationType">
+       <module name="programaci-n-2-2025-levatino-turista-blevatino" />

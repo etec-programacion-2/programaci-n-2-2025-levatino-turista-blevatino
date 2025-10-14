@@ -1,0 +1,19 @@
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>_Nombre: Bruno Levatino_\n\n**Issue 1.1: Creación de las data class y enum para el modelo de negocio:**\n\nUsé data class para LugarTuristico y Actividad porque su función principal es almacenar datos, lo que va a servir en un futuro para procesar todos los lugares y actividades.\n\n**Issue 1.2: Crear la interfaz LugarTuristicoRepository:**\n\nEs preferible utilizar una interfaz ya que en el caso de querer modificar de donde obtengo los datos es algo facil y no debo modificar todo lo anterior.\n\n**Issue 1.3: Implementar JsonLugarTuristicoRepository:**\n\nSe puede remplazar por otra clase gracias a LugarTuristicoRepository que se encarga de hacer independiente a la misma, por lo que no afecta el funcionamiento de lo anterior\n\n**Issue 1.4: Implementar ServicioRecomendaciones:**\n\nLa lógica de filtrado se coloca en el servicio por el Principio de Responsabilidad Única.\n\n-El Repositorio solo se encarga del acceso a los datos.\n\n-La Capa de UI solo se encarga de la presentación.\n\n-El Servicio se encarga de las reglas de negocio.\n\nAl poner la lógica de filtrado en el servicio, esta es reutilizable y el sistema es más modular, ya que cada componente solo tiene una razón para cambiar.\n\n**Issue 2.2: Crear la interfaz AsistenteIA:**\n\nLa interfaz AsistenteIA aísla nuestra aplicación de los detalles de una librería o API específica de OpenAI.\n\n-Nuestra lógica de negocio no depende directamente de una clase concreta, sino de una abstracción.\n\n-Permite cambiar a otro proveedor de IA o usar una versión de prueba (mock) para testear, sin tener que modificar el resto de la aplicación.\n\n**Issue 2.3: Implementar GeminiAsistente:**\n\nPrimero, inicio el servidor de Python en una terminal. Esto prepara mi servicio para recibir peticiones.\n\n`python3 -m venv venv`\n\n`source venv/bin/activate`\n\n`pip install google-generativeai Flask`\n\n`export GEMINI_API_KEY=\"AIzaSyBPerXvJjTwOD65x4_d0POPyB55mSr8W1s\" && python3 ./app/src/main/resources/GeminiApiServer.py`\n\nLuego, ejecuto la aplicación de Kotlin en una segunda terminal.\n`./gradlew run`\n\nMi aplicación de Kotlin enviará una petición a Python, que a su vez se comunicará con la API de Gemini. La respuesta de Gemini viajará de regreso por el mismo camino.\n\n(_Dentro de App.tk hay una prueba_)\n\nPara demostrar la seguridad, la API Key no está en el código, sino que la configuro en una variable de entorno. Esto la mantiene a salvo y hace que mi código sea flexible.\n\n**Issue 2.4: Crear la clase ControladorPrincipal:**\n\n(_Dentro de App.tk hay una prueba_)\n\n**Issue 3.2: Crear la clase VistaConsola:**\n\n\nLa VistaConsola no accede a los servicios porque su único trabajo es la presentación. No debe saber cómo se obtienen los datos o cómo funciona la IA; solo se preocupa por leer y mostrar información al usuario.\n\nEl ControladorPrincipal actúa como intermediario para mantener estas dos partes del sistema separadas y organizadas.
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+--- a/README.md	(revision 48c116499bcbf40610059b75bd85bdd16b9860fd)
++++ b/README.md	(date 1760454690604)
+@@ -42,7 +42,7 @@
+ 
+ `pip install google-generativeai Flask`
+ 
+-`export GEMINI_API_KEY="AIzaSyBPerXvJjTwOD65x4_d0POPyB55mSr8W1s" && python3 ./app/src/main/resources/GeminiApiServer.py`
++`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
+ 
+ Luego, ejecuto la aplicación de Kotlin en una segunda terminal.
+ `./gradlew run`

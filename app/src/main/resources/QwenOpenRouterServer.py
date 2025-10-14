@@ -20,28 +20,32 @@ except Exception as e:
     sys.exit(1)
 
 # -----------------------------------------------------------------------
-# Ruta del servidor para recibir las preguntas
+# Ruta del servidor para recibir las peticiones de enriquecimiento
 # -----------------------------------------------------------------------
 @app.route('/ask', methods=['POST'])
 def ask_qwen():
-    if not request.is_json or 'pregunta' not in request.json:
-        return jsonify({"error": "Petición JSON inválida. Se esperaba la clave 'pregunta'."}), 400
+    # Validación: Ahora se esperan las claves 'lugar_nombre' y 'descripcion_actual'
+    if not request.is_json or 'lugar_nombre' not in request.json or 'descripcion_actual' not in request.json:
+        return jsonify({"error": "Petición JSON inválida. Se esperaban las claves 'lugar_nombre' y 'descripcion_actual'."}), 400
 
     if asistente_ia is None:
-        # Esto solo debería ocurrir si el error de inicialización no forzó el sys.exit(1)
         return jsonify({"error": "El servicio de IA no está configurado (Inicialización fallida)."}), 503
 
-    pregunta_recibida = request.json['pregunta']
-    print(f"Pregunta recibida: {pregunta_recibida}")
+    # Extracción de datos
+    lugar_nombre = request.json['lugar_nombre']
+    descripcion_actual = request.json['descripcion_actual']
 
-    respuesta = asistente_ia.obtener_respuesta(pregunta_recibida)
+    print(f"Petición de enriquecimiento recibida para: {lugar_nombre}")
 
-    # Si la respuesta contiene un error, se propaga con un 500.
+    # Llamada a la nueva función de enriquecimiento
+    respuesta = asistente_ia.enriquecer_lugar_turistico(lugar_nombre, descripcion_actual)
+
+    # Manejo de errores
     if 'error' in respuesta:
         print(f"Error interno de OpenRouter: {respuesta['error']}")
         return jsonify(respuesta), 500
 
-    # Éxito
+    # Éxito: devuelve la descripción enriquecida
     return jsonify(respuesta)
 
 if __name__ == '__main__':
