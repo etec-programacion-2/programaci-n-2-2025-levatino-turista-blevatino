@@ -1,34 +1,41 @@
 package org.example
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import java.io.IOException
 
-import java.io.File
-import java.lang.IllegalArgumentException
+// Simulación de tu modelo de datos del lugar turístico
+data class LugarTuristico(val nombre: String, var descripcion: String)
 
 fun main() {
-    // 1. Definimos las configuraciones de la aplicación.
-    val pythonServiceUrl = "http://127.0.0.1:5000/ask"
+    // 1. Inicializa el servicio
+    val servicioIA = AsistenteQwenService()
 
-    // 2. Cargamos la ruta del archivo JSON de forma segura.
-    // Esto usa el ClassLoader para encontrar 'lugares.json' sin depender de la configuración del IDE.
-    val resource = object {}.javaClass.classLoader.getResource("lugares.json")
-        ?: throw IllegalArgumentException("Error fatal: Archivo 'lugares.json' no encontrado en el classpath. Revise que esté en 'src/main/resources'.")
+    // 2. Simula un lugar de tu base de datos
+    val lugarDeBD = LugarTuristico("Puente del Inca", "Es un puente natural en la ruta a Chile.")
 
-    val jsonFilePath = resource.toURI().path
+    println("Descripción original de ${lugarDeBD.nombre}:\n-> ${lugarDeBD.descripcion}")
 
-    // --- Inyección de Dependencias ---
+    // La llamada debe hacerse dentro de un contexto de Coroutine (como un ViewModelScope.launch en Android)
+    runBlocking(Dispatchers.IO) {
+        println("\nIniciando petición de enriquecimiento a la IA...")
 
-    // Paso 3: Inicializamos las dependencias de la capa más baja.
-    val asistenteIA = GeminiPythonAsistente(pythonServiceUrl)
-    val repositorio = JsonLugarTuristicoRepository(jsonFilePath)
+        try {
+            // 3. Llama a la función de enriquecimiento
+            val nuevaDescripcion = servicioIA.enriquecerDescripcion(
+                nombre = lugarDeBD.nombre,
+                descripcion = lugarDeBD.descripcion
+            )
 
-    // Paso 4: Inicializamos el servicio de negocio.
-    val servicioRecomendaciones = ServicioRecomendaciones(repositorio)
+            // 4. Actualiza la descripción en el modelo
+            lugarDeBD.descripcion = nuevaDescripcion
 
-    // Paso 5: Inicializamos el controlador (el intermediario).
-    val controlador = ControladorPrincipal(servicioRecomendaciones, asistenteIA)
+            println("\n--- DESCRIPCIÓN ENRIQUECIDA EXITOSAMENTE ---")
+            println("Nueva descripción de ${lugarDeBD.nombre}:")
+            println("-> $nuevaDescripcion")
 
-    // Paso 6: Inicializamos la vista (la interfaz de usuario).
-    val vista = VistaConsola(controlador)
-
-    // Paso 7: Iniciamos la aplicación.
-    vista.iniciar()
+        } catch (e: Exception) {
+            println("\n!!! ERROR AL ENRIQUECER !!!")
+            println("Detalle del error: ${e.message}")
+        }
+    }
 }
