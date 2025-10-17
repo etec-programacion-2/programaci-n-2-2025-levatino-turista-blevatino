@@ -1,54 +1,65 @@
 package org.example
 
-import java.io.IOException
-import java.lang.Exception
-
+/**
+ * Orquestador central de la lógica de la aplicación.
+ * Gestiona el flujo de trabajo, decide qué servicio llamar (local o IA)
+ * y mantiene el estado del historial del chat.
+ */
 class ControladorPrincipal(
     private val servicioRecomendaciones: ServicioRecomendaciones,
     private val asistenteIA: AsistenteIA
 ) {
 
+    // --- Estado de la Memoria del Chat ---
+    // El controlador principal es el responsable de mantener el historial de la conversación.
+    private val historialChat: MutableList<Mensaje> = mutableListOf()
+
+    /**
+     * Responde a una nueva pregunta del usuario usando el asistente de IA,
+     * manteniendo la memoria de la conversación.
+     *
+     * Esta función es 'suspend' porque delega la llamada a la red al AsistenteIA.
+     *
+     * @param nuevaPregunta El String con la última pregunta del usuario.
+     * @return La respuesta generada por la IA.
+     */
+    suspend fun obtenerRespuestaAsistente(nuevaPregunta: String): String {
+        // 1. Agregar la pregunta del usuario al historial
+        historialChat.add(Mensaje(role = "user", content = nuevaPregunta))
+
+        // 2. Llamar al asistente enviando TODO el historial.
+        // ESTO RESUELVE EL ERROR DE COMPILACIÓN: se pasa List<Mensaje> en lugar de String.
+        val respuestaIA = asistenteIA.obtenerRespuesta(historialChat)
+
+        // 3. Agregar la respuesta de la IA al historial
+        historialChat.add(Mensaje(role = "assistant", content = respuestaIA))
+
+        return respuestaIA
+    }
+
+    // --- FUNCIONES DE SERVICIO LOCAL ---
+
     fun solicitarRecomendaciones(temporada: Temporada): List<LugarTuristico> {
         return servicioRecomendaciones.obtenerRecomendacionesPorTemporada(temporada)
     }
 
-    fun solicitarTodosLosLugares(): List<LugarTuristico> {
-        return servicioRecomendaciones.obtenerTodos()
+    /**
+     * Lógica para enriquecer la descripción de un lugar usando la IA.
+     */
+    suspend fun enriquecerDescripcionLugar(lugar: LugarTuristico) {
+        val descripcionEnriquecida = asistenteIA.enriquecerLugarTuristico(
+            lugar.nombre,
+            lugar.descripcion
+        )
+        // La lógica de etiquetado (BaseDeDatos:, PotenciadoIA:) debe manejarse en VistaConsola,
+        // pero aquí el controlador simplemente actualiza el modelo.
+        if (descripcionEnriquecida.startsWith("PotenciadoIA:", true)) {
+            lugar.descripcion = descripcionEnriquecida.substringAfter(":")
+        }
+        // Nota: En una arquitectura MVC pura, el controlador sólo notificaría un cambio.
     }
 
-    // MARCADA COMO SUSPEND para poder llamar al asistenteIA.obtenerRespuesta
-    suspend fun obtenerRespuestaAsistente(pregunta: String): String {
-        return try {
-            asistenteIA.obtenerRespuesta(pregunta)
-        } catch (e: IOException) {
-            "Error de red: No se pudo contactar al asistente. Mensaje: ${e.message}"
-        } catch (e: Exception) {
-            "Error interno del asistente: ${e.message}"
-        }
-    }
-
-    // Función para enriquecer el lugar (llamada al servicio de red)
-    suspend fun enriquecerDescripcionLugar(indiceSeleccionado: Int): String {
-        val lugar = servicioRecomendaciones.obtenerLugarPorIndice(indiceSeleccionado)
-
-        if (lugar == null) {
-            return "Error: Índice de lugar no válido."
-        }
-
-        try {
-            val nuevaDescripcion = asistenteIA.enriquecerLugarTuristico(
-                nombre = lugar.nombre,
-                descripcion = lugar.descripcion
-            )
-
-            // Actualiza el objeto original en memoria
-            lugar.descripcion = nuevaDescripcion
-
-            return "Descripción de '${lugar.nombre}' enriquecida exitosamente."
-
-        } catch (e: Exception) {
-            return "Error al enriquecer la descripción de '${lugar.nombre}': ${e.message}"
-        }
-    }
+    // Función de soporte para acceder al historial (si fuera necesario en la UI)
+    fun getHistorialChat(): List<Mensaje> = historialChat
 }
 

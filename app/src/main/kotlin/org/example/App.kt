@@ -1,28 +1,41 @@
 package org.example
 
+// IMPORTACIONES NECESARIAS PARA CORRUTINAS Y SALIR DEL PROCESO
+import kotlinx.coroutines.runBlocking
+import kotlin.system.exitProcess
+// Nota: Las clases como JsonLugarTuristicoRepository y GeminiPythonAsistente
+// se asumen en el mismo paquete org.example, por lo que no necesitan importación explícita.
+
 /**
  * Punto de entrada principal de la aplicación.
- * Se encarga de la inyección de dependencias y de iniciar la Vista de Consola.
- * * NOTA: Esta versión usa el JsonLugarTuristicoRepository y el GeminiPythonAsistente
- * (la implementación de red real).
+ *
+ * Utilizamos runBlocking para que el hilo principal (main) pueda llamar a funciones suspendidas
+ * (como las llamadas HTTP del asistente).
  */
-fun main() {
+fun main() { // CAMBIO CLAVE: Usamos cuerpo de función explícito
+    runBlocking { // Y envolvemos la lógica dentro del bloque runBlocking
 
-    // --- 1. Inicialización de Capas de Datos y Servicios ---
+        // --- 1. Inicialización de Capas de Datos y Servicios ---
 
-    // Repositorio: Fuente de datos de los lugares turísticos (Lee del archivo lugares.json).
-    val repository: LugarTuristicoRepository = JsonLugarTuristicoRepository()
+        // Repositorio: Fuente de datos de los lugares turísticos (Lectura de JSON).
+        val repository: LugarTuristicoRepository = JsonLugarTuristicoRepository()
 
-    val servicioRecomendaciones = ServicioRecomendaciones(repository)
+        // Asistente IA: Implementación real (Ktor -> Python/OpenRouter).
+        // Esta clase contiene las funciones suspendidas que requieren runBlocking.
+        val asistente: AsistenteIA = GeminiPythonAsistente()
 
-    // Servicio de Asistente IA: Implementación real (Ktor -> Python).
-    val asistente: AsistenteIA = GeminiPythonAsistente()
+        // --- 2. Inicio de la Vista de Consola con inyección directa de dependencias ---
+        val vista = VistaConsola(
+            repositorio = repository,
+            asistente = asistente
+        )
 
-    // --- 2. Inicialización del Controlador Principal ---
-    // El controlador une la lógica de negocio y los servicios externos.
-    val controlador = ControladorPrincipal(servicioRecomendaciones, asistente)
+        // Llamamos a la función suspendida iniciar()
+        vista.iniciar()
 
-    // --- 3. Inicio de la Vista de Consola ---
-    val vista = VistaConsola(controlador)
-    vista.iniciar()
+        // Si el bucle de la vista termina de forma natural, la aplicación sale.
+        exitProcess(0)
+    }
 }
+
+

@@ -6,24 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="7df00e65-f658-42c1-8beb-6d27743ca609" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.kotlin/sessions/kotlin-compiler-548562173324964871.salive" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.kotlin/sessions/kotlin-compiler-2137453576766127983.salive" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/Actividad.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/Actividad.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/App.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/AsistenteIA.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/AsistenteIA.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ControladorPrincipal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ControladorPrincipal.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/FakeLugarTuristicoRepository.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/GeminiPythonAsistente.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/GeminiPythonAsistente.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/JsonLugarTuristicoRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/JsonLugarTuristicoRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/LugarTuristico.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/LugarTuristico.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/LugarTuristicoRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/LugarTuristicoRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/PeticionEnriquecimiento.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/PeticionEnriquecimiento.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/RespuestaEnriquecimiento.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/RespuestaEnriquecimiento.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ServicioRecomendaciones.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ServicioRecomendaciones.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/Temporada.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/Temporada.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/VistaConsola.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/VistaConsola.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/lugares.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/lugares.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterAsistente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterAsistente.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterServer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

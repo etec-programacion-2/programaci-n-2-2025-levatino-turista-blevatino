@@ -42,7 +42,7 @@ Primero, inicio el servidor de Python en una terminal. Esto prepara mi servicio 
 
 `pip install google-generativeai Flask`
 
-`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
+`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
 
 Luego, ejecuto la aplicación de Kotlin en una segunda terminal.
 `./gradlew run`
