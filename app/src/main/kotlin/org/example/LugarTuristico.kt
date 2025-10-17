@@ -1,33 +1,38 @@
 package org.example
+
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 @Serializable
 data class LugarTuristico(
+    @SerialName("id")
+    private val _id: Int, // <-- CAMPO 'ID' REQUERIDO AÑADIDO
 
     @SerialName("nombre")
     private val _nombre: String,
 
-    @SerialName("descripcion")
-    private var _descripcion: String, // Cambiado a 'var' para permitir la modificación después de la inicialización
-
     @SerialName("ubicacion")
     private val _ubicacion: String,
 
-    @SerialName("actividadesSugeridas")
-    private val _actividadesSugeridas: List<Actividad>,
+    @SerialName("descripcion")
+    private var _descripcion: String, // ¡MUTABLE para el enriquecimiento IA!
 
-    @SerialName("temporadaRecomendada")
-    private val _temporadaRecomendada: Temporada
+    @SerialName("temporada")
+    private val _temporada: Temporada,
+
+    @SerialName("actividades")
+    private val _actividades: List<Actividad>
 ) {
+    // Propiedades de solo lectura
+    val id: Int get() = _id // <-- NUEVO GETTER
     val nombre: String get() = _nombre
+    val ubicacion: String get() = _ubicacion
+    val temporada: Temporada get() = _temporada
+    val actividades: List<Actividad> get() = _actividades
 
-    // Ahora permite la lectura y la ESCRITURA (mutabilidad) de la descripción
+    // Propiedad con getter/setter para mutar la descripción
     var descripcion: String
         get() = _descripcion
         set(value) { _descripcion = value }
-
-    val ubicacion: String get() = _ubicacion
-    val actividadesSugeridas: List<Actividad> get() = _actividadesSugeridas
-    val temporadaRecomendada: Temporada get() = _temporadaRecomendada
 }
+

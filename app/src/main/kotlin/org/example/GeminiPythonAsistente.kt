@@ -1,65 +1,73 @@
 package org.example
 
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import java.io.IOException
 
+/**
+ * Implementación de la interfaz AsistenteIA.
+ * Se comunica con el servidor Python (Flask + OpenRouter/Mixtral) vía HTTP usando Ktor.
+ */
+class GeminiPythonAsistente : AsistenteIA {
 
-class GeminiPythonAsistente(private val pythonServiceUrl: String) : AsistenteIA {
+    // URL base del servidor Python.
+    private val BASE_URL = "http://127.0.0.1:5000"
+    // Usar "http://127.0.0.1:5000" si ejecutas Kotlin en tu máquina local (JVM).
 
-    // Cliente de OkHttp para gestionar las peticiones HTTP.
-    private val client = OkHttpClient()
-    // Objeto para manejar la serialización/deserialización de JSON.
-    private val json = Json { ignoreUnknownKeys = true }
-    // Define el tipo de contenido de la petición como JSON.
-    private val mediaType = "application/json; charset=utf-8".toMediaType()
+    private val client = HttpClient(CIO) {
+        // Configuración para usar kotlinx.serialization (JSON)
+        install(ContentNegotiation) {
+            json(Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+            })
+        }
+    }
 
     /**
-     * Envía una pregunta a tu servidor de Python y procesa la respuesta.
-     * La lógica de comunicación con la API externa está encapsulada aquí.
-     *
-     * @param pregunta La pregunta de texto para la IA.
-     * @return La respuesta de la IA como un String.
+     * Función de chat genérico. Ahora es 'suspend' para coincidir con la interfaz.
      */
-    override fun obtenerRespuesta(pregunta: String): String {
-        // Construye el JSON que se enviará en el cuerpo de la petición.
-        val jsonBody = """
-        {
-          "pregunta": "$pregunta"
-        }
-        """.trimIndent()
+    override suspend fun obtenerRespuesta(pregunta: String): String { // <-- CORRECCIÓN APLICADA AQUÍ
+        return "La funcionalidad de chat genérico no está implementada en esta versión del servidor de enriquecimiento."
+    }
 
-        val requestBody = jsonBody.toRequestBody(mediaType)
+    /**
+     * Llama al servidor Python para enriquecer la descripción de un lugar.
+     */
+    override suspend fun enriquecerLugarTuristico(nombre: String, descripcion: String): String {
 
-        // Crea la petición HTTP POST a la URL de tu servicio de Python.
-        val request = Request.Builder()
-            .url(pythonServiceUrl)
-            .post(requestBody)
-            .build()
+        val peticion = PeticionEnriquecimiento(
+            lugar_nombre = nombre,
+            descripcion_actual = descripcion
+        )
 
-        // Envía la petición y procesa la respuesta de forma síncrona.
         try {
-            client.newCall(request).execute().use { response ->
-                // Si la petición no fue exitosa (código 200), lanza una excepción.
-                if (!response.isSuccessful) {
-                    throw IOException("Respuesta del servidor inesperada: ${response.code}")
-                }
-
-                // Lee el cuerpo de la respuesta.
-                val responseBody = response.body?.string() ?: throw IOException("Cuerpo de la respuesta vacío")
-
-                // Convierte la cadena JSON en nuestro objeto PythonResponse.
-                val pythonResponse = json.decodeFromString<PythonResponse>(responseBody)
-
-                // Devuelve la respuesta o un mensaje de error si el servidor lo envió.
-                return pythonResponse.respuesta ?: pythonResponse.error ?: "Respuesta inesperada del servidor."
+            val response = client.post("$BASE_URL/ask") {
+                contentType(ContentType.Application.Json)
+                setBody(peticion)
             }
+
+            if (!response.status.isSuccess()) {
+                val errorBody = try { response.body<RespuestaEnriquecimiento>() } catch (e: Exception) { null }
+                val errorMessage = errorBody?.error ?: "Error de servidor desconocido o respuesta no JSON."
+
+                throw IOException("Error HTTP ${response.status.value}: $errorMessage")
+            }
+
+            val respuestaData = response.body<RespuestaEnriquecimiento>()
+
+            return respuestaData.respuesta
+                ?: throw Exception("La respuesta de la IA no contenía el campo 'respuesta'. Detalles: ${respuestaData.error}")
+
         } catch (e: Exception) {
-            // Maneja cualquier error de red o de comunicación.
-            System.err.println("Error al comunicarse con el servidor de Python: ${e.message}")
-            return "Lo siento, no pude obtener una respuesta de la IA."
+            if (e is IOException) throw e
+            throw IOException("Fallo en la comunicación con el servidor Python o en el parsing JSON: ${e.message}")
         }
     }
 }

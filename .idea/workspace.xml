@@ -5,15 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7df00e65-f658-42c1-8beb-6d27743ca609" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterAsistente.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.kotlin/sessions/kotlin-compiler-3064705228670719834.salive" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.kotlin/sessions/kotlin-compiler-548562173324964871.salive" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/Actividad.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/Actividad.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/App.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/AsistenteIA.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/AsistenteIA.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ControladorPrincipal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ControladorPrincipal.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/FakeLugarTuristicoRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/GeminiPythonAsistente.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/GeminiPythonAsistente.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/JsonLugarTuristicoRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/JsonLugarTuristicoRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/LugarTuristico.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/LugarTuristico.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/LugarTuristicoRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/LugarTuristicoRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/PeticionEnriquecimiento.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/PeticionEnriquecimiento.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/RespuestaEnriquecimiento.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/RespuestaEnriquecimiento.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ServicioRecomendaciones.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/ServicioRecomendaciones.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/Temporada.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/Temporada.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/example/VistaConsola.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/example/VistaConsola.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/GeminiApiChat.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/GeminiApiServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/GeminiApiServer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/lugares.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/lugares.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +66,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="8-crear-la-interfaz-asistenteia" />
+        <entry key="$PROJECT_DIR$" value="12-configurar-y-lanzar-la-aplicación-desde-main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -77,6 +87,7 @@
   "keyToString": {
     "Gradle.Build programaci-n-2-2025-levatino-turista-blevatino.executor": "Run",
     "Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.AppKt.main()].executor": "Run",
+    "Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.FakeLugarTuristicoRepositoryKt.main()].executor": "Run",
     "Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.MainJavaFXKt.main()].executor": "Run",
     "Gradle.programaci-n-2-2025-levatino-turista-blevatino:app [:app:org.example.TestKt.main()].executor": "Run",
     "Kotlin.AppKt.executor": "Run",
@@ -88,13 +99,18 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "13-crear-una-vista-principal-en-javafx",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino",
+    "last_opened_file_path": "/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino/app/src/main/kotlin/org/example",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/kotlin/org/example" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="programaci-n-2-2025-levatino-turista-blevatino" />

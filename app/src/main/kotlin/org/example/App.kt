@@ -1,41 +1,28 @@
 package org.example
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import java.io.IOException
 
-// Simulación de tu modelo de datos del lugar turístico
-data class LugarTuristico(val nombre: String, var descripcion: String)
-
+/**
+ * Punto de entrada principal de la aplicación.
+ * Se encarga de la inyección de dependencias y de iniciar la Vista de Consola.
+ * * NOTA: Esta versión usa el JsonLugarTuristicoRepository y el GeminiPythonAsistente
+ * (la implementación de red real).
+ */
 fun main() {
-    // 1. Inicializa el servicio
-    val servicioIA = AsistenteQwenService()
 
-    // 2. Simula un lugar de tu base de datos
-    val lugarDeBD = LugarTuristico("Puente del Inca", "Es un puente natural en la ruta a Chile.")
+    // --- 1. Inicialización de Capas de Datos y Servicios ---
 
-    println("Descripción original de ${lugarDeBD.nombre}:\n-> ${lugarDeBD.descripcion}")
+    // Repositorio: Fuente de datos de los lugares turísticos (Lee del archivo lugares.json).
+    val repository: LugarTuristicoRepository = JsonLugarTuristicoRepository()
 
-    // La llamada debe hacerse dentro de un contexto de Coroutine (como un ViewModelScope.launch en Android)
-    runBlocking(Dispatchers.IO) {
-        println("\nIniciando petición de enriquecimiento a la IA...")
+    val servicioRecomendaciones = ServicioRecomendaciones(repository)
 
-        try {
-            // 3. Llama a la función de enriquecimiento
-            val nuevaDescripcion = servicioIA.enriquecerDescripcion(
-                nombre = lugarDeBD.nombre,
-                descripcion = lugarDeBD.descripcion
-            )
+    // Servicio de Asistente IA: Implementación real (Ktor -> Python).
+    val asistente: AsistenteIA = GeminiPythonAsistente()
 
-            // 4. Actualiza la descripción en el modelo
-            lugarDeBD.descripcion = nuevaDescripcion
+    // --- 2. Inicialización del Controlador Principal ---
+    // El controlador une la lógica de negocio y los servicios externos.
+    val controlador = ControladorPrincipal(servicioRecomendaciones, asistente)
 
-            println("\n--- DESCRIPCIÓN ENRIQUECIDA EXITOSAMENTE ---")
-            println("Nueva descripción de ${lugarDeBD.nombre}:")
-            println("-> $nuevaDescripcion")
-
-        } catch (e: Exception) {
-            println("\n!!! ERROR AL ENRIQUECER !!!")
-            println("Detalle del error: ${e.message}")
-        }
-    }
+    // --- 3. Inicio de la Vista de Consola ---
+    val vista = VistaConsola(controlador)
+    vista.iniciar()
 }

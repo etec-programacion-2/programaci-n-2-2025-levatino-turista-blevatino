@@ -45,6 +45,8 @@ dependencies {
     // Las siguientes dependencias fueron reemplazadas por las de Ktor/Serialization:
     // implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     // implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    implementation("org.slf4j:slf4j-nop:2.0.13")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
