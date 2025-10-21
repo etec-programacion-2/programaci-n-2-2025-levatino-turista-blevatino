@@ -40,9 +40,9 @@ Primero, inicio el servidor de Python en una terminal. Esto prepara mi servicio 
 
 `source venv/bin/activate`
 
-`pip install google-generativeai Flask`
+`pip install google-generativeai Flask datetime pytz`
 
-`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
+`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
 
 Luego, ejecuto la aplicación de Kotlin en una segunda terminal.
 `./gradlew run`
@@ -63,3 +63,4 @@ Para demostrar la seguridad, la API Key no está en el código, sino que la conf
 La VistaConsola no accede a los servicios porque su único trabajo es la presentación. No debe saber cómo se obtienen los datos o cómo funciona la IA; solo se preocupa por leer y mostrar información al usuario.
 
 El ControladorPrincipal actúa como intermediario para mantener estas dos partes del sistema separadas y organizadas.
+
