@@ -1,65 +1,68 @@
 package org.example
 
 /**
- * Orquestador central de la lógica de la aplicación.
- * Gestiona el flujo de trabajo, decide qué servicio llamar (local o IA)
- * y mantiene el estado del historial del chat.
+ * Orquestador principal de la aplicación.
+ * Recibe todos los servicios y la lógica de negocio, y expone los métodos
+ * que la Vista Consola (o cualquier UI) puede llamar.
+ * * Cumple con el Principio de Inversión de Dependencias (DIP) al depender de abstracciones (interfaces).
+ *
+ * @property servicioRecomendaciones Lógica de negocio para obtener lugares turísticos.
+ * @property asistenteIA Servicio de la IA para chat y enriquecimiento de texto.
+ * @property servicioMeteorologico Servicio para obtener hora y pronóstico de clima.
  */
 class ControladorPrincipal(
     private val servicioRecomendaciones: ServicioRecomendaciones,
-    private val asistenteIA: AsistenteIA
+    private val asistenteIA: AsistenteIA,
+    private val servicioMeteorologico: ServicioMeteorologico
 ) {
 
-    // --- Estado de la Memoria del Chat ---
-    // El controlador principal es el responsable de mantener el historial de la conversación.
-    private val historialChat: MutableList<Mensaje> = mutableListOf()
+    // --- Métodos de Recomendación de Turismo (Delegación a ServicioRecomendaciones) ---
 
     /**
-     * Responde a una nueva pregunta del usuario usando el asistente de IA,
-     * manteniendo la memoria de la conversación.
-     *
-     * Esta función es 'suspend' porque delega la llamada a la red al AsistenteIA.
-     *
-     * @param nuevaPregunta El String con la última pregunta del usuario.
-     * @return La respuesta generada por la IA.
+     * Obtiene la lista de lugares turísticos recomendados para una temporada específica.
      */
-    suspend fun obtenerRespuestaAsistente(nuevaPregunta: String): String {
-        // 1. Agregar la pregunta del usuario al historial
-        historialChat.add(Mensaje(role = "user", content = nuevaPregunta))
-
-        // 2. Llamar al asistente enviando TODO el historial.
-        // ESTO RESUELVE EL ERROR DE COMPILACIÓN: se pasa List<Mensaje> en lugar de String.
-        val respuestaIA = asistenteIA.obtenerRespuesta(historialChat)
-
-        // 3. Agregar la respuesta de la IA al historial
-        historialChat.add(Mensaje(role = "assistant", content = respuestaIA))
-
-        return respuestaIA
-    }
-
-    // --- FUNCIONES DE SERVICIO LOCAL ---
-
-    fun solicitarRecomendaciones(temporada: Temporada): List<LugarTuristico> {
+    fun obtenerRecomendacionesPorTemporada(temporada: Temporada): List<LugarTuristico> {
         return servicioRecomendaciones.obtenerRecomendacionesPorTemporada(temporada)
     }
 
     /**
-     * Lógica para enriquecer la descripción de un lugar usando la IA.
+     * Obtiene todos los lugares turísticos registrados.
      */
-    suspend fun enriquecerDescripcionLugar(lugar: LugarTuristico) {
-        val descripcionEnriquecida = asistenteIA.enriquecerLugarTuristico(
-            lugar.nombre,
-            lugar.descripcion
-        )
-        // La lógica de etiquetado (BaseDeDatos:, PotenciadoIA:) debe manejarse en VistaConsola,
-        // pero aquí el controlador simplemente actualiza el modelo.
-        if (descripcionEnriquecida.startsWith("PotenciadoIA:", true)) {
-            lugar.descripcion = descripcionEnriquecida.substringAfter(":")
-        }
-        // Nota: En una arquitectura MVC pura, el controlador sólo notificaría un cambio.
+    fun obtenerTodosLosLugares(): List<LugarTuristico> {
+        return servicioRecomendaciones.obtenerTodos()
     }
 
-    // Función de soporte para acceder al historial (si fuera necesario en la UI)
-    fun getHistorialChat(): List<Mensaje> = historialChat
+    // --- Métodos de Asistente IA (Delegación a AsistenteIA) ---
+
+    /**
+     * Envía un historial de chat a la IA y recibe una respuesta conversacional.
+     */
+    suspend fun obtenerRespuestaChat(historial_mensajes: List<Mensaje>): String {
+        return asistenteIA.obtenerRespuesta(historial_mensajes)
+    }
+
+    /**
+     * Pide a la IA enriquecer o mejorar la descripción de un lugar turístico.
+     */
+    suspend fun enriquecerDescripcion(nombre: String, descripcion: String): String {
+        return asistenteIA.enriquecerLugarTuristico(nombre, descripcion)
+    }
+
+    // --- Métodos de Servicios de Utilidad (Delegación a ServicioMeteorologico) ---
+
+    /**
+     * Obtiene la hora actual desde el servicio meteorológico.
+     */
+    suspend fun obtenerHoraActual(): String {
+        return servicioMeteorologico.obtenerHoraActual()
+    }
+
+    /**
+     * Obtiene el pronóstico del clima a 5 días desde el servicio meteorológico.
+     */
+    suspend fun obtenerPronosticoClima(): List<PronosticoDia> {
+        return servicioMeteorologico.obtenerPronosticoClima()
+    }
 }
+
 

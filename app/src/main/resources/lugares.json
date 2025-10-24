@@ -1,18 +1,802 @@
 [
   {
     "id": 1,
-    "nombre": "Glaciar Perito Moreno",
-    "ubicacion": "Santa Cruz",
-    "descripcion": "...",
-    "temporada": "invierno",
+    "nombre": "Ruta del Olivo (Maipú)",
+    "ubicacion": "Maipú y Luján de Cuyo",
+    "descripcion": "Un circuito de agroturismo especializado en la producción de aceite de oliva, aceto balsámico y derivados. Promueve la diversificación fuera del Malbec, con visitas a olivareras centenarias.",
+    "temporada": "otono",
     "actividades": []
   },
   {
     "id": 2,
-    "nombre": "Cataratas del Iguazú",
-    "ubicacion": "Misiones",
-    "descripcion": "...",
+    "nombre": "Antiguo Molino Orfila",
+    "ubicacion": "San Martín",
+    "descripcion": "Restos de un histórico molino de harina, testimonio de la agroindustria vitivinícola temprana en el Este. Atractivo para el turismo histórico-industrial y fotográfico.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 3,
+    "nombre": "Bóvedas de Uspallata",
+    "ubicacion": "Las Heras (Uspallata)",
+    "descripcion": "Parte del patrimonio de la Gesta Sanmartiniana, utilizado como fundición de armas. Turismo histórico y natural en la precordillera, menos masivo que el Aconcagua.",
     "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 4,
+    "nombre": "Lagunas del Rosario (Guanacache)",
+    "ubicacion": "Lavalle (Zona Norte)",
+    "descripcion": "Ecosistema de humedales de alto valor cultural Huarpe. Destino de muy baja intensidad enfocado en el ecoturismo, la observación de aves y la cultura ancestral del desierto.",
+    "temporada": "invierno",
+    "actividades": []
+  },
+  {
+    "id": 5,
+    "nombre": "Dique Cipolletti",
+    "ubicacion": "Luján de Cuyo",
+    "descripcion": "Obra de ingeniería hidráulica vital para el oasis central. Ofrece un punto de vista sobre la gestión del agua en Mendoza, con mínima intervención turística.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 6,
+    "nombre": "Reserva Natural Villavicencio (Norte)",
+    "ubicacion": "Las Heras",
+    "descripcion": "Reserva famosa por su camino sinuoso y el histórico Hotel Villavicencio. Promueve el turismo de conservación, senderismo y la observación de vertientes de agua mineral.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 7,
+    "nombre": "Plaza Granjera (Maipú)",
+    "ubicacion": "Maipú",
+    "descripcion": "Mercado de productores locales que promueve el consumo justo y directo. Ideal para experimentar la gastronomía local y los productos de la tierra.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 8,
+    "nombre": "Capilla de la Merced (San Martín)",
+    "ubicacion": "San Martín",
+    "descripcion": "Edificio religioso con gran valor patrimonial y artístico en la zona Este. Ofrece un circuito de turismo cultural y religioso de baja afluencia.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 9,
+    "nombre": "Potrerillos (Zona Media)",
+    "ubicacion": "Luján de Cuyo",
+    "descripcion": "Destino conocido, pero aquí se prioriza el turismo local y natural de bajo impacto en zonas de camping y trekking, fuera de los lodges principales.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 10,
+    "nombre": "Reserva Natural Bosques Telteca",
+    "ubicacion": "Lavalle (Zona Noreste)",
+    "descripcion": "Área protegida que conserva bosque nativo de algarrobo. Destino de muy baja intensidad enfocado en el ecoturismo, la observación de aves y la cultura ancestral del desierto.",
+    "temporada": "invierno",
+    "actividades": []
+  },
+  {
+    "id": 11,
+    "nombre": "Bodegas de Vistalba (Boutique)",
+    "ubicacion": "Luján de Cuyo",
+    "descripcion": "Bodegas pequeñas y familiares en Vistalba que ofrecen una experiencia de enoturismo personalizada, lejos de las grandes marcas y la masificación.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 12,
+    "nombre": "Museo del Área Fundacional",
+    "ubicacion": "Ciudad de Mendoza",
+    "descripcion": "Ubicado en las ruinas de la antigua ciudad. Ofrece una inmersión en la historia colonial y sísmica de Mendoza, menos visitado que los circuitos céntricos.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 13,
+    "nombre": "Finca Raíz (Agroturismo)",
+    "ubicacion": "Junín",
+    "descripcion": "Fincas en el Este que permiten participar en cosechas de frutales (duraznos, ciruelas) o pimientos, ofreciendo una experiencia auténtica de trabajo de campo.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 14,
+    "nombre": "Puente del Inca Viejo",
+    "ubicacion": "Las Heras (Uspallata)",
+    "descripcion": "Ruinas del antiguo hotel y la formación rocosa original, menos turística que el puente actual. Interés geológico e histórico.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 15,
+    "nombre": "Reserva Divisadero Largo",
+    "ubicacion": "Ciudad de Mendoza (Oeste)",
+    "descripcion": "Reserva natural urbana a minutos del centro, ideal para senderismo de baja dificultad y observación geológica. Un escape rápido para el turismo local.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 16,
+    "nombre": "Paseo Alameda (Antigua)",
+    "ubicacion": "Ciudad de Mendoza",
+    "descripcion": "La zona más antigua del arbolado público, con un valor patrimonial inmenso. Ideal para un paseo tranquilo y observar arquitectura histórica civil.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 17,
+    "nombre": "Museo del Carreta (San Martín)",
+    "ubicacion": "San Martín",
+    "descripcion": "Pequeño museo que exhibe carretas y herramientas antiguas, centrado en la historia del transporte rural en el Este.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 18,
+    "nombre": "Circuito de Cervecerías Artesanales (Chacras)",
+    "ubicacion": "Luján de Cuyo (Chacras de Coria)",
+    "descripcion": "Ruta de pequeñas fábricas de cerveza artesanal que ofrecen degustaciones y cocina local. Alternativa al enoturismo tradicional.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 19,
+    "nombre": "Cerro Arco (Trekking lateral)",
+    "ubicacion": "Las Heras",
+    "descripcion": "Punto conocido, pero se promueve el trekking por senderos menos transitados para observación de flora y fauna, y evitar las aglomeraciones en la cumbre principal.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 20,
+    "nombre": "Mercado Central (Recorrido Gourmet)",
+    "ubicacion": "Ciudad de Mendoza",
+    "descripcion": "Un destino de turismo local que expone la diversidad de productos frescos, quesos y embutidos de la región. Ideal para una inmersión gastronómica auténtica.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 21,
+    "nombre": "Museos Históricos del Valle de Uco",
+    "ubicacion": "Valle de Uco (Tupungato, Tunuyán, San Carlos)",
+    "descripcion": "Conjunto de pequeños museos descentralizados que rescatan la historia precolombina, colonial y religiosa, ofreciendo una alternativa cultural de baja intensidad.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 22,
+    "nombre": "Bodegas de Altamira (Micro-terroir)",
+    "ubicacion": "San Carlos (Paraje Altamira)",
+    "descripcion": "Bodegas especializadas en Malbec de micro-terroir, con foco en la experimentación y la producción limitada. Enoturismo de nicho y especializado.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 23,
+    "nombre": "Reserva Manzano Histórico",
+    "ubicacion": "Tunuyán (Valle de Uco)",
+    "descripcion": "Sitio donde descansó San Martín, combina monumentos históricos con paisaje de precordillera. Ideal para turismo familiar de bajo costo y naturaleza.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 24,
+    "nombre": "Puente del Río Tunuyán (Trekking)",
+    "ubicacion": "Tunuyán",
+    "descripcion": "Zona de trekking y senderismo a orillas del río, con vistas a la cordillera. Un destino natural que promueve la caminata tranquila.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 25,
+    "nombre": "Monasterio del Cristo Orante",
+    "ubicacion": "Tupungato",
+    "descripcion": "Lugar de retiro y contemplación con una imponente vista al Cordón del Plata. Atractivo de turismo religioso y espiritual, con énfasis en el silencio.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 26,
+    "nombre": "Circuito de Fruticultura Orgánica",
+    "ubicacion": "Tupungato",
+    "descripcion": "Fincas dedicadas a la producción de frutas finas y nueces orgánicas. Un nicho de agroturismo enfocado en la vida saludable y la producción sostenible.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 27,
+    "nombre": "Sitio Arqueológico de la Ciénega",
+    "ubicacion": "San Carlos",
+    "descripcion": "Restos de antiguos asentamientos indígenas Huarpes. Turismo arqueológico de baja afluencia que requiere guías especializados para su comprensión.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 28,
+    "nombre": "Caminos de la Vid Vieja",
+    "ubicacion": "Tunuyán (Sur)",
+    "descripcion": "Ruta rural que conecta bodegas históricas y viñedos de más de 50 años, ofreciendo una experiencia enológica nostálgica y auténtica.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 29,
+    "nombre": "Estancia de los Sauces",
+    "ubicacion": "Tupungato",
+    "descripcion": "Antigua estancia colonial convertida en hospedaje rural, que ofrece una inmersión en la vida de campo mendocina.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 30,
+    "nombre": "Quebrada de la Vaca (Trekking)",
+    "ubicacion": "Tupungato (Cordón del Plata)",
+    "descripcion": "Ruta de trekking menos conocida que la zona de Vallecitos, ideal para senderismo de media montaña con poca gente.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 31,
+    "nombre": "Bodegas de Vista Flores (Autor)",
+    "ubicacion": "Tunuyán (Vista Flores)",
+    "descripcion": "Micro-bodegas que han emergido en la última década, enfocadas en la experimentación y el 'garage wine'. Experiencia enológica moderna y de nicho.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 32,
+    "nombre": "Feria Artesanal de San Carlos",
+    "ubicacion": "San Carlos (La Consulta)",
+    "descripcion": "Feria permanente que expone artesanías en cuero, madera y lana de la región, promoviendo el comercio justo y directo. Alternativa cultural y de compras.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 33,
+    "nombre": "Laguna del Diamante (Acceso limitado)",
+    "ubicacion": "San Carlos (Alta Montaña)",
+    "descripcion": "Impresionante espejo de agua con el Volcán Maipo de fondo. Destino de muy baja intensidad, acceso restringido y conservación estricta.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 34,
+    "nombre": "Cerro Tunduqueral (Petroglifos)",
+    "ubicacion": "Uspallata (Las Heras)",
+    "descripcion": "Sitio arqueológico con petroglifos precolombinos. Un 'tesoro oculto' de gran valor cultural, con acceso controlado y bajo impacto.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 35,
+    "nombre": "Casa de Fader (Pintor)",
+    "ubicacion": "Luján de Cuyo (Mayor Drummond)",
+    "descripcion": "Museo dedicado al célebre pintor Fernando Fader, ubicado en su antigua residencia. Promueve el turismo cultural fuera de los circuitos de vino.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 36,
+    "nombre": "Ruinas de San Francisco (Valle de Uco)",
+    "ubicacion": "San Carlos (La Consulta)",
+    "descripcion": "Restos de una antigua misión jesuítica o franciscana. Turismo histórico y ruinas, centrado en la historia religiosa del siglo XVIII.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 37,
+    "nombre": "Micro-bodegas de La Arboleda",
+    "ubicacion": "Tupungato (La Arboleda)",
+    "descripcion": "Pequeños emprendimientos vitivinícolas que producen vinos experimentales con uvas de altura extrema.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 38,
+    "nombre": "Cascada del Salto del Agua",
+    "ubicacion": "Tunuyán (Cordón del Plata)",
+    "descripcion": "Cascada de difícil acceso que requiere trekking moderado. Destino de aventura y naturaleza virgen, con bajo flujo de turistas.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 39,
+    "nombre": "Mercado Artesanal Mendocino (Uco)",
+    "ubicacion": "Tupungato",
+    "descripcion": "Espacio dedicado a la venta de productos de alfarería, cestería y telares de los artesanos del Valle de Uco.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 40,
+    "nombre": "Ruta de la Cerveza Artesanal (Uco)",
+    "ubicacion": "Tunuyán y Tupungato",
+    "descripcion": "Circuito de pequeñas cervecerías que aprovechan la pureza del agua de deshielo para producir estilos premium. Alternativa de agroturismo.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 41,
+    "nombre": "Cañón del Atuel (Bajo)",
+    "ubicacion": "San Rafael",
+    "descripcion": "La sección inferior del cañón, menos visitada que la superior (Valle Grande). Ofrece paisajes más tranquilos y rutas de senderismo en la planicie.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 42,
+    "nombre": "Villa 25 de Mayo (Histórica)",
+    "ubicacion": "San Rafael",
+    "descripcion": "Pueblo histórico y tranquilo, fundado antes que la ciudad de San Rafael. Turismo rural y patrimonio con la tranquilidad de un pueblo detenido en el tiempo.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 43,
+    "nombre": "Dique Los Reyunos (Baja Intensidad)",
+    "ubicacion": "San Rafael",
+    "descripcion": "Dique y lago menos desarrollado que Valle Grande, ideal para deportes náuticos y pesca. Enfocado en el turismo local y la tranquilidad familiar.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 44,
+    "nombre": "Reserva Natural Laguna de la Niña Encantada",
+    "ubicacion": "Malargüe",
+    "descripcion": "Una pequeña laguna con aguas turquesas y formaciones volcánicas submarinas. Destino de leyenda, con baja afluencia por su ubicación remota.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 45,
+    "nombre": "Bodegas de Rama Caída (Artesanal)",
+    "ubicacion": "San Rafael (Rama Caída)",
+    "descripcion": "Bodegas pequeñas que aún utilizan métodos de elaboración manuales y artesanales, fuera del circuito industrial.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 46,
+    "nombre": "Finca de Producción de Frutas Secas",
+    "ubicacion": "General Alvear",
+    "descripcion": "Agroturismo centrado en la producción de almendras y nueces. Permite al visitante conocer el proceso de cultivo y secado.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 47,
+    "nombre": "Laberinto de Borges (No Masivo)",
+    "ubicacion": "San Rafael",
+    "descripcion": "Aunque es un punto de interés, se lo incluye como turismo de baja intensidad si se visita en temporada baja o en días de semana. Promueve la literatura.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 48,
+    "nombre": "Cascada del Salto del Molle",
+    "ubicacion": "San Rafael (Los Reyunos)",
+    "descripcion": "Cascada oculta que requiere una caminata moderada por senderos naturales. Ideal para el ecoturismo de aventura controlada.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 49,
+    "nombre": "Embalse El Nihuil (Pesca)",
+    "ubicacion": "San Rafael",
+    "descripcion": "Famoso por el viento, es un destino de pesca deportiva y windsurf. Atractivo de nicho para amantes del deporte y la tranquilidad.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 50,
+    "nombre": "Parque Geológico Barrial",
+    "ubicacion": "Malargüe",
+    "descripcion": "Área de estudio geológico con formaciones rocosas únicas y fácil acceso. Turismo científico y de interpretación de la Tierra.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 51,
+    "nombre": "Castillo de San Carlos (Ruinas)",
+    "ubicacion": "San Rafael (Villa 25 de Mayo)",
+    "descripcion": "Antigua estructura que marca un hito en la historia militar de la región. Turismo histórico de ruinas y patrimonio.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 52,
+    "nombre": "Bodegas de Cuadro Nacional",
+    "ubicacion": "San Rafael (Cuadro Nacional)",
+    "descripcion": "Pequeñas bodegas que no forman parte del circuito principal, enfocadas en cepas alternativas y vinos de mesa de calidad.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 53,
+    "nombre": "Circuito de Turismo Rural (General Alvear)",
+    "ubicacion": "General Alvear",
+    "descripcion": "Recorridos por establecimientos que muestran la vida de campo: apicultura, cría de ganado menor y huertas orgánicas.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 54,
+    "nombre": "Museo de Historia Natural (Malargüe)",
+    "ubicacion": "Malargüe",
+    "descripcion": "Museo regional enfocado en la paleontología y geología del sur mendocino. Atractivo científico de baja demanda turística.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 55,
+    "nombre": "Dique Galileo Vitale",
+    "ubicacion": "General Alvear",
+    "descripcion": "Embalse de bajo perfil utilizado principalmente para riego. Un remanso de paz para la pesca local y el descanso.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 56,
+    "nombre": "Laberinto de las Flores",
+    "ubicacion": "San Rafael (25 de Mayo)",
+    "descripcion": "Atracción paisajística y botánica. Turismo temático de baja intensidad, ideal para la familia.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 57,
+    "nombre": "Sierra Pintada (Trekking)",
+    "ubicacion": "San Rafael",
+    "descripcion": "Zona de trekking con formaciones rocosas de colores intensos. Menos concurrido que otros sitios del Cañón del Atuel.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 58,
+    "nombre": "Arroyo de los Patos",
+    "ubicacion": "Malargüe (Ruta 40)",
+    "descripcion": "Sitio de descanso y recreación a orillas de un arroyo, popular entre los locales para pasar el día. Turismo 'low cost' y familiar.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 59,
+    "nombre": "Finca de Aromáticas",
+    "ubicacion": "General Alvear",
+    "descripcion": "Agroturismo especializado en el cultivo y destilación de hierbas aromáticas (lavanda, tomillo).",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 60,
+    "nombre": "Bodegas de El Sosneado",
+    "ubicacion": "San Rafael (El Sosneado)",
+    "descripcion": "Pequeñas bodegas que producen vinos en condiciones extremas de altura y clima. Enoturismo de aventura.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 61,
+    "nombre": "Cueva del Tigre",
+    "ubicacion": "Malargüe",
+    "descripcion": "Sitio de interés geológico y espeleológico. Requiere guía, lo que limita la afluencia turística masiva.",
+    "temporada": "invierno",
+    "actividades": []
+  },
+  {
+    "id": 62,
+    "nombre": "Circuito de Artesanías de Adobe",
+    "ubicacion": "Malargüe",
+    "descripcion": "Ruta que muestra talleres de artesanos que trabajan el adobe y el ladrillo crudo, rescatando técnicas constructivas locales.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 63,
+    "nombre": "Valle de las Leñas (Trekking de verano)",
+    "ubicacion": "Malargüe",
+    "descripcion": "Aunque es un centro de esquí, en verano ofrece trekking de alta montaña con muy pocos visitantes. Naturaleza virgen fuera de temporada.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 64,
+    "nombre": "Reserva La Salina",
+    "ubicacion": "General Alvear",
+    "descripcion": "Antigua salina natural. Interés geológico y de fauna. Destino de difícil acceso y muy baja intensidad.",
+    "temporada": "invierno",
+    "actividades": []
+  },
+  {
+    "id": 65,
+    "nombre": "Sendero de la Posta del Diamante",
+    "ubicacion": "San Rafael (Villa 25 de Mayo)",
+    "descripcion": "Ruta histórica que sigue el trazado de las antiguas postas coloniales. Turismo de patrimonio y caminata ligera.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 66,
+    "nombre": "Reserva Natural La Payunia",
+    "ubicacion": "Malargüe",
+    "descripcion": "Uno de los parques volcánicos más densos del planeta. Paisaje lunar de volcanes extintos y campos basálticos. Aventura extrema y geología.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 67,
+    "nombre": "Caverna de las Brujas (Tour Especial)",
+    "ubicacion": "Malargüe",
+    "descripcion": "Caverna con formaciones de estalactitas y estalagmitas. Se prioriza el tour avanzado para limitar la masificación.",
+    "temporada": "invierno",
+    "actividades": []
+  },
+  {
+    "id": 68,
+    "nombre": "Volcán Malacara (Turismo Geológico)",
+    "ubicacion": "Malargüe",
+    "descripcion": "Volcán único por su formación hidromagmática. Ofrece recorridos guiados que se enfocan en la geología y la interpretación científica.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 69,
+    "nombre": "Termas del Sosneado (Rústico)",
+    "ubicacion": "San Rafael (El Sosneado)",
+    "descripcion": "Termas rústicas y poco desarrolladas, con alto valor terapéutico. Turismo de salud de baja intensidad y aventura.",
+    "temporada": "invierno",
+    "actividades": []
+  },
+  {
+    "id": 70,
+    "nombre": "Dique Agua del Toro (Pesca)",
+    "ubicacion": "San Rafael",
+    "descripcion": "Embalse de aguas frías con poca infraestructura turística, ideal para la pesca de trucha y la navegación tranquila.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 71,
+    "nombre": "La Pasarela (Río Grande)",
+    "ubicacion": "Malargüe",
+    "descripcion": "Punto de acceso al Río Grande, ideal para la pesca con mosca y el turismo de aventura controlada. Requiere guías locales.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 72,
+    "nombre": "Sendero del Árbol Histórico",
+    "ubicacion": "San Rafael (25 de Mayo)",
+    "descripcion": "Ruta de interés patrimonial y botánico que conduce a un árbol centenario con valor histórico regional.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 73,
+    "nombre": "Reserva Natural Laguna del Atuel",
+    "ubicacion": "Malargüe (Alta Montaña)",
+    "descripcion": "Laguna de altura con acceso limitado y estricto control. Ecoturismo de conservación y paisaje andino virgen.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 74,
+    "nombre": "Finca de Producción de Ciruela Seca",
+    "ubicacion": "General Alvear",
+    "descripcion": "Agroturismo enfocado en el proceso de deshidratación de ciruelas. Promueve la industria regional del secado de frutas.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 75,
+    "nombre": "Bodegas de 25 de Mayo (Bajo Atuel)",
+    "ubicacion": "San Rafael (25 de Mayo)",
+    "descripcion": "Pequeños productores de vino ubicados cerca del Río Atuel. Foco en cepas criollas y vinos de patio.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 76,
+    "nombre": "Ruta de la Miel (Sur)",
+    "ubicacion": "General Alvear y San Rafael",
+    "descripcion": "Circuito de apicultores que permite conocer el proceso de producción de miel y derivados.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 77,
+    "nombre": "Fuerte San Rafael del Diamante (Ruinas)",
+    "ubicacion": "San Rafael (Villa 25 de Mayo)",
+    "descripcion": "Restos del antiguo fuerte militar fundado en 1805. Turismo histórico y patrimonial en un entorno rural tranquilo.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 78,
+    "nombre": "El Azufre (Centro de Esqui Remoto)",
+    "ubicacion": "Malargüe (Cordillera)",
+    "descripcion": "Nuevo centro de esquí enfocado en un turismo de lujo de muy baja intensidad. Se promueve el helicóptero y la privacidad, no el turismo masivo.",
+    "temporada": "invierno",
+    "actividades": []
+  },
+  {
+    "id": 79,
+    "nombre": "Arroyo Hondo (Trekking y Aguas)",
+    "ubicacion": "Malargüe",
+    "descripcion": "Sitio de descanso y recreación a orillas de un arroyo, popular entre los locales para pasar el día. Turismo 'low cost' y familiar.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 80,
+    "nombre": "Reserva Natural Laguna de la Lechuga",
+    "ubicacion": "General Alvear",
+    "descripcion": "Humedal y laguna protegida, ideal para la observación de aves migratorias. Ecoturismo de conservación y bajo impacto.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 81,
+    "nombre": "Trekking al Cordón del Plata (Base)",
+    "ubicacion": "Tupungato (Vallecitos)",
+    "descripcion": "Senderismo en la base del Cordón, sin intentar cumbres. Turismo de montaña accesible y de baja intensidad, ideal para aclimatación.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 82,
+    "nombre": "Estación de Tren de Palmira (Histórica)",
+    "ubicacion": "San Martín (Palmira)",
+    "descripcion": "Antigua estación ferroviaria, centro de la logística histórica. Turismo de patrimonio industrial y ferroviario.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 83,
+    "nombre": "Finca de Aromáticas de Lavalle",
+    "ubicacion": "Lavalle",
+    "descripcion": "Cultivo de hierbas aromáticas en zonas desérticas. Agroturismo de nicho con foco en la adaptación al clima árido.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 84,
+    "nombre": "Caminos de la Miel (Norte)",
+    "ubicacion": "Maipú y Lavalle",
+    "descripcion": "Ruta de pequeños productores de miel. Agroturismo y producto local de alto valor añadido.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 85,
+    "nombre": "Museo de Ciencias Naturales Cornelio Moyano",
+    "ubicacion": "Ciudad de Mendoza",
+    "descripcion": "Aunque es central, es un museo cultural y educativo que promueve el conocimiento y no la masividad. Ideal para turismo familiar educativo.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 86,
+    "nombre": "Dique El Tigre",
+    "ubicacion": "Luján de Cuyo (Cacheuta)",
+    "descripcion": "Pequeño dique en la ruta a Cacheuta, menos concurrido que Potrerillos. Ideal para un picnic tranquilo y observación del río.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 87,
+    "nombre": "Reserva Natural Laguna del Viborón",
+    "ubicacion": "Lavalle",
+    "descripcion": "Humedal con gran valor biológico y cultural. Ecoturismo de bajo impacto enfocado en la conservación del agua.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 88,
+    "nombre": "Bodegas de Barrancas (Maipú)",
+    "ubicacion": "Maipú (Barrancas)",
+    "descripcion": "Bodegas en el sector sur de Maipú, fuera del corredor principal. Vinos de llanura con carácter único.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 89,
+    "nombre": "Trekking al Cerro Vizcachas",
+    "ubicacion": "Las Heras",
+    "descripcion": "Trekking de baja dificultad con vistas panorámicas de la ciudad. Ideal para turismo local y de un día.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 90,
+    "nombre": "Feria del Libro y el Artesano (Anual)",
+    "ubicacion": "San Rafael",
+    "descripcion": "Evento cultural que promueve la producción literaria y artesanal de la región sur. Turismo cultural de baja intensidad.",
+    "temporada": "invierno",
+    "actividades": []
+  },
+  {
+    "id": 91,
+    "nombre": "Circuito del Cacao y Chocolate",
+    "ubicacion": "Luján de Cuyo",
+    "descripcion": "Ruta de pequeños productores de chocolate artesanal que utilizan el vino o el olivo como complemento. Turismo gourmet de nicho.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 92,
+    "nombre": "Laguna de las Toldos",
+    "ubicacion": "Malargüe",
+    "descripcion": "Laguna remota con gran belleza escénica. Ecoturismo de conservación con acceso estricto, promoviendo la baja intensidad.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 93,
+    "nombre": "Museo de Ciencias Naturales (San Rafael)",
+    "ubicacion": "San Rafael",
+    "descripcion": "Colección de flora, fauna y arqueología del sur mendocino. Turismo educativo y cultural de bajo flujo.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 94,
+    "nombre": "Ruta de la Semilla (General Alvear)",
+    "ubicacion": "General Alvear",
+    "descripcion": "Agroturismo enfocado en la producción de semillas de alta calidad para exportación. Muestra el proceso agrícola avanzado.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 95,
+    "nombre": "Puente Colgante de Cacheuta (Antiguo)",
+    "ubicacion": "Luján de Cuyo (Cacheuta)",
+    "descripcion": "Puente histórico en desuso, utilizado como mirador. Turismo de patrimonio e ingeniería civil en un entorno natural.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 96,
+    "nombre": "Museo Histórico Las Heras",
+    "ubicacion": "Las Heras",
+    "descripcion": "Museo municipal enfocado en la historia local y la vida cotidiana de Las Heras. Turismo histórico descentralizado.",
+    "temporada": "primavera",
+    "actividades": []
+  },
+  {
+    "id": 97,
+    "nombre": "Sendero del Durazno (Agroturismo)",
+    "ubicacion": "Junín y Rivadavia",
+    "descripcion": "Agroturismo enfocado en la cosecha de duraznos en el Este. Permite al visitante interactuar con la producción de frutas.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 98,
+    "nombre": "Cordón del Portillo (Trekking Base)",
+    "ubicacion": "Tunuyán (Valle de Uco)",
+    "descripcion": "Trekking en la base de la cordillera frontal, menos transitado que el Manzano. Ideal para observar fauna y flora de altura.",
+    "temporada": "verano",
+    "actividades": []
+  },
+  {
+    "id": 99,
+    "nombre": "Paseo de las Artes (Luján de Cuyo)",
+    "ubicacion": "Luján de Cuyo (Centro)",
+    "descripcion": "Feria de arte y artesanías que se celebra los fines de semana, promoviendo el talento local. Turismo de cultura y comercio justo.",
+    "temporada": "otono",
+    "actividades": []
+  },
+  {
+    "id": 100,
+    "nombre": "Ruta del Desierto de Lavalle (Aventura)",
+    "ubicacion": "Lavalle",
+    "descripcion": "Recorridos guiados en 4x4 por la zona más árida de Lavalle. Turismo de aventura y ecología de bajo impacto, centrado en la interpretación del desierto.",
+    "temporada": "invierno",
     "actividades": []
   }
 ]
