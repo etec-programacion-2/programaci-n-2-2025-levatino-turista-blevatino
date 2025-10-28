@@ -8,7 +8,7 @@ enum class Temporada {
     @SerialName("verano")
     VERANO,
 
-    @SerialName("otoño")
+    @SerialName("otono")
     OTONO,
 
     @SerialName("invierno")
