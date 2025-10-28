@@ -17,12 +17,20 @@ import java.io.IOException
  * Representa un mensaje individual en la conversación (Historial).
  * Coincide con el formato JSON que espera OpenAI/OpenRouter: {"role": "user"|"assistant", "content": "texto"}
  */
-
+@Serializable
+data class Mensaje(
+    val role: String, // Puede ser "user" o "assistant"
+    val content: String // El contenido del texto
+)
 
 /**
  * Representa la estructura de la petición JSON para el chat contextual con memoria.
  * El servidor Flask espera { "historial_mensajes": [...] }
  */
+@Serializable
+data class PeticionChat(
+    val historial_mensajes: List<Mensaje>
+)
 
 // --- Cliente Ktor ---
 
@@ -112,4 +120,3 @@ class GeminiPythonAsistente : AsistenteIA {
         }
     }
 }
-

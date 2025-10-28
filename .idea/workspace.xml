@@ -80,7 +80,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "13-crear-una-vista-principal-en-javafx",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino",
+    "last_opened_file_path": "/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino/app/src/main/kotlin",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -89,6 +89,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/kotlin" />
       <recent name="$PROJECT_DIR$/app/src/main/kotlin/org/example" />
     </key>
   </component>
