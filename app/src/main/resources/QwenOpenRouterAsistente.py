@@ -1,87 +1,117 @@
 import os
-from openai import OpenAI
+import sys
 import json
+from openai import OpenAI
 
 # --- ASISTENTE DE IA (CLASE PRINCIPAL) ---
 
 class QwenOpenRouterAsistente:
     def __init__(self):
-        # NOTA: Asegúrate de configurar la variable de entorno OPENROUTER_API_KEY.
         self.api_key = os.getenv("OPENROUTER_API_KEY")
         if not self.api_key:
             raise ValueError("La variable de entorno 'OPENROUTER_API_KEY' no está configurada.")
 
-        # Configuración del cliente OpenAI para usar OpenRouter
         self.client = OpenAI(
             api_key=self.api_key,
             base_url="https://openrouter.ai/api/v1",
             timeout=60.0
         )
-        # Usamos un modelo potente (Mixtral 8x7B) para la creatividad y el chat
         self.model_name = "mistralai/mixtral-8x7b-instruct"
-        print("Asistente IA inicializado con éxito y listo para la API de OpenRouter.")
+        self._perform_initial_check()
 
-    def obtener_respuesta_ia(self, data: dict):
-        """
-        Función central que maneja la lógica de la llamada a la IA (chat o enriquecimiento).
+    def _perform_initial_check(self):
+        print("Realizando verificación inicial de la API de OpenRouter...")
+        try:
+            messages = [{"role": "user", "content": "Responde 'OK' para confirmar la conexión."}]
 
-        :param data: Diccionario que contiene los datos del cliente Kotlin.
-        :return: Diccionario con la clave 'respuesta' o 'error'.
-        """
-        lugar_nombre = data.get('lugar_nombre')
-        descripcion_actual = data.get('descripcion_actual')
-        historial_mensajes = data.get('historial_mensajes')
-
-        # 1. Definir el contexto y el prompt basado en la tarea (Chat o Enriquecimiento)
-        if historial_mensajes is not None:
-            # --- TAREA: Chat Genérico ---
-            system_instruction = (
-                "Eres un asistente virtual experto en turismo de Mendoza, Argentina. "
-                "Mantén el contexto de la conversación. "
-                "Responde preguntas ÚNICAMENTE sobre viajes, lugares turísticos o consejos de Mendoza. "
-                "Si la pregunta no está relacionada (ej. matemáticas, política), dirige cortésmente la conversación al tema de turismo."
+            completion = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=messages,
+                temperature=0.1
             )
 
-            messages = [{"role": "system", "content": system_instruction}]
-            # El historial viene en el formato correcto desde Kotlin (lista de dicts con 'role' y 'content')
-            messages.extend(historial_mensajes)
+            respuesta_texto = completion.choices[0].message.content.strip().upper()
 
-            temperature = 0.7
+            if "OK" in respuesta_texto:
+                print("Verificación inicial EXITOSA. El servidor está listo para recibir peticiones.")
+                return
+            else:
+                raise Exception(f"Verificación fallida: Respuesta inesperada del modelo: {respuesta_texto}")
 
-        elif lugar_nombre and descripcion_actual:
-            # --- TAREA: Enriquecimiento de Lugar Turístico ---
-            system_instruction = (
-                "Eres un escritor de viajes profesional especializado en marketing turístico. "
-                "Tu tarea es mejorar dramáticamente una descripción simple, usando lenguaje vibrante, persuasivo y de lujo. "
-                "DEBES devolver SOLAMENTE el texto mejorado y nada más."
-            )
+        except Exception as e:
+            print("--- DIAGNÓSTICO DE FALLO ---")
+            print(f"FALLO CRÍTICO DE CONEXIÓN CON OPENROUTER: {e}")
+            print("-----------------------------")
+            raise Exception("Fallo en la verificación inicial. No se puede iniciar el servicio de IA.")
 
-            user_prompt = (
-                f"Lugar turístico: {lugar_nombre}\n"
-                f"Descripción actual (simple): {descripcion_actual}\n"
-                "Tarea: Transforma la 'Descripción actual' en un texto de marketing de lujo de 3-4 párrafos. NO incluyas encabezados como 'Descripción de...'"
-            )
+    def enriquecer_lugar_turistico(self, lugar_nombre: str, descripcion_actual: str):
+        # Instrucción del sistema para guiar el comportamiento de la IA
+        system_instruction = (
+            "Eres un escritor de viajes profesional especializado en marketing turístico. "
+            "Tu tarea es mejorar dramáticamente una descripción simple, usando lenguaje vibrante y persuasivo. "
+            "DEBES devolver SOLO el texto mejorado, siguiendo esta regla de etiquetado OBLIGATORIO: "
+            "1. Si consideras que la 'Descripción actual' ya es perfecta y no necesita mejora, "
+            "   tu respuesta DEBE empezar con 'BaseDeDatos:' seguido de la descripción actual."
+            "2. Si la mejoras o la reescribes (lo cual debes hacer casi siempre), "
+            "   tu respuesta DEBE empezar con 'PotenciadoIA:' seguido del nuevo texto enriquecido."
+        )
 
+        # Prompt del usuario con los datos específicos
+        user_prompt = (
+            f"Lugar turístico: {lugar_nombre}\n"
+            f"Descripción actual (simple): {descripcion_actual}\n"
+            "Tarea: Transforma la 'Descripción actual' en un texto de marketing de lujo de 3-4 párrafos. "
+            "Aplica la regla de etiquetado OBLIGATORIO al inicio de tu respuesta."
+        )
+
+        try:
             messages = [
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": user_prompt}
             ]
 
-            temperature = 0.5
-
-        else:
-            return {"error": "Petición de IA inválida: Faltan datos para chat o enriquecimiento."}
-
-        # 2. Llamada a la API
-        try:
             completion = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,
-                temperature=temperature,
+                temperature=0.7,
                 max_tokens=2048
             )
 
             respuesta_texto = completion.choices[0].message.content.strip()
+
+            return {"respuesta": respuesta_texto}
+        except Exception as e:
+            return {"error": f"Error al llamar a OpenRouter: {e}"}
+
+
+    def obtener_respuesta_generica(self, historial_mensajes: list):
+        """
+        Responde preguntas generales sobre turismo, manteniendo la memoria y aplicando restricción
+        de contexto. La funcionalidad de herramientas (hora/clima) fue removida.
+        """
+        # Instrucción estricta para la primera llamada.
+        system_instruction = (
+            "Eres un asistente virtual experto en turismo en Mendoza, Argentina. "
+            "Usa la información de tu historial para mantener el contexto. "
+            "Debes responder ÚNICAMENTE sobre viajes, turismo, o consejos relevantes. "
+            "Si la pregunta es irrelevante, pide amablemente al usuario que se enfoque en el turismo en Mendoza. "
+            "Responde en el mismo idioma que el usuario."
+        )
+
+        # 1. Preparar el historial de mensajes
+        messages = [{"role": "system", "content": system_instruction}]
+        messages.extend(historial_mensajes.copy())
+
+        try:
+            # 2. Llamada a la IA (sin herramientas)
+            completion = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=messages,
+                temperature=0.7
+            )
+
+            respuesta_texto = completion.choices[0].message.content.strip()
+
             return {"respuesta": respuesta_texto}
 
         except Exception as e:

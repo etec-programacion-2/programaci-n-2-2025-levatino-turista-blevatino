@@ -5,19 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7df00e65-f658-42c1-8beb-6d27743ca609" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/Temporada.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/Temporada.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/flask" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/flask" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/normalizer" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/normalizer" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip3" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pyrsa-decrypt" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pyrsa-decrypt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pyrsa-encrypt" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pyrsa-encrypt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pyrsa-keygen" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pyrsa-keygen" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pyrsa-priv2pub" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pyrsa-priv2pub" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pyrsa-sign" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pyrsa-sign" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pyrsa-verify" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pyrsa-verify" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/tqdm" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/tqdm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterAsistente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterAsistente.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/pyvenv.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pyvenv.cfg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
