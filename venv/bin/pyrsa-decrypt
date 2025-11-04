@@ -1,4 +1,4 @@
-#!/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino/venv/bin/python3
+#!/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino/venv/bin/python3.13
 import sys
 from rsa.cli import decrypt
 if __name__ == '__main__':

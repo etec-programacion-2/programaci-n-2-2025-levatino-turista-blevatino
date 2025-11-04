@@ -40,9 +40,9 @@ Primero, inicio el servidor de Python en una terminal. Esto prepara mi servicio 
 
 `source venv/bin/activate`
 
-`pip install google-generativeai Flask`
+`pip install openai Flask datetime pytz`
 
-`export GEMINI_API_KEY="AIzaSyBPerXvJjTwOD65x4_d0POPyB55mSr8W1s" && python3 ./app/src/main/resources/GeminiApiServer.py`
+`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
 
 Luego, ejecuto la aplicación de Kotlin en una segunda terminal.
 `./gradlew run`
@@ -52,6 +52,15 @@ Mi aplicación de Kotlin enviará una petición a Python, que a su vez se comuni
 (_Dentro de App.tk hay una prueba_)
 
 Para demostrar la seguridad, la API Key no está en el código, sino que la configuro en una variable de entorno. Esto la mantiene a salvo y hace que mi código sea flexible.
+
+En el caso que exista algun fallo usar:
+
+`deactivate`
+
+`rm -rf venv`
+
+y luego volver a montarlo
+
 
 **Issue 2.4: Crear la clase ControladorPrincipal:**
 
