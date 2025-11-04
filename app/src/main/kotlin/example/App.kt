@@ -25,6 +25,8 @@ fun main() { // CAMBIO CLAVE: Usamos cuerpo de función explícito
         val asistente: AsistenteIA = GeminiPythonAsistente()
 
         // --- 2. Inicio de la Vista de Consola con inyección directa de dependencias ---
+        // Asumiendo que VistaConsola necesita el repositorio para mostrar datos locales
+        // y el asistente para el chat.
         val vista = VistaConsola(
             repositorio = repository,
             asistente = asistente
@@ -37,5 +39,3 @@ fun main() { // CAMBIO CLAVE: Usamos cuerpo de función explícito
         exitProcess(0)
     }
 }
-
-

@@ -1,205 +1,192 @@
 package org.example
 
-import kotlin.system.exitProcess
 import java.io.IOException
+import java.util.InputMismatchException
 
-class VistaConsola(private val repositorio: LugarTuristicoRepository, private val asistente: AsistenteIA) {
-
-    // --- Memoria del Chat ---
+/**
+ * Vista de la aplicación para la interfaz de consola.
+ * Maneja la interacción con el usuario y utiliza los servicios y el asistente de IA.
+ */
+class VistaConsola(
+    private val repositorio: LugarTuristicoRepository,
+    private val asistente: AsistenteIA
+) {
+    // Memoria para el chat, necesaria para las peticiones contextuales.
     private val historialChat: MutableList<Mensaje> = mutableListOf()
 
+    /**
+     * Inicia el bucle principal de la aplicación de consola.
+     * Es una función suspendida porque el menú incluye llamadas a la IA.
+     */
     suspend fun iniciar() {
-        println("--- Bienvenido al Asistente Turístico IA ---")
-        var opcion: Int
+        println("=========================================")
+        println("   Bienvenido al Asistente Turístico IA  ")
+        println("=========================================")
+
+        var opcion: Int? = null
+
         do {
             mostrarMenu()
-            opcion = leerOpcion()
-            manejarOpcion(opcion)
+            try {
+                opcion = readlnOrNull()?.toIntOrNull()
+
+                when (opcion) {
+                    1 -> mostrarLugaresPorTemporada()
+                    2 -> iniciarChat()
+                    3 -> enriquecerLugar()
+                    0 -> println("Saliendo del asistente. ¡Adiós!")
+                    else -> println("Opción no válida. Inténtalo de nuevo.")
+                }
+            } catch (e: NumberFormatException) {
+                println("Entrada no válida. Por favor, introduce un número.")
+                opcion = -1 // Forzar la repetición del bucle
+            } catch (e: Exception) {
+                System.err.println("Ocurrió un error inesperado: ${e.message}")
+            }
         } while (opcion != 0)
     }
 
     private fun mostrarMenu() {
-        println("\n==============================================")
-        println("== Sistema de Información Turística (Beta) ==")
-        println("==============================================")
-        println("1. Mostrar todos los Lugares Turísticos")
-        println("2. Chatear con Asistente IA (Modo Memoria)")
-        println("3. Enriquecer una descripción con IA")
-        println("4. Mostrar Lugares por Temporada")
+        println("\n--- Menú Principal ---")
+        println("1. Ver Lugares por Temporada")
+        println("2. Iniciar Chat con el Asistente IA")
+        println("3. Enriquecer la Descripción de un Lugar (IA)")
         println("0. Salir")
-        print("Seleccione una opción: ")
+        print("Selecciona una opción: ")
     }
 
-    private fun leerOpcion(): Int {
-        return try {
-            readlnOrNull()?.toIntOrNull() ?: -1
-        } catch (e: Exception) {
-            -1
-        }
-    }
-
-    private suspend fun manejarOpcion(opcion: Int) {
-        when (opcion) {
-            1 -> mostrarTodosLosLugares()
-            2 -> chatearConIA() // NUEVA LÓGICA CON MEMORIA
-            3 -> seleccionarLugarParaEnriquecer()
-            4 -> mostrarLugaresPorTemporada()
-            0 -> {
-                println("Gracias por usar el Asistente Turístico. ¡Adiós!")
-                exitProcess(0)
-            }
-            else -> println("Opción inválida. Intente de nuevo.")
-        }
-    }
-
-    // ------------------------------------------------------------------
-    // OP. 2: Lógica de Chat con Historial (Memoria)
-    // ------------------------------------------------------------------
-    private suspend fun chatearConIA() {
-        println("\n--- MODO CHAT CON ASISTENTE IA (TEMAS TURÍSTICOS) ---")
-        println("Tu historial actual tiene ${historialChat.size} mensajes. (Escribe 'salir' para volver al menú)")
-
-        // Muestra el historial si no está vacío
-        historialChat.forEach { mensaje ->
-            println("${if (mensaje.role == "user") "Tú" else "Asistente"}: ${mensaje.content}")
-        }
-
-        while (true) {
-            print("\nTú: ")
-            val pregunta = readlnOrNull()
-            if (pregunta.isNullOrBlank() || pregunta.lowercase() == "salir") {
-                println("Saliendo del chat. Volviendo al menú principal.")
-                break
-            }
-
-            // 1. Agregar pregunta del usuario al historial
-            historialChat.add(Mensaje(role = "user", content = pregunta))
-
-            try {
-                // 2. Llamar al asistente enviando TODO el historial
-                val respuestaIA = asistente.obtenerRespuesta(historialChat)
-
-                // 3. Imprimir respuesta
-                println("\nAsistente: $respuestaIA")
-
-                // 4. Agregar respuesta de la IA al historial
-                historialChat.add(Mensaje(role = "assistant", content = respuestaIA))
-
-            } catch (e: IOException) {
-                println("ERROR: Fallo de conexión o comunicación con el servidor de IA: ${e.message}")
-                // Si falla, removemos el último mensaje del usuario para no contaminar
-                historialChat.removeLastOrNull()
-            } catch (e: Exception) {
-                println("ERROR inesperado al procesar la respuesta de la IA: ${e.message}")
-                historialChat.removeLastOrNull()
-            }
-        }
-    }
-
-    // ------------------------------------------------------------------
-    // OP. 3: Enriquecimiento de Lugares
-    // ------------------------------------------------------------------
-    private suspend fun seleccionarLugarParaEnriquecer() {
-        val lugares = repositorio.obtenerTodos()
-        if (lugares.isEmpty()) {
-            println("No hay lugares turísticos disponibles para enriquecer.")
-            return
-        }
-
-        println("\n--- ENRIQUECIMIENTO DE DESCRIPCIONES ---")
-        lugares.forEachIndexed { index: Int, lugar: LugarTuristico ->
-            println("${index + 1}. ${lugar.nombre} (${lugar.ubicacion})")
-        }
-        print("Seleccione el número del lugar a enriquecer (o 0 para cancelar): ")
-
-        val seleccion = readlnOrNull()?.toIntOrNull()
-        if (seleccion == null || seleccion <= 0 || seleccion > lugares.size) {
-            println("Selección inválida o cancelada.")
-            return
-        }
-
-        val lugarSeleccionado = lugares[seleccion - 1]
-        println("\nEnriqueciendo la descripción de: ${lugarSeleccionado.nombre}...")
-        println("Descripción original: ${lugarSeleccionado.descripcion}")
-
-        try {
-            val nuevaDescripcionCompleta = asistente.enriquecerLugarTuristico(
-                lugarSeleccionado.nombre,
-                lugarSeleccionado.descripcion
-            )
-
-            // Procesamiento de la etiqueta de respuesta
-            if (nuevaDescripcionCompleta.startsWith("BaseDeDatos:", true)) {
-                val descripcionBD = nuevaDescripcionCompleta.substringAfter(":")
-                println("\n[ETIQUETA: BaseDeDatos] La descripción es excelente y no fue modificada.")
-                println("Descripción final: $descripcionBD")
-            } else if (nuevaDescripcionCompleta.startsWith("PotenciadoIA:", true)) {
-                val descripcionIA = nuevaDescripcionCompleta.substringAfter(":")
-                println("\n[ETIQUETA: PotenciadoIA] La descripción ha sido mejorada por la IA.")
-                println("Descripción enriquecida: $descripcionIA")
-            } else {
-                // Si la IA no sigue la instrucción de etiquetado
-                println("\n[ERROR ETIQUETADO] Respuesta inesperada del asistente (sin prefijo).")
-                println("Respuesta cruda: $nuevaDescripcionCompleta")
-            }
-        } catch (e: IOException) {
-            println("ERROR de conexión: ${e.message}")
-        } catch (e: Exception) {
-            println("ERROR inesperado al enriquecer: ${e.message}")
-        }
-    }
-
-    // ------------------------------------------------------------------
-    // Opciones Simples
-    // ------------------------------------------------------------------
-
-    private fun mostrarTodosLosLugares() {
-        val lugares = repositorio.obtenerTodos()
-        println("\n--- LISTA COMPLETA DE LUGARES TURÍSTICOS ---")
-        if (lugares.isEmpty()) {
-            println("No hay lugares cargados.")
-            return
-        }
-        lugares.forEach { lugar ->
-            println("- ${lugar.nombre} (${lugar.ubicacion})")
-            println("  Descripción: ${lugar.descripcion}")
-            println("  Actividades: ${lugar.actividades.joinToString { it.nombre }}")
-            println("  Temporada: ${lugar.temporada.name}")
-            println("----------------------------------------------")
-        }
-    }
+    // --- Opción 1: Mostrar Lugares por Temporada ---
 
     private fun mostrarLugaresPorTemporada() {
-        println("\n--- FILTRAR LUGARES POR TEMPORADA ---")
-        Temporada.entries.filter { it != Temporada.TODO_EL_ANO }.forEachIndexed { index, temp ->
-            println("${index + 1}. ${temp.name}")
+        println("\n--- Seleccionar Temporada ---")
+
+        // CORRECCIÓN CLAVE: Usamos nombreDisplay para mostrar "Otoño"
+        val temporadasFiltradas = Temporada.entries.filter { it != Temporada.TODO_EL_ANO }
+
+        temporadasFiltradas.forEachIndexed { index, temporada ->
+            println("${index + 1}. ${temporada.nombreDisplay}")
         }
-        println("${Temporada.entries.size}. ${Temporada.TODO_EL_ANO.name} (Todos)")
-        print("Seleccione la temporada (número): ")
+        print("Introduce el número de la temporada: ")
 
-        val seleccion = readlnOrNull()?.toIntOrNull()
-        val temporadaSeleccionada = when (seleccion) {
-            1 -> Temporada.VERANO
-            2 -> Temporada.OTONO
-            3 -> Temporada.INVIERNO
-            4 -> Temporada.PRIMAVERA
-            5 -> Temporada.TODO_EL_ANO
-            else -> {
-                println("Selección inválida. Cancelando.")
-                return
-            }
-        }
+        val input = readlnOrNull()?.toIntOrNull()
+        val temporadaIndex = input?.minus(1) // Convertimos el número de opción a índice de lista (0-basado)
 
-        val lugaresFiltrados = repositorio.obtenerPorTemporada(temporadaSeleccionada)
-
-        println("\n--- Lugares recomendados para ${temporadaSeleccionada.name} ---")
-        if (lugaresFiltrados.isEmpty()) {
-            println("No se encontraron lugares para esa temporada.")
+        val temporadaSeleccionada = if (temporadaIndex != null && temporadaIndex in temporadasFiltradas.indices) {
+            // Obtenemos la temporada correcta por índice
+            temporadasFiltradas.getOrNull(temporadaIndex)
         } else {
-            lugaresFiltrados.forEach { lugar ->
-                println("- ${lugar.nombre} (${lugar.ubicacion})")
+            println("Selección de temporada no válida.")
+            return
+        }
+
+        if (temporadaSeleccionada != null) {
+            val lugares = repositorio.obtenerPorTemporada(temporadaSeleccionada)
+
+            // CORRECCIÓN CLAVE: Usamos nombreDisplay en el encabezado
+            println("\n--- Lugares recomendados para ${temporadaSeleccionada.nombreDisplay} ---")
+
+            if (lugares.isEmpty()) {
+                println("No se encontraron lugares para esta temporada.")
+            } else {
+                lugares.forEachIndexed { index, lugar ->
+                    println("[$index] ${lugar.nombre} (${lugar.ubicacion})")
+                    println("    Descripción: ${lugar.descripcion.take(100)}...")
+                    println("    Actividades: ${lugar.actividades.joinToString { it.nombre }}")
+                    println("---------------------------------")
+                }
             }
+        }
+    }
+
+    // --- Opción 2: Chat con el Asistente IA ---
+
+    private suspend fun iniciarChat() {
+        println("\n--- Chat con Asistente IA (Escribe 'salir' para terminar) ---")
+
+        var pregunta: String
+        do {
+            print("Tú: ")
+            pregunta = readlnOrNull() ?: ""
+
+            if (pregunta.lowercase() == "salir") break
+
+            if (pregunta.isNotBlank()) {
+                try {
+                    // 1. Agregar la pregunta del usuario al historial
+                    historialChat.add(Mensaje(role = "user", content = pregunta))
+
+                    // 2. Llamada a la función suspendida del asistente
+                    val respuestaIA = asistente.obtenerRespuesta(historialChat)
+
+                    // 3. La respuesta ya fue agregada al historial dentro del asistente (se asume, aunque en este caso se agrega en el Controlador/Vista)
+                    historialChat.add(Mensaje(role = "assistant", content = respuestaIA)) // Se añade la respuesta aquí para asegurar la memoria
+                    println("IA: $respuestaIA")
+
+                } catch (e: IOException) {
+                    // Manejo de errores de red o parsing
+                    println("🔴 Error de comunicación con el asistente: ${e.message}")
+                    // Intentamos revertir la adición de la pregunta al historial
+                    if (historialChat.lastOrNull()?.content == pregunta) {
+                        historialChat.removeLast()
+                    }
+                } catch (e: Exception) {
+                    println("🔴 Error: ${e.message}")
+                }
+            }
+        } while (true)
+    }
+
+    // --- Opción 3: Enriquecer Descripción (IA) ---
+
+    private suspend fun enriquecerLugar() {
+        val todosLosLugares = repositorio.obtenerTodos()
+        if (todosLosLugares.isEmpty()) {
+            println("No hay lugares cargados para enriquecer.")
+            return
+        }
+
+        println("\n--- Seleccionar Lugar a Enriquecer ---")
+        todosLosLugares.forEachIndexed { index, lugar ->
+            println("[$index] ${lugar.nombre} (${lugar.ubicacion})")
+        }
+        print("Introduce el ID del lugar para enriquecer (0-${todosLosLugares.size - 1}): ")
+
+        val input = readlnOrNull()?.toIntOrNull()
+
+        if (input != null && input in todosLosLugares.indices) {
+            // NOTA: En Kotlin, al obtener un objeto de una lista (como 'lugarSeleccionado'),
+            // se obtiene una referencia. Si el objeto (LugarTuristico) es mutable (tiene 'var' en la descripción),
+            // la modificación de esa referencia afecta al objeto original en el repositorio.
+            val lugarSeleccionado = todosLosLugares[input]
+
+            println("\nOriginal: ${lugarSeleccionado.descripcion.take(100)}...")
+            println("Enriqueciendo la descripción de ${lugarSeleccionado.nombre} con IA...")
+
+            try {
+                // Llamada suspendida para el enriquecimiento
+                val resultado = asistente.enriquecerLugarTuristico(
+                    nombre = lugarSeleccionado.nombre,
+                    descripcion = lugarSeleccionado.descripcion
+                )
+
+                // El resultado debe contener el prefijo de etiquetado
+                if (resultado.startsWith("PotenciadoIA:", true)) {
+                    // Actualizamos el lugar si la IA devolvió nuevo contenido
+                    lugarSeleccionado.descripcion = resultado.substringAfter(":", "").trim()
+                    println("✅ Descripción enriquecida con éxito.")
+                    println("Nueva Descripción: ${lugarSeleccionado.descripcion.take(150)}...")
+                } else {
+                    println("La IA no enriqueció la descripción o el formato fue incorrecto.")
+                    println("Respuesta cruda: $resultado")
+                }
+
+            } catch (e: IOException) {
+                println("🔴 Error de comunicación con la IA: ${e.message}")
+            } catch (e: Exception) {
+                println("🔴 Error inesperado durante el enriquecimiento: ${e.message}")
+            }
+        } else {
+            println("ID de lugar no válido.")
         }
     }
 }
-

@@ -1,5 +1,7 @@
 package org.example
 
+import java.io.IOException
+
 /**
  * Orquestador central de la lógica de la aplicación.
  * Gestiona el flujo de trabajo, decide qué servicio llamar (local o IA)
@@ -11,55 +13,56 @@ class ControladorPrincipal(
 ) {
 
     // --- Estado de la Memoria del Chat ---
-    // El controlador principal es el responsable de mantener el historial de la conversación.
     private val historialChat: MutableList<Mensaje> = mutableListOf()
 
     /**
      * Responde a una nueva pregunta del usuario usando el asistente de IA,
      * manteniendo la memoria de la conversación.
-     *
-     * Esta función es 'suspend' porque delega la llamada a la red al AsistenteIA.
-     *
-     * @param nuevaPregunta El String con la última pregunta del usuario.
-     * @return La respuesta generada por la IA.
      */
     suspend fun obtenerRespuestaAsistente(nuevaPregunta: String): String {
         // 1. Agregar la pregunta del usuario al historial
         historialChat.add(Mensaje(role = "user", content = nuevaPregunta))
 
-        // 2. Llamar al asistente enviando TODO el historial.
-        // ESTO RESUELVE EL ERROR DE COMPILACIÓN: se pasa List<Mensaje> en lugar de String.
-        val respuestaIA = asistenteIA.obtenerRespuesta(historialChat)
+        try {
+            // 2. Llamar al asistente enviando TODO el historial.
+            val respuestaIA = asistenteIA.obtenerRespuesta(historialChat)
 
-        // 3. Agregar la respuesta de la IA al historial
-        historialChat.add(Mensaje(role = "assistant", content = respuestaIA))
+            // 3. Agregar la respuesta de la IA al historial
+            historialChat.add(Mensaje(role = "assistant", content = respuestaIA))
 
-        return respuestaIA
+            return respuestaIA
+        } catch (e: Exception) {
+            // Si la llamada falla, se elimina la última pregunta del usuario para no contaminar el historial
+            if (historialChat.lastOrNull()?.role == "user") {
+                historialChat.removeLast()
+            }
+            throw e // Relanzar la excepción para que la Vista la maneje
+        }
     }
 
-    // --- FUNCIONES DE SERVICIO LOCAL ---
+    /**
+     * Lógica para obtener la descripción enriquecida y actualizar el lugar en memoria si fue potenciada por IA.
+     */
+    suspend fun obtenerDescripcionEnriquecidaLugar(lugar: LugarTuristico): String {
+        val descripcionEnriquecidaEtiquetada = asistenteIA.enriquecerLugarTuristico(
+            lugar.nombre,
+            lugar.descripcion
+        )
+
+        // El controlador decide si actualiza el modelo basado en la etiqueta de respuesta
+        if (descripcionEnriquecidaEtiquetada.startsWith("PotenciadoIA:", true)) {
+            // Si fue potenciado por IA, actualiza la descripción del objeto mutable
+            // Se usa substringAfter para eliminar el prefijo "PotenciadoIA:"
+            lugar.descripcion = descripcionEnriquecidaEtiquetada.substringAfter(":", "").trim()
+        }
+
+        // Retorna la cadena etiquetada (ej: "PotenciadoIA: Nueva descripcion" o "BaseDeDatos: Descripcion original")
+        return descripcionEnriquecidaEtiquetada
+    }
+
+    // --- FUNCIONES DE SERVICIO LOCAL (Delegación) ---
 
     fun solicitarRecomendaciones(temporada: Temporada): List<LugarTuristico> {
         return servicioRecomendaciones.obtenerRecomendacionesPorTemporada(temporada)
     }
-
-    /**
-     * Lógica para enriquecer la descripción de un lugar usando la IA.
-     */
-    suspend fun enriquecerDescripcionLugar(lugar: LugarTuristico) {
-        val descripcionEnriquecida = asistenteIA.enriquecerLugarTuristico(
-            lugar.nombre,
-            lugar.descripcion
-        )
-        // La lógica de etiquetado (BaseDeDatos:, PotenciadoIA:) debe manejarse en VistaConsola,
-        // pero aquí el controlador simplemente actualiza el modelo.
-        if (descripcionEnriquecida.startsWith("PotenciadoIA:", true)) {
-            lugar.descripcion = descripcionEnriquecida.substringAfter(":")
-        }
-        // Nota: En una arquitectura MVC pura, el controlador sólo notificaría un cambio.
-    }
-
-    // Función de soporte para acceder al historial (si fuera necesario en la UI)
-    fun getHistorialChat(): List<Mensaje> = historialChat
 }
-

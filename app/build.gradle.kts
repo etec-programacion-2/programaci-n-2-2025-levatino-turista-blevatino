@@ -1,78 +1,105 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    // 1. Aplicación del plugin JVM
-    // La versión del plugin JVM debe coincidir con el plugin de Serialización
-    val kotlinVersion = "1.9.22"
-    id("org.jetbrains.kotlin.jvm") version kotlinVersion
+    // Aplica el plugin de Kotlin JVM
+    kotlin("jvm") version "1.9.22"
 
-    // 2. Aplicación del plugin de SERIALIZACIÓN
-    // IMPORTANTE: Definir la versión explícitamente resuelve el error de "Plugin not found".
-    id("org.jetbrains.kotlin.plugin.serialization") version kotlinVersion
-
-    // El resto de tus plugins (application, javafx, etc.)
-    application
+    // Aplica el plugin de JavaFX para manejar las dependencias nativas
     id("org.openjfx.javafxplugin") version "0.1.0"
+
+    // Aplica el plugin de Kotlinx Serialization para el manejo de JSON
+    kotlin("plugin.serialization") version "1.9.22"
+
+    // Aplica el plugin de aplicación (para crear la tarea run)
+    application
 }
 
+group = "org.example"
+version = "1.0-SNAPSHOT"
+
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
+// Define la versión de Coroutines
+val coroutinesVersion = "1.8.1"
+// Define la versión de Ktor
+val ktorVersion = "2.3.8"
+// Define la versión de Kotlinx Serialization
+val serializationVersion = "1.6.3"
+
 dependencies {
-    // Use the Kotlin JUnit 5 integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    // ----------------------------------------------------
+    // Kotlin y Testing
+    // ----------------------------------------------------
+    implementation(kotlin("stdlib"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
 
-    // Use the JUnit 5 integration.
-    testImplementation(libs.junit.jupiter.engine)
+    // ----------------------------------------------------
+    // JavaFX (Necesario para la GUI)
+    // ----------------------------------------------------
+    // El plugin de javafx ya inyecta las dependencias necesarias, pero puedes
+    // especificar la versión si fuera necesario, aunque el bloque 'javafx' es preferido.
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    // Esta dependencia es usada por la aplicación (Guava como ejemplo).
-    implementation(libs.guava)
-
-    // --- Dependencias para Coroutines y Ktor para comunicación con el servidor Python ---
-
-    // 1. Kotlin Coroutines: Necesario para manejar la asincronía (funciones 'suspend' y 'runBlocking')
-    val coroutinesVersion = "1.8.1" // Versión actualizada
+    // ----------------------------------------------------
+    // Kotlin Coroutines (Necesario para concurrencia)
+    // ----------------------------------------------------
+    // Core de corrutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    // Adaptación para usar Dispatchers.Main con JavaFX (¡CRÍTICO para resolver el primer error!)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:$coroutinesVersion")
 
-    // 2. Ktor Client: Core y el motor CIO (Content I/O) para realizar peticiones HTTP
-    val ktorVersion = "2.3.11" // Versión actualizada
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
+
+    // ----------------------------------------------------
+    // Ktor (Cliente HTTP)
+    // ----------------------------------------------------
+    // Motor de conexión (CIO recomendado para cliente)
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
-
-
-    // 3. Ktor Content Negotiation y JSON Serialization: Permite enviar y recibir los Data Classes (@Serializable)
-    val serializationVersion = "1.6.3" // Versión del runtime JSON
+    // Plugin de Content Negotiation (manejo de JSON)
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    // Adaptador de Kotlinx Serialization para Ktor
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    // AÑADIDO: Dependencia explícita del runtime JSON para eliminar advertencias
+
+
+    // ----------------------------------------------------
+    // Kotlinx Serialization (Manejo de JSON)
+    // ----------------------------------------------------
+    // Runtime para la serialización
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
-    // Dependencia de utilidad para manejar logging (slf4j)
-    implementation("org.slf4j:slf4j-nop:2.0.13")
-
+    // Corrección errores
+    implementation("org.slf4j:slf4j-simple:2.0.7") // Usa la versión actual
 }
 
-// Apply a specific Java toolchain to ease working on different environments.
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
+// --- Configuración Específica ---
 
 // Configuración de JavaFX
-javafx {
-    version = "25" // Especifica la versión de JavaFX
-    modules = listOf("javafx.controls", "javafx.fxml") // Módulos que necesitas
+javafx{
+    // Versión de JavaFX (debe coincidir con la de tu JDK/entorno)
+    version = "21"
+    // Módulos de JavaFX que se van a usar
+    modules = listOf("javafx.controls", "javafx.fxml")
 }
 
+// Configuración de Kotlin
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "21" // O la versión de tu JDK (ej: "17")
+}
+
+// Configuración de la Aplicación
 application {
-    // Define the main class for the application.
-    mainClass = "org.example.AppKt"
+    // Define la clase principal (el punto de entrada de la aplicación JavaFX)
+    mainClass.set("org.example.MainJavaFX")
 }
 
-tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
+// Configuración para el empaquetado JAR (opcional, pero buena práctica)
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = application.mainClass.get()
+    }
+    // Incluye todas las dependencias en el JAR (fat jar)
+    // Puede ser necesario para una ejecución más sencilla fuera de Gradle
+    // from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    // duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

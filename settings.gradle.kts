@@ -10,6 +10,5 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
 }
 
-
 rootProject.name = "programaci-n-2-2025-levatino-turista-blevatino"
 include("app")

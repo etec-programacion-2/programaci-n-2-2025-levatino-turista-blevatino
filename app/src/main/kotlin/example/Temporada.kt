@@ -4,19 +4,19 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 @Serializable
-enum class Temporada {
+enum class Temporada(val nombreDisplay: String) { // <--- AÑADIDO: Constructor
     @SerialName("verano")
-    VERANO,
+    VERANO("Verano"),
 
     @SerialName("otono")
-    OTONO,
+    OTONO("Otoño"), // <--- CORREGIDO: "Otoño" con Ñ mayúscula
 
     @SerialName("invierno")
-    INVIERNO,
+    INVIERNO("Invierno"),
 
     @SerialName("primavera")
-    PRIMAVERA,
+    PRIMAVERA("Primavera"),
 
-    @SerialName("todo_el_ano") // <-- ¡Este es el valor faltante!
-    TODO_EL_ANO
+    @SerialName("todo_el_ano")
+    TODO_EL_ANO("Todo el Año") // <--- CORREGIDO: Display también para este
 }

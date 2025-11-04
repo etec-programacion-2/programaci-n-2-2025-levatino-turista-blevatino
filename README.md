@@ -42,7 +42,7 @@ Primero, inicio el servidor de Python en una terminal. Esto prepara mi servicio 
 
 `pip install openai Flask datetime pytz`
 
-`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
+`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
 
 Luego, ejecuto la aplicación de Kotlin en una segunda terminal.
 `./gradlew run`
@@ -52,6 +52,15 @@ Mi aplicación de Kotlin enviará una petición a Python, que a su vez se comuni
 (_Dentro de App.tk hay una prueba_)
 
 Para demostrar la seguridad, la API Key no está en el código, sino que la configuro en una variable de entorno. Esto la mantiene a salvo y hace que mi código sea flexible.
+
+En el caso que exista algun fallo usar:
+
+`deactivate`
+
+`rm -rf venv`
+
+y luego volver a montarlo
+
 
 **Issue 2.4: Crear la clase ControladorPrincipal:**
 
@@ -63,4 +72,3 @@ Para demostrar la seguridad, la API Key no está en el código, sino que la conf
 La VistaConsola no accede a los servicios porque su único trabajo es la presentación. No debe saber cómo se obtienen los datos o cómo funciona la IA; solo se preocupa por leer y mostrar información al usuario.
 
 El ControladorPrincipal actúa como intermediario para mantener estas dos partes del sistema separadas y organizadas.
-
