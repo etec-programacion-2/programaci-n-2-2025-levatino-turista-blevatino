@@ -1,22 +1,32 @@
 package org.example
 
+/**
+ * Servicio de Negocio.
+ * Contiene la lógica para obtener y filtrar lugares turísticos.
+ * Depende del LugarTuristicoRepository para obtener los datos.
+ */
 class ServicioRecomendaciones(private val repository: LugarTuristicoRepository) {
 
+    /**
+     * Obtiene recomendaciones de lugares turísticos filtrados por la temporada.
+     */
     fun obtenerRecomendacionesPorTemporada(temporada: Temporada): List<LugarTuristico> {
         return repository.obtenerPorTemporada(temporada)
     }
 
+    /**
+     * Obtiene la lista completa de lugares turísticos.
+     */
     fun obtenerTodos(): List<LugarTuristico> {
         return repository.obtenerTodos()
     }
 
-    // Función auxiliar necesaria para el enriquecimiento por índice (si se usara en el futuro)
-    fun obtenerLugarPorIndice(indice: Int): LugarTuristico? {
-        val todosLosLugares = repository.obtenerTodos()
-        return if (indice >= 0 && indice < todosLosLugares.size) {
-            todosLosLugares[indice]
-        } else {
-            null
-        }
+    /**
+     * Busca un lugar específico por su ID, crucial para las rutas web.
+     */
+    fun obtenerLugarPorId(id: Int?): LugarTuristico? {
+        if (id == null) return null
+        // Asumiendo que LugarTuristico tiene la propiedad 'id'
+        return repository.obtenerTodos().firstOrNull { it.id == id }
     }
 }

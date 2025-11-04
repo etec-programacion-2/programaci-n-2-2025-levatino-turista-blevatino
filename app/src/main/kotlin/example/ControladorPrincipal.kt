@@ -1,68 +1,61 @@
 package org.example
 
-import java.io.IOException
-
 /**
  * Orquestador central de la lógica de la aplicación.
  * Gestiona el flujo de trabajo, decide qué servicio llamar (local o IA)
- * y mantiene el estado del historial del chat.
+ * y mantiene el estado del historial del chat (para el modo web, este historial
+ * es compartido por simplicidad, pero se manejaría por sesión en un entorno real).
  */
 class ControladorPrincipal(
-    private val servicioRecomendaciones: ServicioRecomendaciones,
-    private val asistenteIA: AsistenteIA
+    val servicioRecomendaciones: ServicioRecomendaciones, // <-- HECHO PÚBLICO (val)
+    val asistenteIA: AsistenteIA // <-- HECHO PÚBLICO (val)
 ) {
 
-    // --- Estado de la Memoria del Chat ---
+    // --- Estado de la Memoria del Chat (compartido globalmente en este ejemplo) ---
     private val historialChat: MutableList<Mensaje> = mutableListOf()
 
     /**
      * Responde a una nueva pregunta del usuario usando el asistente de IA,
      * manteniendo la memoria de la conversación.
+     *
+     * @param nuevaPregunta El String con la última pregunta del usuario.
+     * @return La respuesta generada por la IA.
      */
     suspend fun obtenerRespuestaAsistente(nuevaPregunta: String): String {
-        // 1. Agregar la pregunta del usuario al historial
+        // La lógica de manejar el historial se ha movido al frontend en la arquitectura web.
+        // Aquí, simplemente delegamos la petición. Si se llama desde las rutas web,
+        // la ruta deberá pasar el historial completo, no solo la pregunta.
+        // Pero mantenemos esta función por si alguna otra parte la requiere.
+
+        // **NOTA: Para Ktor, la ruta /chat necesita un endpoint que reciba el historial completo (ver ApiRoutes.kt)**
+
+        // Lógica de memoria compartida (Mantener la función original para compatibilidad con la consola si aplica)
         historialChat.add(Mensaje(role = "user", content = nuevaPregunta))
-
-        try {
-            // 2. Llamar al asistente enviando TODO el historial.
-            val respuestaIA = asistenteIA.obtenerRespuesta(historialChat)
-
-            // 3. Agregar la respuesta de la IA al historial
-            historialChat.add(Mensaje(role = "assistant", content = respuestaIA))
-
-            return respuestaIA
-        } catch (e: Exception) {
-            // Si la llamada falla, se elimina la última pregunta del usuario para no contaminar el historial
-            if (historialChat.lastOrNull()?.role == "user") {
-                historialChat.removeLast()
-            }
-            throw e // Relanzar la excepción para que la Vista la maneje
-        }
+        val respuestaIA = asistenteIA.obtenerRespuesta(historialChat)
+        historialChat.add(Mensaje(role = "assistant", content = respuestaIA))
+        return respuestaIA
     }
 
-    /**
-     * Lógica para obtener la descripción enriquecida y actualizar el lugar en memoria si fue potenciada por IA.
-     */
-    suspend fun obtenerDescripcionEnriquecidaLugar(lugar: LugarTuristico): String {
-        val descripcionEnriquecidaEtiquetada = asistenteIA.enriquecerLugarTuristico(
-            lugar.nombre,
-            lugar.descripcion
-        )
-
-        // El controlador decide si actualiza el modelo basado en la etiqueta de respuesta
-        if (descripcionEnriquecidaEtiquetada.startsWith("PotenciadoIA:", true)) {
-            // Si fue potenciado por IA, actualiza la descripción del objeto mutable
-            // Se usa substringAfter para eliminar el prefijo "PotenciadoIA:"
-            lugar.descripcion = descripcionEnriquecidaEtiquetada.substringAfter(":", "").trim()
-        }
-
-        // Retorna la cadena etiquetada (ej: "PotenciadoIA: Nueva descripcion" o "BaseDeDatos: Descripcion original")
-        return descripcionEnriquecidaEtiquetada
-    }
-
-    // --- FUNCIONES DE SERVICIO LOCAL (Delegación) ---
+    // --- FUNCIONES DE SERVICIO LOCAL ---\
 
     fun solicitarRecomendaciones(temporada: Temporada): List<LugarTuristico> {
         return servicioRecomendaciones.obtenerRecomendacionesPorTemporada(temporada)
+    }
+
+    /**
+     * Lógica para enriquecer la descripción de un lugar usando la IA.
+     * La modificación del lugar ocurre en el modelo (lugar: LugarTuristico).
+     */
+    suspend fun enriquecerDescripcionLugar(lugar: LugarTuristico) {
+        val descripcionEnriquecida = asistenteIA.enriquecerLugarTuristico(
+            lugar.nombre,
+            lugar.descripcion
+        )
+        // La IA devuelve el prefijo. Lo eliminamos para que el modelo quede limpio.
+        if (descripcionEnriquecida.startsWith("PotenciadoIA:", true)) {
+            lugar.descripcion = descripcionEnriquecida.substringAfter(":")
+        } else {
+            lugar.descripcion = descripcionEnriquecida // Si no tiene el prefijo, usamos la respuesta completa.
+        }
     }
 }

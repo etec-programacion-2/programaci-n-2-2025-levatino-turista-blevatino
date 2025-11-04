@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Asistente Turístico Web</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; color: #333; }
+        h1, h2, h3 { color: #007bff; }
+        .tab-content { border: 1px solid #ddd; border-top: none; padding: 20px; min-height: 500px; background-color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .tab-button { padding: 10px 15px; cursor: pointer; border: 1px solid #ddd; background-color: #eee; border-radius: 5px 5px 0 0; margin-right: 5px; }
+        .tab-button.active { background-color: #fff; border-bottom: 1px solid #fff; font-weight: bold; }
+        #chat-history { height: 300px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; white-space: pre-wrap; margin-bottom: 10px; background-color: #f9f9f9; }
+        .error { color: #dc3545; font-weight: bold; margin-top: 10px; }
+        #lugares-list { width: 100%; min-height: 250px; }
+        #detalle-lugar { width: 100%; height: 250px; padding: 10px; border: 1px solid #ccc; }
+        #chat-input { padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>Asistente Turístico IA</h1>
+
+<div>
+    <button class="tab-button active" onclick="showTab('lugares')">🌎 Lugares y Enriquecimiento</button>
+    <button class="tab-button" onclick="showTab('chat')">💬 Chat con Asistente IA</button>
+</div>
+
+<div id="lugares" class="tab-content">
+    <h2>Lugares Turísticos</h2>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+        <label for="temporada-select">Seleccionar Temporada:</label>
+        <select id="temporada-select" style="padding: 8px; border-radius: 5px;"></select>
+        <button id="btn-enriquecer" disabled style="padding: 8px 15px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Enriquecer Descripción (IA)</button>
+    </div>
+
+    <div style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+            <h3>Lista de Lugares</h3>
+            <select id="lugares-list" size="10" style="width: 100%;"></select>
+        </div>
+        <div style="flex: 2;">
+            <h3>Detalles</h3>
+            <textarea id="detalle-lugar" readonly></textarea>
+        </div>
+    </div>
+</div>
+
+<div id="chat" class="tab-content" style="display: none;">
+    <h2>Chat con Asistente IA</h2>
+    <div id="chat-history"></div>
+    <div style="display: flex; gap: 10px;">
+        <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." style="flex-grow: 1;">
+        <button id="chat-send" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Enviar</button>
+    </div>
+</div>
+
+<p class="error" id="status-message"></p>
+
+<script>
+    const API_BASE = "/api";
+    let chatHistory = [];
+    let lugaresData = [];
+    let lugarSeleccionadoId = null;
+
+    // --- MANEJO DE PESTAÑAS ---
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+        document.getElementById(tabId).style.display = 'block';
+        document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+        document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
+    }
+
+    // --- LÓGICA GENERAL ---
+    function setStatus(message, isError = false) {
+        const statusEl = document.getElementById('status-message');
+        statusEl.textContent = message;
+        statusEl.className = isError ? 'error' : '';
+    }
+
+    // --- LÓGICA DE LUGARES ---
+    async function loadTemporadas() {
+        const select = document.getElementById('temporada-select');
+        try {
+            const response = await fetch(`${API_BASE}/temporadas`);
+            const temporadas = await response.json();
+
+            select.innerHTML = '';
+            select.onchange = (e) => loadLugares(e.target.value);
+
+            temporadas.forEach(t => {
+                const option = document.createElement('option');
+                option.value = t.value;
+                option.textContent = t.display; // Aquí figura "Otoño"
+                select.appendChild(option);
+            });
+
+            if(temporadas.length > 0) {
+                loadLugares(temporadas[0].value);
+            }
+        } catch(e) {
+            setStatus("Error al cargar las temporadas. Verifique que el servidor Ktor esté en 8080.", true);
+        }
+    }
+
+    async function loadLugares(temporada) {
+        const list = document.getElementById('lugares-list');
+        const detalleArea = document.getElementById('detalle-lugar');
+
+        setStatus(`Cargando lugares para ${temporada}...`);
+        try {
+            const response = await fetch(`${API_BASE}/lugares/${temporada}`);
+            if (!response.ok) throw new Error("Error en la API.");
+
+            lugaresData = await response.json();
+            list.innerHTML = '';
+            detalleArea.value = '';
+            document.getElementById('btn-enriquecer').disabled = true;
+
+            lugaresData.forEach(l => {
+                const option = document.createElement('option');
+                option.value = l.id;
+                option.textContent = `${l.nombre} (${l.ubicacion})`;
+                list.appendChild(option);
+            });
+            setStatus(`Lugares cargados. Selecciona uno.`);
+        } catch(e) {
+            setStatus(`🔴 Error al cargar los lugares: ${e.message}`, true);
+        }
+    }
+
+    function showLugarDetails(id) {
+        const lugar = lugaresData.find(l => l.id == id);
+        if (!lugar) return;
+        lugarSeleccionadoId = id;
+
+        const detalles = `NOMBRE: ${lugar.nombre}\nUBICACIÓN: ${lugar.ubicacion}\nTEMPORADA: ${lugar.temporada.nombreDisplay}\n\nACTIVIDADES:\n${lugar.actividades.map(a => `  - ${a.nombre}`).join('\n')}\n\nDESCRIPCIÓN:\n${lugar.descripcion}`;
+        document.getElementById('detalle-lugar').value = detalles;
+        document.getElementById('btn-enriquecer').disabled = false;
+    }
+
+    async function enriquecerLugar() {
+        const id = lugarSeleccionadoId;
+        if (!id) return;
+
+        const btn = document.getElementById('btn-enriquecer');
+        btn.disabled = true;
+        document.getElementById('detalle-lugar').value = "ENRIQUECIENDO con IA... Por favor, espere. (El servidor Python debe estar activo en el puerto 5000)";
+        setStatus("Petición a la IA en curso...");
+
+        try {
+            const response = await fetch(`${API_BASE}/enriquecer/${id}`, { method: 'POST' });
+            if (!response.ok) throw new Error("Error al enriquecer. Verifique el servidor Python.");
+
+            const lugarActualizado = await response.json();
+
+            // Actualiza el array de datos localmente
+            const index = lugaresData.findIndex(l => l.id == lugarActualizado.id);
+            if (index !== -1) {
+                lugaresData[index] = lugarActualizado;
+            }
+
+            showLugarDetails(lugarActualizado.id);
+            setStatus("✅ Descripción enriquecida con éxito.");
+
+        } catch(e) {
+            setStatus(`🔴 Falló el enriquecimiento: ${e.message}`, true);
+            btn.disabled = false;
+        }
+    }
+
+    // --- LÓGICA DEL CHAT ---
+    function updateChatHistory(role, content) {
+        const historyEl = document.getElementById('chat-history');
+        const prefix = role === 'user' ? 'Tú: ' : 'IA: ';
+        historyEl.value += `${prefix}${content}\n`;
+        historyEl.scrollTop = historyEl.scrollHeight;
+    }
+
+    // El div de chat-history lo cambiamos a TextArea para facilitar el append
+    document.getElementById('chat-history').outerHTML = '<textarea id="chat-history" readonly style="width: 100%;"></textarea>';
+
+
+    async function sendChat() {
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+        if (!message) return;
+
+        // 1. Añadir el mensaje del usuario al historial y a la UI
+        chatHistory.push({ role: 'user', content: message });
+        updateChatHistory('user', message);
+
+        input.value = '';
+        input.disabled = true;
+        document.getElementById('chat-send').disabled = true;
+        setStatus("Esperando respuesta de la IA...");
+
+        try {
+            // 2. Enviar todo el historial al servidor Ktor
+            const response = await fetch(`${API_BASE}/chat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ historial_mensajes: chatHistory })
+            });
+
+            if (!response.ok) throw new Error("Error en el servidor de Ktor o en la IA.");
+
+            const responseMessage = await response.json(); // Mensaje de la IA
+
+            // 3. Añadir la respuesta de la IA al historial y a la UI
+            chatHistory.push(responseMessage);
+            updateChatHistory('assistant', responseMessage.content);
+            setStatus("Respuesta de la IA recibida.");
+
+        } catch(e) {
+            // 4. Manejo de error
+            chatHistory.pop();
+            updateChatHistory('system', `[ERROR]: ${e.message}`);
+            setStatus("🔴 Error al chatear.", true);
+        } finally {
+            input.disabled = false;
+            document.getElementById('chat-send').disabled = false;
+            input.focus();
+        }
+    }
+
+    // --- INICIALIZACIÓN ---
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTemporadas();
+
+        document.getElementById('lugares-list').addEventListener('change', (e) => showLugarDetails(e.target.value));
+        document.getElementById('btn-enriquecer').addEventListener('click', enriquecerLugar);
+        document.getElementById('chat-send').addEventListener('click', sendChat);
+        document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendChat();
+        });
+    });
+</script>
+</body>
+</html>
