@@ -2,87 +2,207 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Asistente Turístico Web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Turístico IA: Tu Próxima Aventura</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#0D9488', // Teal 700 - Color vibrante de aventura
+                        'secondary': '#FDBA74', // Amber 300 - Color cálido de acento
+                        'bg-light': '#F0FDF4', // Green 50 - Fondo muy claro
+                        'card-bg': '#FFFFFF',
+                        'accent-green': '#10B981', // Emerald 500
+                    },
+                    boxShadow: {
+                        '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
+                        'neumorphic': '6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; color: #333; }
-        h1, h2, h3 { color: #007bff; }
-        .tab-content { border: 1px solid #ddd; border-top: none; padding: 20px; min-height: 500px; background-color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .tab-button { padding: 10px 15px; cursor: pointer; border: 1px solid #ddd; background-color: #eee; border-radius: 5px 5px 0 0; margin-right: 5px; }
-        .tab-button.active { background-color: #fff; border-bottom: 1px solid #fff; font-weight: bold; }
-        #chat-history { height: 300px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; white-space: pre-wrap; margin-bottom: 10px; background-color: #f9f9f9; }
-        .error { color: #dc3545; font-weight: bold; margin-top: 10px; }
-        #lugares-list { width: 100%; min-height: 250px; }
-        #detalle-lugar { width: 100%; height: 250px; padding: 10px; border: 1px solid #ccc; }
-        #chat-input { padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        /* ---------------------------------------------------------------------- */
+        /* ESTILOS DE TRANSICIÓN Y ANIMACIONES                                    */
+        /* ---------------------------------------------------------------------- */
+
+        /* 1. Animación base para las pestañas (ya existente) */
+        .tab-content {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .tab-content.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 2. Keyframes para el Fade-In y Slide-Up */
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 3. Clase de utilidad para aplicar la animación a los elementos de contenido */
+        .animate-content-in {
+            animation: fadeInSlideUp 0.4s ease-out;
+        }
+
+        /* Oculta la barra de desplazamiento en el chat por defecto, si es necesario */
+        #chat-messages {
+            scrollbar-width: none; /* Firefox */
+        }
+        #chat-messages::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        /* Estilo para el botón de enviar mientras carga */
+        #chat-send.loading {
+            cursor: not-allowed;
+            background-color: #0F766E; /* Teal 600 */
+        }
     </style>
 </head>
-<body>
+<body class="bg-bg-light min-h-screen">
 
-<h1>Asistente Turístico IA</h1>
+<div class="container mx-auto p-4 lg:p-10">
+    <header class="text-center mb-10">
+        <h1 class="text-4xl font-extrabold text-primary mb-2">TravelGenie IA 🤖</h1>
+        <p class="text-xl text-gray-600">Tu Asistente Turístico IA para Mendoza, Argentina</p>
+    </header>
 
-<div>
-    <button class="tab-button active" onclick="showTab('lugares')">🌎 Lugares y Enriquecimiento</button>
-    <button class="tab-button" onclick="showTab('chat')">💬 Chat con Asistente IA</button>
-</div>
-
-<div id="lugares" class="tab-content">
-    <h2>Lugares Turísticos</h2>
-    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-        <label for="temporada-select">Seleccionar Temporada:</label>
-        <select id="temporada-select" style="padding: 8px; border-radius: 5px;"></select>
-        <button id="btn-enriquecer" disabled style="padding: 8px 15px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Enriquecer Descripción (IA)</button>
+    <div class="flex border-b border-primary/20 mb-6">
+        <button id="tab-lugares" class="tab-button active bg-card-bg text-primary border-t border-r border-l border-primary/20 hover:bg-primary/5 p-3 rounded-t-lg transition-colors font-semibold shadow-md -mb-px" onclick="showTab('lugares')">🌎 Lugares y Enriquecimiento</button>
+        <button id="tab-chat" class="tab-button text-gray-600 hover:text-primary hover:bg-primary/5 p-3 rounded-t-lg transition-colors font-semibold ml-2" onclick="showTab('chat')">💬 Conversar con TravelGenie</button>
     </div>
 
-    <div style="display: flex; gap: 20px;">
-        <div style="flex: 1;">
-            <h3>Lista de Lugares</h3>
-            <select id="lugares-list" size="10" style="width: 100%;"></select>
+    <main class="bg-card-bg p-6 lg:p-8 rounded-lg shadow-xl">
+
+        <div id="lugares" class="tab-content active">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Gestión de Lugares Turísticos</h2>
+
+            <div class="flex flex-col lg:flex-row lg:items-center gap-4 mb-6 p-4 bg-primary/10 rounded-lg">
+                <label for="temporada-select" class="font-medium text-primary">Seleccionar Temporada:</label>
+                <select id="temporada-select" class="p-2 border border-primary/50 rounded-md focus:ring-primary focus:border-primary transition-colors"></select>
+                <button id="btn-enriquecer" disabled class="lg:ml-auto p-3 bg-secondary text-gray-900 font-bold rounded-lg shadow-md hover:bg-secondary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    ✨ Enriquecer Descripción (IA)
+                </button>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1">
+                    <h3 class="text-xl font-semibold mb-3">Lista de Lugares</h3>
+                    <select id="lugares-list" size="15" class="w-full border border-gray-300 rounded-md p-2 focus:border-primary focus:ring-primary h-96"></select>
+                </div>
+                <div class="lg:col-span-2">
+                    <h3 class="text-xl font-semibold mb-3">Detalles del Lugar</h3>
+                    <div id="detalle-lugar-container" class="w-full border border-gray-300 rounded-md p-4 h-96 overflow-y-auto text-sm bg-gray-50 space-y-4">
+                        <p class="text-gray-500">Selecciona un lugar de la lista para ver sus detalles aquí.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div style="flex: 2;">
-            <h3>Detalles</h3>
-            <textarea id="detalle-lugar" readonly></textarea>
+
+        <div id="chat" class="tab-content" style="display: none;">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Conversación con el Asistente</h2>
+
+            <div id="chat-messages" class="h-96 overflow-y-auto border border-gray-300 p-4 rounded-lg bg-gray-50 flex flex-col space-y-4 mb-4">
+                <div class="flex justify-start">
+                    <div class="bg-secondary/40 text-gray-800 rounded-xl rounded-tl-none shadow-md p-3 max-w-3/4 animate-content-in">
+                        <p class="font-semibold text-primary/80 mb-1">TravelGenie</p>
+                        <p>¡Hola! Soy tu asistente experto en turismo en Mendoza. ¿Qué te gustaría saber sobre lugares, actividades o temporadas?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <input type="text" id="chat-input" placeholder="Escribe tu pregunta sobre turismo en Mendoza..." class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                <button id="chat-send" class="p-3 bg-primary text-white font-bold rounded-lg shadow-md hover:bg-primary/90 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </button>
+            </div>
         </div>
-    </div>
-</div>
 
-<div id="chat" class="tab-content" style="display: none;">
-    <h2>Chat con Asistente IA</h2>
-    <div id="chat-history"></div>
-    <div style="display: flex; gap: 10px;">
-        <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." style="flex-grow: 1;">
-        <button id="chat-send" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Enviar</button>
-    </div>
-</div>
+    </main>
 
-<p class="error" id="status-message"></p>
+    <p class="text-center mt-6 p-3 rounded-lg font-semibold transition-all duration-300" id="status-message"></p>
+
+</div>
 
 <script>
     const API_BASE = "/api";
     let chatHistory = [];
     let lugaresData = [];
     let lugarSeleccionadoId = null;
+    // let temporadasData = []; <-- ELIMINADO: Ya no se necesita el estado global de temporadas
 
-    // --- MANEJO DE PESTAÑAS ---
+    // --- MANEJO DE VISTAS Y ESTADO ---
+
     function showTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-        document.getElementById(tabId).style.display = 'block';
-        document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
-        document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.remove('active');
+            el.style.display = 'none';
+        });
+        const tabEl = document.getElementById(tabId);
+        tabEl.style.display = 'block';
+        setTimeout(() => tabEl.classList.add('active'), 10);
+
+        document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active', 'bg-card-bg', 'text-primary', 'border-primary/20', 'shadow-md', '-mb-px'));
+        document.querySelectorAll('.tab-button').forEach(el => el.classList.add('text-gray-600', 'hover:text-primary'));
+
+        const activeBtn = document.getElementById(`tab-${tabId}`);
+        activeBtn.classList.add('active', 'bg-card-bg', 'text-primary', 'border-t', 'border-r', 'border-l', 'border-primary/20', 'shadow-md', '-mb-px');
+        activeBtn.classList.remove('text-gray-600', 'hover:text-primary', 'hover:bg-primary/5');
     }
 
-    // --- LÓGICA GENERAL ---
     function setStatus(message, isError = false) {
         const statusEl = document.getElementById('status-message');
         statusEl.textContent = message;
-        statusEl.className = isError ? 'error' : '';
+        statusEl.className = 'text-center mt-6 p-3 rounded-lg font-semibold transition-all duration-300';
+        if (isError) {
+            statusEl.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-400');
+        } else if (message) {
+            statusEl.classList.add('bg-primary/20', 'text-primary', 'border', 'border-primary/50');
+        } else {
+            statusEl.textContent = "";
+            statusEl.classList.remove('bg-primary/20', 'text-primary', 'border', 'border-primary/50', 'bg-red-100', 'text-red-700', 'border-red-400');
+        }
     }
 
+    function showLoading(elementId, loadingText = 'Cargando...') {
+        const btn = document.getElementById(elementId);
+        btn.disabled = true;
+        btn.classList.add('loading');
+        // Mostrar spinner y texto
+        btn.innerHTML = `<svg class="animate-spin h-5 w-5 text-white inline-block mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>${loadingText}</span>`;
+    }
+
+    function hideLoading(elementId, originalHtml) {
+        const btn = document.getElementById(elementId);
+        btn.disabled = false;
+        btn.classList.remove('loading');
+        btn.innerHTML = originalHtml;
+    }
+
+
     // --- LÓGICA DE LUGARES ---
+
     async function loadTemporadas() {
         const select = document.getElementById('temporada-select');
+        setStatus(`Cargando temporadas...`);
         try {
             const response = await fetch(`${API_BASE}/temporadas`);
             const temporadas = await response.json();
+
+            // ELIMINADO: Ya no guardamos la lista globalmente
+            // temporadasData = temporadas;
 
             select.innerHTML = '';
             select.onchange = (e) => loadLugares(e.target.value);
@@ -90,7 +210,7 @@
             temporadas.forEach(t => {
                 const option = document.createElement('option');
                 option.value = t.value;
-                option.textContent = t.display; // Aquí figura "Otoño"
+                option.textContent = t.display;
                 select.appendChild(option);
             });
 
@@ -98,22 +218,35 @@
                 loadLugares(temporadas[0].value);
             }
         } catch(e) {
-            setStatus("Error al cargar las temporadas. Verifique que el servidor Ktor esté en 8080.", true);
+            setStatus("🔴 Error al cargar las temporadas. Verifique que el servidor Ktor esté activo.", true);
         }
     }
 
     async function loadLugares(temporada) {
         const list = document.getElementById('lugares-list');
-        const detalleArea = document.getElementById('detalle-lugar');
+        const detalleArea = document.getElementById('detalle-lugar-container');
+
+        const select = document.getElementById('temporada-select');
+        select.disabled = true;
 
         setStatus(`Cargando lugares para ${temporada}...`);
+
+        list.classList.remove('animate-content-in');
+
         try {
             const response = await fetch(`${API_BASE}/lugares/${temporada}`);
-            if (!response.ok) throw new Error("Error en la API.");
+            if (!response.ok) {
+                let errorMsg = "Error en la API. Verifique la ruta y el servidor.";
+                try {
+                    const errorJson = await response.json();
+                    errorMsg = errorJson.error || errorMsg;
+                } catch (e) { /* no hay json */ }
+                throw new Error(errorMsg);
+            }
 
             lugaresData = await response.json();
             list.innerHTML = '';
-            detalleArea.value = '';
+            detalleArea.innerHTML = '<p class="text-gray-500">Selecciona un lugar de la lista para ver sus detalles aquí.</p>';
             document.getElementById('btn-enriquecer').disabled = true;
 
             lugaresData.forEach(l => {
@@ -122,10 +255,26 @@
                 option.textContent = `${l.nombre} (${l.ubicacion})`;
                 list.appendChild(option);
             });
-            setStatus(`Lugares cargados. Selecciona uno.`);
+
+            void list.offsetWidth;
+            list.classList.add('animate-content-in');
+
+            setStatus(`✅ ${lugaresData.length} lugares cargados para la temporada seleccionada.`);
         } catch(e) {
             setStatus(`🔴 Error al cargar los lugares: ${e.message}`, true);
+        } finally {
+            select.disabled = false;
         }
+    }
+
+    // Función auxiliar para generar el HTML de una tarjeta de detalle
+    function formatDetailCard(title, content, bgColorClass = 'bg-primary/10', titleColorClass = 'text-primary') {
+        return `
+            <div class="p-3 ${bgColorClass} rounded-lg shadow-sm border border-gray-200">
+                <p class="font-bold text-xs uppercase ${titleColorClass} mb-1">${title}</p>
+                <p class="text-gray-800 whitespace-pre-wrap">${content}</p>
+            </div>
+        `;
     }
 
     function showLugarDetails(id) {
@@ -133,8 +282,53 @@
         if (!lugar) return;
         lugarSeleccionadoId = id;
 
-        const detalles = `NOMBRE: ${lugar.nombre}\nUBICACIÓN: ${lugar.ubicacion}\nTEMPORADA: ${lugar.temporada.nombreDisplay}\n\nACTIVIDADES:\n${lugar.actividades.map(a => `  - ${a.nombre}`).join('\n')}\n\nDESCRIPCIÓN:\n${lugar.descripcion}`;
-        document.getElementById('detalle-lugar').value = detalles;
+        const container = document.getElementById('detalle-lugar-container');
+
+        // ELIMINADO: La lógica de temporada que fallaba
+        // const temporadaInfo = temporadasData.find(t => t.value === lugar.temporada);
+        // const temporadaDisplay = temporadaInfo ? temporadaInfo.display : 'Desconocida';
+
+        // 1. Lógica para Actividades (solo si hay actividades)
+        let actividadesBlockHTML = '';
+
+        if (lugar.actividades.length > 0) {
+            const actividadesListHTML = lugar.actividades.map(a => `
+                <div class="p-2 border-l-4 border-secondary/80 bg-white shadow-sm rounded-md">
+                    <p class="font-semibold text-gray-700">${a.nombre}</p>
+                    <p class="text-xs text-gray-500">${a.descripcion}</p>
+                </div>
+            `).join('');
+
+            actividadesBlockHTML = `
+                <div class="mt-4">
+                    <h4 class="text-lg font-bold text-gray-700 mb-2 border-b pb-1 border-gray-200">Actividades (${lugar.actividades.length})</h4>
+                    <div class="space-y-2">
+                        ${actividadesListHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 2. Construir todo el HTML de los detalles
+        const detallesHTML = `
+            <h3 class="text-2xl font-extrabold text-primary mb-4">${lugar.nombre}</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                ${formatDetailCard('Ubicación', lugar.ubicacion, 'bg-green-100', 'text-accent-green')}
+
+                </div>
+
+            ${formatDetailCard('Descripción General', lugar.descripcion, 'bg-gray-100', 'text-gray-700')}
+
+            ${actividadesBlockHTML}
+        `;
+
+        // 3. Aplicar animación: remover, cambiar contenido y volver a añadir
+        container.classList.remove('animate-content-in');
+        container.innerHTML = detallesHTML;
+        void container.offsetWidth; // Forzar reflow
+        container.classList.add('animate-content-in');
+
         document.getElementById('btn-enriquecer').disabled = false;
     }
 
@@ -142,42 +336,88 @@
         const id = lugarSeleccionadoId;
         if (!id) return;
 
-        const btn = document.getElementById('btn-enriquecer');
-        btn.disabled = true;
-        document.getElementById('detalle-lugar').value = "ENRIQUECIENDO con IA... Por favor, espere. (El servidor Python debe estar activo en el puerto 5000)";
-        setStatus("Petición a la IA en curso...");
+        const originalHtml = '✨ Enriquecer Descripción (IA)';
+        showLoading('btn-enriquecer', 'Enriqueciendo...');
+
+        // Mostrar mensaje de carga
+        const container = document.getElementById('detalle-lugar-container');
+        container.classList.remove('animate-content-in');
+        container.innerHTML = `
+            <div class="flex flex-col items-center justify-center h-full animate-content-in">
+                <svg class="animate-spin h-10 w-10 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="mt-4 text-lg text-gray-600">ENRIQUECIENDO con IA... Por favor, espere.</p>
+                <p class="text-sm text-red-500">(El servidor Python debe estar activo en el puerto 5000)</p>
+            </div>
+        `;
+        setStatus("Petición de enriquecimiento a la IA en curso...");
 
         try {
             const response = await fetch(`${API_BASE}/enriquecer/${id}`, { method: 'POST' });
-            if (!response.ok) throw new Error("Error al enriquecer. Verifique el servidor Python.");
+
+            if (!response.ok) {
+                let errorMsg = "Error HTTP en el servidor Ktor al enriquecer.";
+                try {
+                    const errorJson = await response.json();
+                    errorMsg = errorJson.error || errorMsg;
+                } catch (e) { /* no hay json */ }
+                throw new Error(errorMsg);
+            }
 
             const lugarActualizado = await response.json();
 
-            // Actualiza el array de datos localmente
             const index = lugaresData.findIndex(l => l.id == lugarActualizado.id);
             if (index !== -1) {
                 lugaresData[index] = lugarActualizado;
             }
 
+            // Vuelve a mostrar los detalles, activando la animación
             showLugarDetails(lugarActualizado.id);
-            setStatus("✅ Descripción enriquecida con éxito.");
+            setStatus("✅ Descripción enriquecida con éxito y guardada en el servidor.");
 
         } catch(e) {
+            container.innerHTML = `<p class="text-red-700">🔴 Falló el enriquecimiento: ${e.message}</p>`;
             setStatus(`🔴 Falló el enriquecimiento: ${e.message}`, true);
-            btn.disabled = false;
+        } finally {
+            hideLoading('btn-enriquecer', originalHtml);
         }
     }
 
     // --- LÓGICA DEL CHAT ---
-    function updateChatHistory(role, content) {
-        const historyEl = document.getElementById('chat-history');
-        const prefix = role === 'user' ? 'Tú: ' : 'IA: ';
-        historyEl.value += `${prefix}${content}\n`;
-        historyEl.scrollTop = historyEl.scrollHeight;
-    }
 
-    // El div de chat-history lo cambiamos a TextArea para facilitar el append
-    document.getElementById('chat-history').outerHTML = '<textarea id="chat-history" readonly style="width: 100%;"></textarea>';
+    function appendMessage(sender, text, isError = false) {
+        const chatMessages = document.getElementById('chat-messages');
+        const isUser = sender === 'user';
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'}`;
+
+        const bubbleClass = isUser
+            ? 'bg-primary text-white rounded-xl rounded-br-none shadow-md'
+            : (isError ? 'bg-red-200 text-red-800 rounded-xl rounded-tl-none shadow-md border border-red-400' : 'bg-secondary/40 text-gray-800 rounded-xl rounded-tl-none shadow-md');
+
+        const content = document.createElement('div');
+        // Aplicar la animación a la burbuja del mensaje
+        content.className = `${bubbleClass} p-3 max-w-3/4 transform transition duration-300 ease-in-out whitespace-pre-wrap animate-content-in`;
+
+        if (!isUser && !isError) {
+            const name = document.createElement('p');
+            name.className = 'font-semibold text-primary/80 mb-1';
+            name.textContent = 'TravelGenie';
+            content.appendChild(name);
+        }
+
+        const messageText = document.createElement('p');
+        messageText.textContent = text;
+        content.appendChild(messageText);
+
+        messageDiv.appendChild(content);
+        chatMessages.appendChild(messageDiv);
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 
 
     async function sendChat() {
@@ -185,53 +425,63 @@
         const message = input.value.trim();
         if (!message) return;
 
-        // 1. Añadir el mensaje del usuario al historial y a la UI
         chatHistory.push({ role: 'user', content: message });
-        updateChatHistory('user', message);
+        appendMessage('user', message);
 
         input.value = '';
         input.disabled = true;
-        document.getElementById('chat-send').disabled = true;
-        setStatus("Esperando respuesta de la IA...");
+
+        const originalHtml = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>`;
+        showLoading('chat-send', '');
+        setStatus("Esperando respuesta de la IA (puede tardar unos segundos)...");
 
         try {
-            // 2. Enviar todo el historial al servidor Ktor
             const response = await fetch(`${API_BASE}/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ historial_mensajes: chatHistory })
             });
 
-            if (!response.ok) throw new Error("Error en el servidor de Ktor o en la IA.");
+            if (!response.ok) {
+                let errorMsg = "Error HTTP no especificado.";
+                try {
+                    const errorJson = await response.json();
+                    errorMsg = errorJson.error || errorMsg;
+                } catch (e) { /* no hay json */ }
+                throw new Error(errorMsg);
+            }
 
-            const responseMessage = await response.json(); // Mensaje de la IA
+            const responseMessage = await response.json();
 
-            // 3. Añadir la respuesta de la IA al historial y a la UI
             chatHistory.push(responseMessage);
-            updateChatHistory('assistant', responseMessage.content);
+            appendMessage('assistant', responseMessage.content);
             setStatus("Respuesta de la IA recibida.");
 
         } catch(e) {
-            // 4. Manejo de error
-            chatHistory.pop();
-            updateChatHistory('system', `[ERROR]: ${e.message}`);
-            setStatus("🔴 Error al chatear.", true);
+            if (chatHistory.length > 0 && chatHistory[chatHistory.length - 1].role === 'user') {
+                 chatHistory.pop();
+            }
+            appendMessage('system', `[ERROR]: ${e.message}`, true);
+            setStatus("🔴 Error al chatear. Verifique que el servidor Python esté activo y la clave API configurada.", true);
         } finally {
             input.disabled = false;
-            document.getElementById('chat-send').disabled = false;
+            hideLoading('chat-send', originalHtml);
             input.focus();
         }
     }
 
     // --- INICIALIZACIÓN ---
     document.addEventListener('DOMContentLoaded', () => {
+        showTab('lugares');
         loadTemporadas();
 
         document.getElementById('lugares-list').addEventListener('change', (e) => showLugarDetails(e.target.value));
         document.getElementById('btn-enriquecer').addEventListener('click', enriquecerLugar);
         document.getElementById('chat-send').addEventListener('click', sendChat);
         document.getElementById('chat-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendChat();
+            if (e.key === 'Enter' && !document.getElementById('chat-send').disabled) {
+                sendChat();
+            }
         });
     });
 </script>
