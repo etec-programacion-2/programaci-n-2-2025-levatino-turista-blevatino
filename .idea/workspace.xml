@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7df00e65-f658-42c1-8beb-6d27743ca609" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/ControladorPrincipal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/ControladorPrincipal.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/GeminiPythonAsistente.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/GeminiPythonAsistente.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/JsonLugarTuristicoRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/JsonLugarTuristicoRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/LugarTuristicoRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/LugarTuristicoRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/ServicioRecomendaciones.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/ServicioRecomendaciones.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/static/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
