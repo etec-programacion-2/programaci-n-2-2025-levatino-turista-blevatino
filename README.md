@@ -27,7 +27,7 @@ _Nombre: Bruno Levatino_
 
 3.  **Configurar Variables de Entorno y ejecutar Python:**
     ```bash
-    export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py
+    export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py
     ```
 
 4. **Ejecutar Kotlin (En una nueva terminal):**
