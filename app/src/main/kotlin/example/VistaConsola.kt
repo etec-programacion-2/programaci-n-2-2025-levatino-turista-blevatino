@@ -3,21 +3,15 @@ package org.example
 import java.io.IOException
 import java.util.InputMismatchException
 
-/**
- * Vista de la aplicación para la interfaz de consola.
- * Maneja la interacción con el usuario y utiliza los servicios y el asistente de IA.
- */
+// Vista de la aplicación para la interfaz de consola.
+// Delega toda la lógica al ControladorPrincipal.
 class VistaConsola(
-    private val repositorio: LugarTuristicoRepository,
-    private val asistente: AsistenteIA
+    private val controlador: ControladorPrincipal
 ) {
-    // Memoria para el chat, necesaria para las peticiones contextuales.
+    // Historial para mantener el contexto del chat.
     private val historialChat: MutableList<Mensaje> = mutableListOf()
 
-    /**
-     * Inicia el bucle principal de la aplicación de consola.
-     * Es una función suspendida porque el menú incluye llamadas a la IA.
-     */
+    // Inicia el bucle principal del menú de la consola.
     suspend fun iniciar() {
         println("=========================================")
         println("   Bienvenido al Asistente Turístico IA  ")
@@ -39,7 +33,7 @@ class VistaConsola(
                 }
             } catch (e: NumberFormatException) {
                 println("Entrada no válida. Por favor, introduce un número.")
-                opcion = -1 // Forzar la repetición del bucle
+                opcion = -1
             } catch (e: Exception) {
                 System.err.println("Ocurrió un error inesperado: ${e.message}")
             }
@@ -60,7 +54,6 @@ class VistaConsola(
     private fun mostrarLugaresPorTemporada() {
         println("\n--- Seleccionar Temporada ---")
 
-        // CORRECCIÓN CLAVE: Usamos nombreDisplay para mostrar "Otoño"
         val temporadasFiltradas = Temporada.entries.filter { it != Temporada.TODO_EL_ANO }
 
         temporadasFiltradas.forEachIndexed { index, temporada ->
@@ -69,10 +62,9 @@ class VistaConsola(
         print("Introduce el número de la temporada: ")
 
         val input = readlnOrNull()?.toIntOrNull()
-        val temporadaIndex = input?.minus(1) // Convertimos el número de opción a índice de lista (0-basado)
+        val temporadaIndex = input?.minus(1)
 
         val temporadaSeleccionada = if (temporadaIndex != null && temporadaIndex in temporadasFiltradas.indices) {
-            // Obtenemos la temporada correcta por índice
             temporadasFiltradas.getOrNull(temporadaIndex)
         } else {
             println("Selección de temporada no válida.")
@@ -80,16 +72,16 @@ class VistaConsola(
         }
 
         if (temporadaSeleccionada != null) {
-            val lugares = repositorio.obtenerPorTemporada(temporadaSeleccionada)
+            // Delega la obtención de recomendaciones al controlador
+            val lugares = controlador.solicitarRecomendaciones(temporadaSeleccionada)
 
-            // CORRECCIÓN CLAVE: Usamos nombreDisplay en el encabezado
             println("\n--- Lugares recomendados para ${temporadaSeleccionada.nombreDisplay} ---")
 
             if (lugares.isEmpty()) {
                 println("No se encontraron lugares para esta temporada.")
             } else {
                 lugares.forEachIndexed { index, lugar ->
-                    println("[$index] ${lugar.nombre} (${lugar.ubicacion})")
+                    println("[ID: ${lugar.id}] ${lugar.nombre} (${lugar.ubicacion})")
                     println("    Descripción: ${lugar.descripcion.take(100)}...")
                     println("    Actividades: ${lugar.actividades.joinToString { it.nombre }}")
                     println("---------------------------------")
@@ -112,20 +104,17 @@ class VistaConsola(
 
             if (pregunta.isNotBlank()) {
                 try {
-                    // 1. Agregar la pregunta del usuario al historial
                     historialChat.add(Mensaje(role = "user", content = pregunta))
 
-                    // 2. Llamada a la función suspendida del asistente
-                    val respuestaIA = asistente.obtenerRespuesta(historialChat)
+                    // Llama al controlador para obtener la respuesta del chat
+                    val respuestaIA = controlador.solicitarRespuestaChat(historialChat)
 
-                    // 3. La respuesta ya fue agregada al historial dentro del asistente (se asume, aunque en este caso se agrega en el Controlador/Vista)
-                    historialChat.add(Mensaje(role = "assistant", content = respuestaIA)) // Se añade la respuesta aquí para asegurar la memoria
+                    historialChat.add(Mensaje(role = "assistant", content = respuestaIA))
                     println("IA: $respuestaIA")
 
                 } catch (e: IOException) {
-                    // Manejo de errores de red o parsing
                     println("🔴 Error de comunicación con el asistente: ${e.message}")
-                    // Intentamos revertir la adición de la pregunta al historial
+                    // Elimina el mensaje del usuario si la IA falla
                     if (historialChat.lastOrNull()?.content == pregunta) {
                         historialChat.removeLast()
                     }
@@ -139,46 +128,35 @@ class VistaConsola(
     // --- Opción 3: Enriquecer Descripción (IA) ---
 
     private suspend fun enriquecerLugar() {
-        val todosLosLugares = repositorio.obtenerTodos()
+        // Obtiene los datos a través del servicio en el controlador.
+        val todosLosLugares = controlador.servicioRecomendaciones.obtenerTodos().associateBy { it.id }
+
         if (todosLosLugares.isEmpty()) {
             println("No hay lugares cargados para enriquecer.")
             return
         }
 
         println("\n--- Seleccionar Lugar a Enriquecer ---")
-        todosLosLugares.forEachIndexed { index, lugar ->
-            println("[$index] ${lugar.nombre} (${lugar.ubicacion})")
+        // Muestra la lista de IDs disponibles
+        todosLosLugares.values.forEach { lugar ->
+            println("[ID: ${lugar.id}] ${lugar.nombre} (${lugar.ubicacion})")
         }
-        print("Introduce el ID del lugar para enriquecer (0-${todosLosLugares.size - 1}): ")
+        print("Introduce el ID del lugar para enriquecer: ")
 
         val input = readlnOrNull()?.toIntOrNull()
 
-        if (input != null && input in todosLosLugares.indices) {
-            // NOTA: En Kotlin, al obtener un objeto de una lista (como 'lugarSeleccionado'),
-            // se obtiene una referencia. Si el objeto (LugarTuristico) es mutable (tiene 'var' en la descripción),
-            // la modificación de esa referencia afecta al objeto original en el repositorio.
-            val lugarSeleccionado = todosLosLugares[input]
+        val lugarSeleccionado = todosLosLugares[input]
 
+        if (lugarSeleccionado != null) {
             println("\nOriginal: ${lugarSeleccionado.descripcion.take(100)}...")
             println("Enriqueciendo la descripción de ${lugarSeleccionado.nombre} con IA...")
 
             try {
-                // Llamada suspendida para el enriquecimiento
-                val resultado = asistente.enriquecerLugarTuristico(
-                    nombre = lugarSeleccionado.nombre,
-                    descripcion = lugarSeleccionado.descripcion
-                )
+                // Llama al controlador para gestionar el enriquecimiento
+                val lugarModificado = controlador.enriquecerDescripcionLugar(lugarSeleccionado)
 
-                // El resultado debe contener el prefijo de etiquetado
-                if (resultado.startsWith("PotenciadoIA:", true)) {
-                    // Actualizamos el lugar si la IA devolvió nuevo contenido
-                    lugarSeleccionado.descripcion = resultado.substringAfter(":", "").trim()
-                    println("✅ Descripción enriquecida con éxito.")
-                    println("Nueva Descripción: ${lugarSeleccionado.descripcion.take(150)}...")
-                } else {
-                    println("La IA no enriqueció la descripción o el formato fue incorrecto.")
-                    println("Respuesta cruda: $resultado")
-                }
+                println("✅ Descripción enriquecida con éxito.")
+                println("Nueva Descripción: ${lugarModificado.descripcion.take(150)}...")
 
             } catch (e: IOException) {
                 println("🔴 Error de comunicación con la IA: ${e.message}")

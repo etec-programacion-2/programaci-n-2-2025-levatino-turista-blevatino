@@ -30,13 +30,9 @@ data class PeticionEnriquecimiento(
     val descripcion_actual: String
 )
 
-// --- Clases de Datos para Respuestas (Deben coincidir con Flask) ---
+// --- Clases de Datos para Respuestas ---
 
-/**
- * [CORRECCIÓN] Clase unificada para manejar la respuesta del servidor Python (Flask),
- * ya sea para chat o enriquecimiento. El servidor Python siempre debe devolver una
- * respuesta con la clave 'respuesta' o 'error'.
- */
+// Clase que maneja la respuesta del servidor Python.
 @Serializable
 data class PythonBaseResponse(
     val respuesta: String? = null,
@@ -46,94 +42,57 @@ data class PythonBaseResponse(
 
 // --- Cliente Ktor ---
 
-/**
- * Implementación de AsistenteIA que se comunica con el servidor Python (Flask) vía HTTP usando Ktor.
- */
+// Implementación de AsistenteIA que se comunica con el servidor Python (Flask) vía HTTP.
 class GeminiPythonAsistente : AsistenteIA {
 
-    // **IMPORTANTE: Usar la IP local si Flask se ejecuta en la misma máquina**
+    private val httpClient = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            json(Json { ignoreUnknownKeys = true })
+        }
+        // Lanza excepción para códigos de estado 4xx/5xx
+        expectSuccess = true
+    }
+
+    // URL del microservicio Python (asume puerto 5000)
     private val BASE_URL = "http://127.0.0.1:5000"
 
-    private val client = HttpClient(CIO) {
-        install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-            })
-        }
-        // Configuración para reintentos o tiempo de espera
-    }
-
+    // Llama al endpoint /chat.
     override suspend fun obtenerRespuesta(historial_mensajes: List<Mensaje>): String {
-        val peticion = PeticionChat(historial_mensajes = historial_mensajes)
+        val peticion = PeticionChat(historial_mensajes)
+        val endpoint = "$BASE_URL/chat"
 
-        try {
-            val response = client.post("$BASE_URL/chat") {
-                contentType(ContentType.Application.Json)
-                setBody(peticion)
-            }
-
-            // 1. Manejo de error HTTP (ej. 404, 500)
-            if (!response.status.isSuccess()) {
-                val errorBody = try { response.body<PythonBaseResponse>() } catch (e: Exception) { null }
-                val errorMessage = errorBody?.error ?: "Error de servidor desconocido o respuesta no JSON."
-                throw IOException("Error HTTP ${response.status.value}: $errorMessage")
-            }
-
-            // 2. Manejo de error de PARSING JSON (Lo que causaba tu error)
-            val respuestaData: PythonBaseResponse = try {
-                response.body()
-            } catch (e: Exception) {
-                val rawBody = response.body<String>()
-                // [DIAGNÓSTICO] Esta línea imprimirá en la consola Ktor el cuerpo que vino de Python
-                println("--- DIAGNÓSTICO KTOR: FALLO CRÍTICO DE PARSING ---")
-                println("Cuerpo crudo devuelto por Flask: '$rawBody'")
-                println("--------------------------------------------------")
-                throw IOException("Error de PARSING JSON. Cuerpo devuelto: $rawBody. Error: ${e.message}")
-            }
-
-            // 3. Verifica el contenido de la respuesta (la clave 'respuesta')
-            return respuestaData.respuesta
-                ?: throw Exception("La respuesta de la IA no contenía el campo 'respuesta'. Detalles: ${respuestaData.error}")
-        } catch (e: Exception) {
-            if (e is IOException) throw e
-            throw IOException("Fallo en la comunicación con el servidor Python: ${e.message}")
-        }
+        return executePostRequest(endpoint, peticion)
     }
 
+    // Llama al endpoint /ask.
     override suspend fun enriquecerLugarTuristico(nombre: String, descripcion: String): String {
-        val peticion = PeticionEnriquecimiento(lugar_nombre = nombre, descripcion_actual = descripcion)
+        val peticion = PeticionEnriquecimiento(nombre, descripcion)
+        val endpoint = "$BASE_URL/ask"
+
+        return executePostRequest(endpoint, peticion)
+    }
+
+    // Función genérica para manejar la comunicación con el servidor Python.
+    private suspend fun executePostRequest(endpoint: String, peticion: Any): String {
         try {
-            val response = client.post("$BASE_URL/ask") {
+            val response = httpClient.post(endpoint) {
                 contentType(ContentType.Application.Json)
                 setBody(peticion)
             }
 
-            // 1. Manejo de error HTTP
-            if (!response.status.isSuccess()) {
-                val errorBody = try { response.body<PythonBaseResponse>() } catch (e: Exception) { null }
-                val errorMessage = errorBody?.error ?: "Error de servidor desconocido o respuesta no JSON."
-                throw IOException("Error HTTP ${response.status.value}: $errorMessage")
-            }
-
-            // 2. Manejo de error de PARSING JSON
             val respuestaData: PythonBaseResponse = try {
                 response.body()
             } catch (e: Exception) {
                 val rawBody = response.body<String>()
-                println("--- DIAGNÓSTICO KTOR: FALLO CRÍTICO DE PARSING ---")
-                println("Cuerpo crudo devuelto por Flask: '$rawBody'")
-                println("--------------------------------------------------")
                 throw IOException("Error de PARSING JSON. Cuerpo devuelto: $rawBody. Error: ${e.message}")
             }
 
-            // 3. Verifica el contenido de la respuesta
+            // Verifica que el campo 'respuesta' exista
             return respuestaData.respuesta
-                ?: throw Exception("La respuesta de la IA no contenía el campo 'respuesta'. Detalles: ${respuestaData.error}")
+                ?: throw Exception("La respuesta de la IA no contenía el campo 'respuesta'. Error: ${respuestaData.error}")
         } catch (e: Exception) {
             if (e is IOException) throw e
-            throw IOException("Fallo en la comunicación con el servidor Python: ${e.message}")
+            throw IOException("Fallo en la comunicación con el servidor Python en $endpoint: ${e.message}")
         }
     }
 }
