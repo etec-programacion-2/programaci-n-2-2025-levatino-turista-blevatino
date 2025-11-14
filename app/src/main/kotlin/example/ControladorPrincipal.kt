@@ -2,57 +2,56 @@ package org.example
 
 import java.io.IOException
 
-/**
- * Orquestador central de la lógica de la aplicación.
- * Gestiona el flujo de trabajo, decide qué servicio llamar (local o IA).
- */
+// Controlador de la aplicación.
+// Conecta la vista/API con los servicios de negocio y la IA.
 class ControladorPrincipal(
     val servicioRecomendaciones: ServicioRecomendaciones,
     val asistenteIA: AsistenteIA
 ) {
 
-    // --- FUNCIONES DE SERVICIO LOCAL ---
+    // --- Funciones de Acceso a Servicios ---
 
-    /**
-     * [CORRECCIÓN DE LA LÍNEA 17] Llama a la función que antes generaba el error.
-     */
+    // Obtiene recomendaciones filtradas por temporada.
     fun solicitarRecomendaciones(temporada: Temporada): List<LugarTuristico> {
         return servicioRecomendaciones.obtenerRecomendacionesPorTemporada(temporada)
     }
 
-    /**
-     * Lógica para enriquecer la descripción de un lugar usando la IA.
-     */
-    suspend fun enriquecerDescripcionLugar(lugar: LugarTuristico) {
+    // Obtiene una respuesta del chat IA.
+    suspend fun solicitarRespuestaChat(historialMensajes: List<Mensaje>): String {
+        return asistenteIA.obtenerRespuesta(historialMensajes)
+    }
+
+    // Envía un lugar a la IA para enriquecer su descripción y devuelve el objeto modificado.
+    suspend fun enriquecerDescripcionLugar(lugar: LugarTuristico): LugarTuristico {
         val descripcionEnriquecida = try {
             asistenteIA.enriquecerLugarTuristico(
                 lugar.nombre,
                 lugar.descripcion
             )
         } catch (e: IOException) {
-            // Manejo de error específico de la comunicación con Python
             println("ERROR COMUNICACIÓN IA: Fallo al enriquecer. ${e.message}")
-            // Devolvemos la descripción original o un mensaje de error si falla la comunicación
-            return
+            throw e
         }
 
-        // [ROBUSTEZ] Usa la función de limpieza para manejar prefijos de forma segura.
-        lugar.descripcion = limpiarPrefijoIA(descripcionEnriquecida)
+        // Limpia cualquier prefijo que la IA haya incluido
+        val nuevaDescripcion = limpiarPrefijoIA(descripcionEnriquecida)
+
+        // Actualiza y retorna el objeto
+        lugar.descripcion = nuevaDescripcion
+        return lugar
     }
 
-    // Función auxiliar para limpieza de prefijos (maneja mayúsculas/minúsculas)
+    // Función auxiliar para limpiar prefijos como "PotenciadoIA:"
     private fun limpiarPrefijoIA(texto: String): String {
         val prefijoPotenciado = "PotenciadoIA:"
         val prefijoBase = "BaseDeDatos:"
 
-        var resultado = texto
+        var resultado = texto.trim()
 
-        // 1. Comprobar y eliminar 'PotenciadoIA:' (ignora mayúsculas/minúsculas)
+        // Elimina prefijos sin distinción de mayúsculas
         if (resultado.startsWith(prefijoPotenciado, ignoreCase = true)) {
             resultado = resultado.substringAfter(prefijoPotenciado)
         }
-
-        // 2. Comprobar y eliminar 'BaseDeDatos:' (ignora mayúsculas/minúsculas)
         if (resultado.startsWith(prefijoBase, ignoreCase = true)) {
             resultado = resultado.substringAfter(prefijoBase)
         }

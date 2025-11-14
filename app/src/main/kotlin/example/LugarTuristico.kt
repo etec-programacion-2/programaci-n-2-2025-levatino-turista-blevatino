@@ -15,7 +15,7 @@ data class LugarTuristico(
     private val _ubicacion: String,
 
     @SerialName("descripcion")
-    private var _descripcion: String, // ¡Importante: usa 'var' para ser mutable!
+    private var _descripcion: String, // 'var' permite modificar la descripción
 
     @SerialName("temporada")
     private val _temporada: Temporada,
@@ -30,7 +30,7 @@ data class LugarTuristico(
     val temporada: Temporada get() = _temporada
     val actividades: List<Actividad> get() = _actividades
 
-    // Propiedad con getter/setter para mutar la descripción
+    // Propiedad con getter/setter para la descripción
     var descripcion: String
         get() = _descripcion
         set(value) { _descripcion = value }

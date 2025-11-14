@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente Turístico IA: Tu Próxima Aventura</title>
+    <title>Asistente Turístico Mendoza</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -72,13 +72,15 @@
 
 <div class="container mx-auto p-4 lg:p-10">
     <header class="text-center mb-10">
-        <h1 class="text-4xl font-extrabold text-primary mb-2">TravelGenie IA 🤖</h1>
-        <p class="text-xl text-gray-600">Tu Asistente Turístico IA para Mendoza, Argentina</p>
+        <!-- CAMBIO A MendoTravel -->
+        <h1 class="text-4xl font-extrabold text-primary mb-2">MendoTravel IA 🤖</h1>
+        <p class="text-xl text-gray-600">Tu Asistente Turístico IA de Mendoza, Argentina</p>
     </header>
 
     <div class="flex border-b border-primary/20 mb-6">
         <button id="tab-lugares" class="tab-button active bg-card-bg text-primary border-t border-r border-l border-primary/20 hover:bg-primary/5 p-3 rounded-t-lg transition-colors font-semibold shadow-md -mb-px" onclick="showTab('lugares')">🌎 Lugares y Enriquecimiento</button>
-        <button id="tab-chat" class="tab-button text-gray-600 hover:text-primary hover:bg-primary/5 p-3 rounded-t-lg transition-colors font-semibold ml-2" onclick="showTab('chat')">💬 Conversar con TravelGenie</button>
+        <!-- CAMBIO DE TRAVELGENIE A MendoTravel -->
+        <button id="tab-chat" class="tab-button text-gray-600 hover:text-primary hover:bg-primary/5 p-3 rounded-t-lg transition-colors font-semibold ml-2" onclick="showTab('chat')">💬 Conversar con MendoTravel</button>
     </div>
 
     <main class="bg-card-bg p-6 lg:p-8 rounded-lg shadow-xl">
@@ -114,7 +116,8 @@
             <div id="chat-messages" class="h-96 overflow-y-auto border border-gray-300 p-4 rounded-lg bg-gray-50 flex flex-col space-y-4 mb-4">
                 <div class="flex justify-start">
                     <div class="bg-secondary/40 text-gray-800 rounded-xl rounded-tl-none shadow-md p-3 max-w-3/4 animate-content-in">
-                        <p class="font-semibold text-primary/80 mb-1">TravelGenie</p>
+                        <!-- CAMBIO DE TRAVELGENIE A MendoTravel -->
+                        <p class="font-semibold text-primary/80 mb-1">MendoTravel</p>
                         <p>¡Hola! Soy tu asistente experto en turismo en Mendoza. ¿Qué te gustaría saber sobre lugares, actividades o temporadas?</p>
                     </div>
                 </div>
@@ -405,7 +408,8 @@
         if (!isUser && !isError) {
             const name = document.createElement('p');
             name.className = 'font-semibold text-primary/80 mb-1';
-            name.textContent = 'TravelGenie';
+            // CAMBIO DE TRAVELGENIE A MendoTravel
+            name.textContent = 'MendoTravel';
             content.appendChild(name);
         }
 

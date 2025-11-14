@@ -2,6 +2,7 @@ import os
 import sys
 import json
 from openai import OpenAI
+from dotenv import load_dotenv # Añadido para asegurar la carga de variables de entorno
 
 # --- ASISTENTE DE IA (CLASE PRINCIPAL) ---
 
@@ -20,7 +21,7 @@ class QwenOpenRouterAsistente:
         self._perform_initial_check()
 
     def _perform_initial_check(self):
-        print("Realizando verificación inicial de la API de OpenRouter...")
+        # Realiza la verificación de la API de OpenRouter de forma silenciosa.
         try:
             messages = [{"role": "user", "content": "Responde 'OK' para confirmar la conexión."}]
 
@@ -33,7 +34,7 @@ class QwenOpenRouterAsistente:
             respuesta_texto = completion.choices[0].message.content.strip().upper()
 
             if "OK" in respuesta_texto:
-                print("Verificación inicial EXITOSA. El servidor está listo para recibir peticiones.")
+                # Verificación exitosa. No se imprime nada.
                 return
             else:
                 raise Exception(f"Verificación fallida: Respuesta inesperada del modelo: {respuesta_texto}")
@@ -42,6 +43,7 @@ class QwenOpenRouterAsistente:
             print("--- DIAGNÓSTICO DE FALLO ---")
             print(f"FALLO CRÍTICO DE CONEXIÓN CON OPENROUTER: {e}")
             print("-----------------------------")
+            # El raise detiene la inicialización del servidor de Python.
             raise Exception("Fallo en la verificación inicial. No se puede iniciar el servicio de IA.")
 
     def enriquecer_lugar_turistico(self, lugar_nombre: str, descripcion_actual: str):

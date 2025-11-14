@@ -1,9 +1,7 @@
 import os
 from flask import Flask, request, jsonify
 import sys
-
 # Importa la clase de la lógica de la IA
-# NOTA: Asegúrate de que QwenOpenRouterAsistente.py esté en la misma carpeta.
 from QwenOpenRouterAsistente import QwenOpenRouterAsistente
 
 # --- Inicialización de la aplicación Flask ---
@@ -15,10 +13,12 @@ try:
 except Exception as e:
     asistente_ia = None
     print("\n******************************************************************")
+    # El mensaje de error ahora es más claro y termina el script si hay fallo crítico
     print(f"ERROR: No se pudo inicializar el Asistente IA. Causa: {e}")
     print("El servidor NO se iniciará hasta que se resuelva este problema.")
     print("******************************************************************")
     sys.exit(1)
+
 
 # -----------------------------------------------------------------------
 # Ruta 1: Enriquecimiento de Lugares (/ask)
@@ -30,36 +30,36 @@ def ask_qwen():
         return jsonify({"error": "Petición JSON inválida. Se esperaban las claves 'lugar_nombre' y 'descripcion_actual'."}), 400
 
     if asistente_ia is None:
-        return jsonify({"error": "El servicio de IA no está configurado (Inicialización fallida)."}), 503
+        return jsonify({"error": "El servicio de IA no está configurado (Inicialización fallida). No se puede procesar la petición."}), 503
 
     # Extracción de datos
-    lugar_nombre = request.json['lugar_nombre']
-    descripcion_actual = request.json['descripcion_actual']
+    nombre = request.json.get('lugar_nombre')
+    descripcion = request.json.get('descripcion_actual')
 
-    print(f"Petición de enriquecimiento recibida para: {lugar_nombre}")
+    print(f"Petición de enriquecimiento recibida para: {nombre}")
 
-    # Llamada a la función de enriquecimiento (que incluye la lógica de etiquetado)
-    respuesta = asistente_ia.enriquecer_lugar_turistico(lugar_nombre, descripcion_actual)
+    # ↓↓↓ CORRECCIÓN DEL ERROR: Se llama al método con el nombre correcto ↓↓↓
+    respuesta = asistente_ia.enriquecer_lugar_turistico(nombre, descripcion)
 
     # Manejo de errores
     if 'error' in respuesta:
-        print(f"Error interno de OpenRouter: {respuesta['error']}")
+        print(f"Error interno de OpenRouter en enriquecimiento: {respuesta['error']}")
         return jsonify(respuesta), 500
 
-    # Éxito: devuelve la descripción enriquecida (que ya lleva el prefijo: PotenciadoIA: o BaseDeDatos:)
     return jsonify(respuesta)
+
 
 # -----------------------------------------------------------------------
 # Ruta 2: Chat Contextual con Memoria (/chat)
 # -----------------------------------------------------------------------
 @app.route('/chat', methods=['POST'])
 def chat_contextual():
-    # CAMBIO: Ahora se espera la clave 'historial_mensajes'
+    # Validación: Ahora se espera la clave 'historial_mensajes'
     if not request.is_json or 'historial_mensajes' not in request.json:
         return jsonify({"error": "Petición JSON inválida. Se esperaba la clave 'historial_mensajes'."}), 400
 
     if asistente_ia is None:
-        return jsonify({"error": "El servicio de IA no está configurado (Inicialización fallida)."}), 503
+        return jsonify({"error": "El servicio de IA no está configurado (Inicialización fallida). No se puede procesar la petición."}), 503
 
     # Extracción del historial de mensajes
     historial_mensajes = request.json.get('historial_mensajes')
@@ -80,5 +80,5 @@ def chat_contextual():
 
 
 if __name__ == '__main__':
-    # Ejecutamos el servidor en el puerto 5000 y lo hacemos accesible externamente
+    # Ejecutamos el servidor en el puerto 5000
     app.run(host='0.0.0.0', port=5000)

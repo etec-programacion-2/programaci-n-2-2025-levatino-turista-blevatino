@@ -47,7 +47,7 @@ dependencies {
 
 // Configuración para ejecutar el servidor Ktor desde el IDE
 application {
-    mainClass.set("org.example.ApplicationKt")
+    mainClass.set("org.example.AppKt")
 }
 
 // Configuración de tareas
