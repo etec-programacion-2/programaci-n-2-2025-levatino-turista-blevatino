@@ -8,7 +8,7 @@ package org.example
 class ServicioRecomendaciones(private val repository: LugarTuristicoRepository) {
 
     /**
-     * Obtiene recomendaciones de lugares turísticos filtrados por la temporada.
+     * [FUNCIÓN REQUERIDA] Obtiene recomendaciones de lugares turísticos filtrados por la temporada.
      */
     fun obtenerRecomendacionesPorTemporada(temporada: Temporada): List<LugarTuristico> {
         return repository.obtenerPorTemporada(temporada)
@@ -22,11 +22,12 @@ class ServicioRecomendaciones(private val repository: LugarTuristicoRepository) 
     }
 
     /**
-     * Busca un lugar específico por su ID, crucial para las rutas web.
+     * Busca un lugar específico por su ID.
+     * [OPTIMIZADO] Llama al nuevo método 'obtenerPorId' del repositorio.
      */
     fun obtenerLugarPorId(id: Int?): LugarTuristico? {
         if (id == null) return null
-        // Asumiendo que LugarTuristico tiene la propiedad 'id'
-        return repository.obtenerTodos().firstOrNull { it.id == id }
+        // Asume que obtienesPorId está implementado en el Repository
+        return repository.obtenerPorId(id)
     }
 }
