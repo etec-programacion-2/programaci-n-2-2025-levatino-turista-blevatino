@@ -32,17 +32,17 @@ data class PeticionEnriquecimiento(
 
 // --- Clases de Datos para Respuestas (Deben coincidir con Flask) ---
 
+/**
+ * [CORRECCIÓN] Clase unificada para manejar la respuesta del servidor Python (Flask),
+ * ya sea para chat o enriquecimiento. El servidor Python siempre debe devolver una
+ * respuesta con la clave 'respuesta' o 'error'.
+ */
 @Serializable
-data class PythonResponse(
+data class PythonBaseResponse(
     val respuesta: String? = null,
     val error: String? = null
 )
 
-@Serializable
-data class RespuestaEnriquecimiento(
-    val respuesta: String? = null,
-    val error: String? = null
-)
 
 // --- Cliente Ktor ---
 
@@ -55,46 +55,48 @@ class GeminiPythonAsistente : AsistenteIA {
     private val BASE_URL = "http://127.0.0.1:5000"
 
     private val client = HttpClient(CIO) {
-        // Configuración para usar kotlinx.serialization (JSON)
         install(ContentNegotiation) {
             json(Json {
-                ignoreUnknownKeys = true
                 prettyPrint = true
                 isLenient = true
+                ignoreUnknownKeys = true
             })
         }
+        // Configuración para reintentos o tiempo de espera
     }
 
     override suspend fun obtenerRespuesta(historial_mensajes: List<Mensaje>): String {
         val peticion = PeticionChat(historial_mensajes = historial_mensajes)
+
         try {
             val response = client.post("$BASE_URL/chat") {
                 contentType(ContentType.Application.Json)
                 setBody(peticion)
             }
 
-            // 1. Manejo de error HTTP (4xx o 5xx)
+            // 1. Manejo de error HTTP (ej. 404, 500)
             if (!response.status.isSuccess()) {
-                val errorBody = try { response.body<PythonResponse>() } catch (e: Exception) { null }
+                val errorBody = try { response.body<PythonBaseResponse>() } catch (e: Exception) { null }
                 val errorMessage = errorBody?.error ?: "Error de servidor desconocido o respuesta no JSON."
                 throw IOException("Error HTTP ${response.status.value}: $errorMessage")
             }
 
-            // 2. **Manejo de error de PARSING JSON (Causa de la última falla)**
-            val respuestaData: PythonResponse = try {
+            // 2. Manejo de error de PARSING JSON (Lo que causaba tu error)
+            val respuestaData: PythonBaseResponse = try {
                 response.body()
             } catch (e: Exception) {
-                val rawBody = response.body<String>() // Intenta leer como String para obtener la causa
-                // Lanza un error de I/O para que sea capturado por el ControladorPrincipal y propagado a la GUI
+                val rawBody = response.body<String>()
+                // [DIAGNÓSTICO] Esta línea imprimirá en la consola Ktor el cuerpo que vino de Python
+                println("--- DIAGNÓSTICO KTOR: FALLO CRÍTICO DE PARSING ---")
+                println("Cuerpo crudo devuelto por Flask: '$rawBody'")
+                println("--------------------------------------------------")
                 throw IOException("Error de PARSING JSON. Cuerpo devuelto: $rawBody. Error: ${e.message}")
             }
-            // -------------------------------------------------------------
 
-            // 3. Verifica el contenido de la respuesta
+            // 3. Verifica el contenido de la respuesta (la clave 'respuesta')
             return respuestaData.respuesta
-                ?: throw Exception("La IA devolvió un JSON 200, pero el campo 'respuesta' es nulo o ausente.")
+                ?: throw Exception("La respuesta de la IA no contenía el campo 'respuesta'. Detalles: ${respuestaData.error}")
         } catch (e: Exception) {
-            // Relanza como IOException si es un error de red o parsing para la capa superior
             if (e is IOException) throw e
             throw IOException("Fallo en la comunicación con el servidor Python: ${e.message}")
         }
@@ -110,16 +112,19 @@ class GeminiPythonAsistente : AsistenteIA {
 
             // 1. Manejo de error HTTP
             if (!response.status.isSuccess()) {
-                val errorBody = try { response.body<RespuestaEnriquecimiento>() } catch (e: Exception) { null }
+                val errorBody = try { response.body<PythonBaseResponse>() } catch (e: Exception) { null }
                 val errorMessage = errorBody?.error ?: "Error de servidor desconocido o respuesta no JSON."
                 throw IOException("Error HTTP ${response.status.value}: $errorMessage")
             }
 
-            // 2. **Manejo de error de PARSING JSON**
-            val respuestaData: RespuestaEnriquecimiento = try {
+            // 2. Manejo de error de PARSING JSON
+            val respuestaData: PythonBaseResponse = try {
                 response.body()
             } catch (e: Exception) {
                 val rawBody = response.body<String>()
+                println("--- DIAGNÓSTICO KTOR: FALLO CRÍTICO DE PARSING ---")
+                println("Cuerpo crudo devuelto por Flask: '$rawBody'")
+                println("--------------------------------------------------")
                 throw IOException("Error de PARSING JSON. Cuerpo devuelto: $rawBody. Error: ${e.message}")
             }
 

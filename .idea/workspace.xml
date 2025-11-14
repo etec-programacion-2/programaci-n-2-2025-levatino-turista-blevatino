@@ -7,8 +7,12 @@
     <list default="true" id="7df00e65-f658-42c1-8beb-6d27743ca609" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterAsistente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/QwenOpenRouterAsistente.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/pyvenv.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pyvenv.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/ControladorPrincipal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/ControladorPrincipal.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/GeminiPythonAsistente.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/GeminiPythonAsistente.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/JsonLugarTuristicoRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/JsonLugarTuristicoRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/LugarTuristicoRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/LugarTuristicoRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/example/ServicioRecomendaciones.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/example/ServicioRecomendaciones.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/static/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +33,17 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="programaci-n-2-2025-levatino-turista-blevatino" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="programaci-n-2-2025-levatino-turista-blevatino" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="programaci-n-2-2025-levatino-turista-blevatino" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
               </path>
             </expand>
             <select />
@@ -83,7 +98,7 @@
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;13-crear-una-vista-principal-en-javafx&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;23-cambio-de-javafx-a-web&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/etec/Desktop/programaci-n-2-2025-levatino-turista-blevatino/app/src/main/kotlin&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,

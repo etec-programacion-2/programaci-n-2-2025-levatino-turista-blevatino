@@ -42,7 +42,7 @@ Primero, inicio el servidor de Python en una terminal. Esto prepara mi servicio 
 
 `pip install openai Flask datetime pytz`
 
-`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
+`export OPENROUTER_API_KEY="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" && python3 ./app/src/main/resources/QwenOpenRouterServer.py`
 
 Luego, ejecuto la aplicación de Kotlin en una segunda terminal.
 `./gradlew run`

@@ -1,105 +1,56 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    // Aplica el plugin de Kotlin JVM
-    kotlin("jvm") version "1.9.22"
+    // Configuración estándar de Kotlin JVM
+    kotlin("jvm") version "1.9.23"
+    // Plugin para serialización (necesario para Ktor JSON)
+    kotlin("plugin.serialization") version "1.9.23"
 
-    // Aplica el plugin de JavaFX para manejar las dependencias nativas
-    id("org.openjfx.javafxplugin") version "0.1.0"
-
-    // Aplica el plugin de Kotlinx Serialization para el manejo de JSON
-    kotlin("plugin.serialization") version "1.9.22"
-
-    // Aplica el plugin de aplicación (para crear la tarea run)
+    // SOLUCIÓN DEL ERROR ANTERIOR: plugin 'application'
     application
 }
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
 
+// 🔥 SOLUCIÓN FINAL: Se añade el repositorio de Google 🔥
 repositories {
     mavenCentral()
+    google() // <-- AÑADIDO: Repositorio clave para artefactos de Kotlin/Android
+    maven("https://maven.pkg.jetbrains.space/public/p/kotlin/p/kotlin")
 }
-
-// Define la versión de Coroutines
-val coroutinesVersion = "1.8.1"
-// Define la versión de Ktor
-val ktorVersion = "2.3.8"
-// Define la versión de Kotlinx Serialization
-val serializationVersion = "1.6.3"
 
 dependencies {
-    // ----------------------------------------------------
-    // Kotlin y Testing
-    // ----------------------------------------------------
-    implementation(kotlin("stdlib"))
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    // --- LIBRERÍAS CORE ---
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
-    // ----------------------------------------------------
-    // JavaFX (Necesario para la GUI)
-    // ----------------------------------------------------
-    // El plugin de javafx ya inyecta las dependencias necesarias, pero puedes
-    // especificar la versión si fuera necesario, aunque el bloque 'javafx' es preferido.
+    // --- KTOR SERVER (Backend) ---
+    implementation("io.ktor:ktor-server-netty:2.3.11")
+    implementation("io.ktor:ktor-server-core-jvm:2.3.11")
+    implementation("io.ktor:ktor-server-content-negotiation:2.3.11")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.11")
+    implementation("io.ktor:ktor-server-call-logging:2.3.11")
+    implementation("io.ktor:ktor-server-default-headers:2.3.11")
+    implementation("io.ktor:ktor-server-cors:2.3.11")
 
+    // --- KTOR CLIENT (Para llamar al servidor Python de la IA) ---
+    implementation("io.ktor:ktor-client-core:2.3.11")
+    implementation("io.ktor:ktor-client-cio:2.3.11")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.11")
 
-    // ----------------------------------------------------
-    // Kotlin Coroutines (Necesario para concurrencia)
-    // ----------------------------------------------------
-    // Core de corrutinas
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    // Adaptación para usar Dispatchers.Main con JavaFX (¡CRÍTICO para resolver el primer error!)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:$coroutinesVersion")
+    // --- LOGGING ---
+    implementation("ch.qos.logback:logback-classic:1.5.6")
 
-
-    // ----------------------------------------------------
-    // Ktor (Cliente HTTP)
-    // ----------------------------------------------------
-    // Motor de conexión (CIO recomendado para cliente)
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    // Plugin de Content Negotiation (manejo de JSON)
-    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    // Adaptador de Kotlinx Serialization para Ktor
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-
-
-    // ----------------------------------------------------
-    // Kotlinx Serialization (Manejo de JSON)
-    // ----------------------------------------------------
-    // Runtime para la serialización
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-
-    // Corrección errores
-    implementation("org.slf4j:slf4j-simple:2.0.7") // Usa la versión actual
+    // --- TESTEO ---
+    testImplementation(kotlin("test"))
+    testImplementation("io.ktor:ktor-server-tests:2.3.11")
 }
 
-// --- Configuración Específica ---
-
-// Configuración de JavaFX
-javafx{
-    // Versión de JavaFX (debe coincidir con la de tu JDK/entorno)
-    version = "21"
-    // Módulos de JavaFX que se van a usar
-    modules = listOf("javafx.controls", "javafx.fxml")
-}
-
-// Configuración de Kotlin
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "21" // O la versión de tu JDK (ej: "17")
-}
-
-// Configuración de la Aplicación
+// Configuración para ejecutar el servidor Ktor desde el IDE
 application {
-    // Define la clase principal (el punto de entrada de la aplicación JavaFX)
-    mainClass.set("org.example.MainJavaFX")
+    mainClass.set("org.example.ApplicationKt")
 }
 
-// Configuración para el empaquetado JAR (opcional, pero buena práctica)
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = application.mainClass.get()
-    }
-    // Incluye todas las dependencias en el JAR (fat jar)
-    // Puede ser necesario para una ejecución más sencilla fuera de Gradle
-    // from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-    // duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+// Configuración de tareas
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "21"
 }
